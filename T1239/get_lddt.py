@@ -14,7 +14,6 @@ def assessment(ID, score):
 
     v1_ref_model_v1 = v1_ref_df[v1_ref_df['Model'].str.contains('v1')]
 
-    print(v1_ref_model_v1.columns)
     v2_ref_model_v2 = v2_ref_df[v2_ref_df['Model'].str.contains('v2')]
 
     # STEP 1: Get best fit overall
@@ -61,9 +60,7 @@ def assessment(ID, score):
             combined_df.loc[combined_df['Group'] == Group, f'best_{score}_v1_ref'] = best_fit
             if best_fit_source.split('_')[-2][1] == '1': # best model fit came from v1 submission
                 # need to find the best model fit from v2 submission to v2 ref
-                if Group == 'TS015':
-                    print("HERE")
-                    print(best_fit_v2_v2)
+
                 combined_df = place_data(Group, combined_df,  f'best_model_v1_ref', best_fit_v1_v1, 'Model')
                 combined_df = place_data(Group, combined_df,  f'best_version_v1_ref', best_fit_v1_v1, 'Version')
                 combined_df = place_data(Group, combined_df,  f'best_model_v2_ref', best_fit_v2_v2, 'Model')
@@ -90,8 +87,21 @@ def assessment(ID, score):
     from adjustText import adjust_text  
     # Plot the data as a scatter plot
     plt.figure(figsize=(10, 6))
-    plt.scatter(combined_df[f"best_v1_ref"], combined_df[f"best_v2_ref"], c='blue')
-    texts = [plt.text(combined_df[f"best_v1_ref"].iloc[i], combined_df[f"best_v2_ref"].iloc[i], txt, fontsize=8) for i, txt in enumerate(combined_df['Group'])]
+    # Add y=x line
+    max_val = max(combined_df["best_v1_ref"].max(), combined_df["best_v2_ref"].max())
+    plt.plot([0, max_val], [0, max_val], 'r--', label='y=x')
+    plt.scatter(combined_df["best_v1_ref"], combined_df["best_v2_ref"], c='blue', label='Groups')
+    # Set axis bounds with padding
+    x_min = combined_df["best_v1_ref"].min()
+    x_max = combined_df["best_v1_ref"].max()
+    y_min = combined_df["best_v2_ref"].min()
+    y_max = combined_df["best_v2_ref"].max()
+    padding = 0.05  # 5% padding
+    x_range = x_max - x_min
+    y_range = y_max - y_min
+    plt.xlim(x_min - x_range * padding, x_max + x_range * padding)
+    plt.ylim(y_min - y_range * padding, y_max + y_range * padding)
+    texts = [plt.text(combined_df["best_v1_ref"].iloc[i], combined_df["best_v2_ref"].iloc[i], txt, fontsize=8) for i, txt in enumerate(combined_df['Group'])]
     adjust_text(texts, arrowprops=dict(arrowstyle='->', color='red'))
     plt.xlabel(f'Best {score} v1 ref', fontsize=14, fontweight='bold')
     plt.ylabel(f'Best {score} v2 ref', fontsize=14, fontweight='bold')
@@ -104,7 +114,6 @@ def assessment(ID, score):
     plt.cla()
     combined_df['Combined_Score'] = combined_df['best_v1_ref'] + combined_df['best_v2_ref']
 
-    print(combined_df)
     # Sort the combined_df by 'Combined_Score' in descending order
     combined_df = combined_df.sort_values(by='Combined_Score', ascending=False)
     # Save the combined metric to a CSV file

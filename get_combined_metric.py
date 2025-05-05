@@ -1,4 +1,3 @@
-
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -34,9 +33,11 @@ def assessment(ID):
     combined_df['V1B_version'] = V1B_versions
     combined_df['V1B_model'] = V1B_models
 
-    # Add columns to store the final fit for each version
-    combined_df['V1A_final_fit'] = [0 for _ in range(len(combined_df['Group']))]
-    combined_df['V1B_final_fit'] = [0 for _ in range(len(combined_df['Group']))]
+    # Add columns to store the final fit for each version with proper dtype
+    combined_df['V1A_final_fit'] = pd.Series(0.0, index=combined_df.index, dtype='float64')
+    combined_df['V1B_final_fit'] = pd.Series(0.0, index=combined_df.index, dtype='float64')
+    combined_df['V1A_final_model'] = ''
+    combined_df['V1B_final_model'] = ''
 
     # Now, find the best match over both V1A and V1B
     for i, group in enumerate(combined_df['Group']):

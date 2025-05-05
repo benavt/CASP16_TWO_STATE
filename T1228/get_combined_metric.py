@@ -28,8 +28,8 @@ combined_df['V1B'] = V1B_GDTs
 combined_df['V1B_version'] = V1B_versions
 
 # Add columns to store the final fit for each version
-combined_df['V1A_final_fit'] = [0 for _ in range(len(combined_df['Group']))]
-combined_df['V1B_final_fit'] = [0 for _ in range(len(combined_df['Group']))]
+combined_df['V1A_final_fit'] = pd.Series([0.0 for _ in range(len(combined_df['Group']))], dtype='float64')
+combined_df['V1B_final_fit'] = pd.Series([0.0 for _ in range(len(combined_df['Group']))], dtype='float64')
 
 # Now, find the best match over both V1A and V1B
 for i, group in enumerate(combined_df['Group']):
@@ -59,12 +59,12 @@ from adjustText import adjust_text
 import matplotlib.pyplot as plt
 # Plot the data as a scatter plot
 plt.figure(figsize=(10, 6))
-plt.scatter(combined_df[f"V1A_final_fit"], combined_df[f"V1B_final_fit"], c='blue')
+plt.scatter(combined_df[f"V1A_final_fit"], combined_df[f"V1B_final_fit"], c='blue', label='Groups')
 texts = [plt.text(combined_df[f"V1A_final_fit"].iloc[i], combined_df[f"V1B_final_fit"].iloc[i], txt, fontsize=8) for i, txt in enumerate(combined_df['Group'])]
 adjust_text(texts, arrowprops=dict(arrowstyle='->', color='red'))
-plt.xlabel(f'Best Global_GDT V1A ref')
-plt.ylabel(f'Best Global_GDT V1B ref')
-plt.title(f'Scatter plot of best Global_GDT scores for 1228 V1A vs V1B')
+plt.xlabel(f'Best Global_GDT V1A ref', fontsize=14, fontweight='bold')
+plt.ylabel(f'Best Global_GDT V1B ref', fontsize=14, fontweight='bold')
+plt.title(f'Scatter plot of best Global_GDT scores for 1228 V1A vs V1B', fontsize=16, fontweight='bold')
 plt.legend()
 plt.tight_layout()
 # Save the plot as an image file

@@ -91,12 +91,25 @@ def assessment(ID, score):
     from adjustText import adjust_text  
     # Plot the data as a scatter plot
     plt.figure(figsize=(10, 6))
+    # Add y=x line
+    max_val = max(combined_df[f"best_v1_ref"].max(), combined_df[f"best_v2_ref"].max())
+    plt.plot([0, max_val], [0, max_val], 'r--', label='y=x')
     plt.scatter(combined_df[f"best_v1_ref"], combined_df[f"best_v2_ref"], c='blue')
+    # Set axis bounds with padding
+    x_min = combined_df[f"best_v1_ref"].min()
+    x_max = combined_df[f"best_v1_ref"].max()
+    y_min = combined_df[f"best_v2_ref"].min()
+    y_max = combined_df[f"best_v2_ref"].max()
+    padding = 0.05  # 5% padding
+    x_range = x_max - x_min
+    y_range = y_max - y_min
+    plt.xlim(x_min - x_range * padding, x_max + x_range * padding)
+    plt.ylim(y_min - y_range * padding, y_max + y_range * padding)
     texts = [plt.text(combined_df[f"best_v1_ref"].iloc[i], combined_df[f"best_v2_ref"].iloc[i], txt, fontsize=8) for i, txt in enumerate(combined_df['Group'])]
     adjust_text(texts, arrowprops=dict(arrowstyle='->', color='red'))
-    plt.xlabel(f'Best {score} v1 ref')
-    plt.ylabel(f'Best {score} v2 ref')
-    plt.title(f'Scatter plot of best {score} scores for {ID} V1 vs V2')
+    plt.xlabel(f'Best {score} v1 ref', fontsize=14, fontweight='bold')
+    plt.ylabel(f'Best {score} v2 ref', fontsize=14, fontweight='bold')
+    plt.title(f'Scatter plot of best {score} scores for {ID} V1 vs V2', fontsize=16, fontweight='bold')
     plt.legend()
     plt.tight_layout()
     # Save the plot as an image file

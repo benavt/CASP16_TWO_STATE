@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 def assessment(ID, score):
     # Get a list of all CSV files in the directories
     v1_ref_df = pd.read_csv(f'./best_globdockq_v1_ascending.csv')
+    v1_ref_df['GlobDockQ'] = v1_ref_df['GlobDockQ'] / 10
     v1_ref_df['Group'] = v1_ref_df['Model'].apply(lambda x: x.split('_')[0].split('v')[1][1:])
     v1_ref_df['Version'] = v1_ref_df['Model'].apply(lambda x: x.split(f'{ID}')[1][:2])
 
