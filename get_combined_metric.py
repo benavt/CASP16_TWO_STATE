@@ -74,22 +74,22 @@ def assessment(ID):
     combined_df.to_csv(f'{ID}_combined_metric.csv', index=False)
     # Create a stacked bar chart
     plt.figure(figsize=(10, 6))
-    plt.bar(combined_df['Group'], combined_df['V1A_final_fit'], label='V1A_GDT_TS')
-    plt.bar(combined_df['Group'], combined_df['V1B_final_fit'], bottom=combined_df['V1A_final_fit'], label='V1B_GDT_TS')
+    plt.bar(combined_df['Group'], combined_df['V1A_final_fit'], label='<GDT_TS> (V1A)')
+    plt.bar(combined_df['Group'], combined_df['V1B_final_fit'], bottom=combined_df['V1A_final_fit'], label='<GDT_TS> (V1B)')
 
     # Update font size and make text bold
-    plt.xlabel('Group', fontsize=14, fontweight='bold')
-    plt.ylabel('Two-State Score', fontsize=14, fontweight='bold')
-    plt.title(f'Aggregate Global GDT_TS scores for {ID} V1A and V1B', fontsize=16, fontweight='bold')
+    plt.xlabel('Group', fontsize=18)
+    plt.ylabel('Two-State Score', fontsize=18)
+    plt.title(f'Aggregate Global GDT_TS scores for {ID} V1A and V1B', fontsize=18)
 
     # Update legend font size and weight
-    plt.legend(fontsize=12)
+    plt.legend(fontsize=16)
 
     # Update x-ticks rotation and font size
-    plt.xticks(rotation=90, fontsize=12, fontweight='bold')
+    plt.xticks(rotation=90, fontsize=14)
 
     # Update y-ticks font size and weight
-    plt.yticks(fontsize=12, fontweight='bold')
+    plt.yticks(fontsize=14)
 
     plt.tight_layout()
     #plt.show()
