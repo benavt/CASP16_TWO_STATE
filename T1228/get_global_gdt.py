@@ -138,8 +138,8 @@ fig, ax_main = plt.subplots(figsize=(10, 6))
 
 # Add y=x line
 max_val = max(combined_df["V1A_final_fit"].max(), combined_df["V1B_final_fit"].max())
-ax_main.plot([0, max_val], [0, max_val], 'r--', label='y=x')
-scatter = ax_main.scatter(combined_df['V1A_final_fit'], combined_df['V1B_final_fit'], c='blue', label='Groups')
+ax_main.plot([0, max_val], [0, max_val], 'r-', label='y=x')
+scatter = ax_main.scatter(combined_df['V1A_final_fit'], combined_df['V1B_final_fit'], c='blue', label='Submission Groups')
 
 # Set axis bounds with padding for main plot
 x_min = combined_df["V1A_final_fit"].min()
@@ -172,9 +172,9 @@ if texts:
                avoid_self=True)
 
 # Set labels and title for main plot
-ax_main.set_xlabel('Best Global_GDT V1A ref', fontsize=18)
-ax_main.set_ylabel('Best Global_GDT V1B ref', fontsize=18)
-ax_main.set_title('Scatter plot of best Global_GDT scores for 1228 V1A vs V1B', fontsize=18)
+ax_main.set_xlabel('Best Global_GDT score (V1A reference state)', fontsize=18)
+ax_main.set_ylabel('Best Global_GDT score (V1B reference state)', fontsize=18)
+ax_main.set_title('Scatter plot of best Global_GDT scores \n for T1228 V1A vs V1B reference states', fontsize=18)
 ax_main.legend(fontsize=16)
 ax_main.tick_params(axis='both', labelsize=16)
 
@@ -196,12 +196,12 @@ combined_df.to_csv('combined_metric.csv', index=False)
 plt.figure(figsize=(10, 6))
 plt.bar(combined_df['Group'].str.replace('TS', ''), combined_df['V1A_final_fit'], label='<GDT_TS> (V1A)')
 plt.bar(combined_df['Group'].str.replace('TS', ''), combined_df['V1B_final_fit'], bottom=combined_df['V1A_final_fit'], label='<GDT_TS> (V1B)')
-plt.xlabel('Group', fontsize=18)
+plt.xlabel('Submission Group', fontsize=18)
 plt.ylabel('Two-State Score', fontsize=18)
-plt.title('Aggregate Global GDT_TS scores for T1228 V1A and V1B', fontsize=18)
+plt.title('Aggregate Global GDT_TS scores \n for T1228 V1A and V1B reference states', fontsize=18)
 plt.legend(loc='upper right', fontsize=16)
 plt.xticks(rotation=90, fontsize=8)
 plt.yticks(fontsize=18)
 
 # Save the plot as an image file
-plt.savefig('../PLOTS/T1228_GDT_TS_plot.png')
+plt.savefig('../PLOTS/T1228_GDT_TS_two_state.png', dpi=300)

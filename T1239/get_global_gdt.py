@@ -137,8 +137,8 @@ import matplotlib.pyplot as plt
 plt.figure(figsize=(10, 6))
 # Add y=x line
 max_val = max(combined_df[f"V1A_final_fit"].max(), combined_df[f"V1B_final_fit"].max())
-plt.plot([0, max_val], [0, max_val], 'r--', label='y=x')
-plt.scatter(combined_df[f"V1A_final_fit"], combined_df[f"V1B_final_fit"], c='blue', label='Groups')
+plt.plot([0, max_val], [0, max_val], 'r-', label='y=x')
+plt.scatter(combined_df[f"V1A_final_fit"], combined_df[f"V1B_final_fit"], c='blue', label='Submission Groups')
 # Set axis bounds with padding
 x_min = combined_df[f"V1A_final_fit"].min()
 x_max = combined_df[f"V1A_final_fit"].max()
@@ -157,15 +157,15 @@ adjust_text(texts, arrowprops=dict(arrowstyle='->', color='red', lw=0.5),
                    avoid_text=True,          # Enable text avoidance
                    avoid_points=True,        # Enable point avoidance
                    avoid_self=True)          # Enable self avoidance)
-plt.xlabel(f'Best Global_GDT V1A ref', fontsize=18)
-plt.ylabel(f'Best Global_GDT V1B ref', fontsize=18)
-plt.title(f'Scatter plot of best Global_GDT scores for 1239 V1A vs V1B', fontsize=18)
+plt.xlabel(f'Best Global_GDT score (V1A reference state)', fontsize=18)
+plt.ylabel(f'Best Global_GDT score (V1B reference state)', fontsize=18)
+plt.title(f'Scatter plot of best Global_GDT scores for T1239 V1A vs V1B reference states', fontsize=18)
 plt.legend(fontsize=16)
 plt.xticks(fontsize=18)
 plt.yticks(fontsize=18)
 plt.tight_layout()
 # Save the plot as an image file
-plt.savefig(f'../PLOTS/T1239_Global_GDT_scatter_plot.png')
+plt.savefig(f'../PLOTS/T1239_Global_GDT_scatter_plot.png', dpi=300)
 # plt.show()
 plt.cla()
 
@@ -180,14 +180,14 @@ combined_df.to_csv(f'T1239_GDT_two_state.csv', index=False)
 plt.figure(figsize=(10, 6))
 # Convert Group to string type to ensure it's treated as categorical data
 combined_df['Group'] = combined_df['Group'].astype(str)
-plt.bar(combined_df['Group'].str.replace('TS', ''), combined_df['V1A_final_fit'], label='<GDT_TS> (V1A)', color='blue')
-plt.bar(combined_df['Group'].str.replace('TS', ''), combined_df['V1B_final_fit'], bottom=combined_df['V1A_final_fit'], label='<GDT_TS> (V1B)', color='orange')
-plt.xlabel('Group', fontsize=18)
+plt.bar(combined_df['Group'].str.replace('TS', ''), combined_df['V1A_final_fit'], label='<GDT_TS> (V1A)')
+plt.bar(combined_df['Group'].str.replace('TS', ''), combined_df['V1B_final_fit'], bottom=combined_df['V1A_final_fit'], label='<GDT_TS> (V1B)')
+plt.xlabel('Submission Group', fontsize=18)
 plt.ylabel('Two-State Score', fontsize=18)
-plt.title('Aggregate Global GDT_TS scores for T1239 V1A and V1B', fontsize=18)
+plt.title('Aggregate Global GDT_TS scores for T1239 V1A and V1B reference states', fontsize=18)
 plt.legend(loc='upper right', fontsize=16)
 plt.xticks(rotation=90, fontsize=8)
 plt.yticks(fontsize=18)
 plt.tight_layout()
 # Save the plot as an image file
-plt.savefig('../PLOTS/T1239_global_gdt_plot.png')
+plt.savefig('../PLOTS/T1239_global_gdt_two_state.png', dpi=300)
