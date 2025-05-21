@@ -93,8 +93,8 @@ def assessment(ID, score):
     plt.figure(figsize=(10, 6))
     # Add y=x line
     max_val = max(combined_df[f"best_v1_ref"].max(), combined_df[f"best_v2_ref"].max())
-    plt.plot([0, max_val], [0, max_val], 'r--', label='y=x')
-    plt.scatter(combined_df[f"best_v1_ref"], combined_df[f"best_v2_ref"], c='blue')
+    plt.plot([0, max_val], [0, max_val], 'r-', label='y=x')
+    plt.scatter(combined_df[f"best_v1_ref"], combined_df[f"best_v2_ref"], c='blue', label='Submission Groups')
     # Set axis bounds with padding
     x_min = combined_df[f"best_v1_ref"].min()
     x_max = combined_df[f"best_v1_ref"].max()
@@ -112,15 +112,15 @@ def assessment(ID, score):
                    avoid_text=True,          # Enable text avoidance
                    avoid_points=True,        # Enable point avoidance
                    avoid_self=True)          # Enable self avoidance)
-    plt.xlabel(f'Best {score} v1 ref', fontsize=18)
-    plt.ylabel(f'Best {score} v2 ref', fontsize=18)
-    plt.title(f'Scatter plot of best {score} scores for {ID} V1 vs V2', fontsize=18)
+    plt.xlabel(f'Best {score} Score (V1 reference state)', fontsize=18)
+    plt.ylabel(f'Best {score} Score (V2 reference state)', fontsize=18)
+    plt.title(f'Scatter plot of best {score} \n scores for {ID} V1 vs V2 reference states', fontsize=18)
     plt.legend(fontsize=16)
     plt.xticks(fontsize=18)
     plt.yticks(fontsize=18)
     plt.tight_layout()
     # Save the plot as an image file
-    plt.savefig(f'../PLOTS/{ID}_{score}_scatter_plot.png')
+    plt.savefig(f'../PLOTS/{ID}_{score}_scatter_plot.png', dpi=300)
     # plt.show()
     plt.cla()
     combined_df['Combined_Score'] = combined_df['best_v1_ref'] + combined_df['best_v2_ref']
@@ -134,13 +134,13 @@ def assessment(ID, score):
     plt.figure(figsize=(10, 6))
     plt.bar(combined_df['Group'].str.replace('TS', ''), combined_df[f'best_{score}_v1_ref'], label=f'<DockQ> (V1A)')
     plt.bar(combined_df['Group'].str.replace('TS', ''), combined_df[f'best_{score}_v2_ref'], bottom=combined_df[f'best_{score}_v1_ref'], label=f'<DockQ> (V1B)')
-    plt.xlabel('Group', fontsize=18)
-    plt.ylabel('Score', fontsize=18)
-    plt.title(f'Aggregate {score} scores for {ID} V1A and V1B', fontsize=18)
+    plt.xlabel('SubmissionGroup', fontsize=18)
+    plt.ylabel('Two-State Score', fontsize=18)
+    plt.title(f'Aggregate {score} scores \n for {ID} V1A and V1B reference states', fontsize=18)
     plt.legend(loc='upper right', fontsize=16)
     plt.xticks(rotation=90, fontsize=14)
     plt.yticks(fontsize=18)
     plt.tight_layout()
     # Save the plot as an image file
-    plt.savefig(f'../PLOTS/{ID}_{score}_two_state.png')
+    plt.savefig(f'../PLOTS/{ID}_{score}_two_state.png', dpi=300)
 assessment("M1228", "GlobDockQ")

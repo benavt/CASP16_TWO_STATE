@@ -116,12 +116,12 @@ def assessment(ID, score):
     
     # Add y=x line
     max_val = max(combined_df["best_v1_ref"].max(), combined_df["best_v2_ref"].max())
-    ax_main.plot([0, max_val], [0, max_val], 'r--', label='y=x')
-    scatter = ax_main.scatter(combined_df['best_v1_ref'], combined_df['best_v2_ref'], c='blue', label='Groups')
+    ax_main.plot([0, max_val], [0, max_val], 'r-', label='y=x')
+    scatter = ax_main.scatter(combined_df['best_v1_ref'], combined_df['best_v2_ref'], c='blue', label='Submission Groups')
     
     # Create inset axes using inset_axes
     ax_inset = ax_main.inset_axes([0.24, 0.05, 0.475, 0.475])  # [left, bottom, width, height]
-    ax_inset.plot([0, max_val], [0, max_val], 'r--')
+    ax_inset.plot([0, 1], [0, 1], 'r-')
     ax_inset.scatter(combined_df['best_v1_ref'], combined_df['best_v2_ref'], c='blue')
     ax_inset.set_xlim(0.7, 0.85)
     ax_inset.set_ylim(0.65, 0.85)
@@ -164,7 +164,11 @@ def assessment(ID, score):
                    ax=ax_inset,  # Specify the axis for inset
                    arrowprops=dict(arrowstyle='->', color='red', lw=0.5),
                    expand_points=(1.1, 1.1),
-                   force_points=(0.1, 0.1))
+                   force_text=(0.5, 0.5),    # Increased force to move text away
+                   force_points=(0.1, 0.1),  # Increased force to avoid points
+                   avoid_text=True,          # Enable text avoidance
+                   avoid_points=True,        # Enable point avoidance
+                   avoid_self=True)      
     
     # Then handle main plot texts
     main_texts = []
@@ -188,9 +192,9 @@ def assessment(ID, score):
                    avoid_self=True)          # Enable self avoidance
     
     # Set labels and title for main plot
-    ax_main.set_xlabel(f'Best {score} V1 ref', fontsize=18)
-    ax_main.set_ylabel(f'Best {score} V2 ref', fontsize=18)
-    ax_main.set_title(f'Scatter plot of best {score} scores for {ID} V1 vs V2', fontsize=18)
+    ax_main.set_xlabel(f'Best {score} score (V1 reference state)', fontsize=18)
+    ax_main.set_ylabel(f'Best {score} score (V2 reference state)', fontsize=18)
+    ax_main.set_title(f'Scatter plot of best {score} scores for {ID} V1 vs V2 reference states', fontsize=18)
     ax_main.legend(fontsize=16)
     ax_main.tick_params(axis='both', labelsize=16)
     
@@ -210,13 +214,13 @@ def assessment(ID, score):
     plt.figure(figsize=(10, 6))
     plt.bar(combined_df['Group'].str.replace('TS', ''), combined_df[f'best_v1_ref'], label=f'<{score}> (V1A)')
     plt.bar(combined_df['Group'].str.replace('TS', ''), combined_df[f'best_v2_ref'], bottom=combined_df[f'best_v1_ref'], label=f'<{score}> (V1B)')
-    plt.xlabel('Group', fontsize=18)
+    plt.xlabel('Submission Group', fontsize=18)
     plt.ylabel('Two-State Score', fontsize=18)
-    plt.title(f'Aggregate {score} scores for {ID} V1 and V2', fontsize=18)
+    plt.title(f'Aggregate {score} scores for {ID} V1 and V2 reference states', fontsize=18)
     plt.legend(loc='upper right', fontsize=16)
     plt.xticks(rotation=90, fontsize=8)
     plt.yticks(fontsize=18)
     plt.tight_layout()
     # Save the plot as an image file
-    plt.savefig(f'../PLOTS/{ID}_{score}_two_state_plot.png')
+    plt.savefig(f'../PLOTS/{ID}_{score}_two_state.png', dpi=300)
 assessment("T1249", "lDDT")
