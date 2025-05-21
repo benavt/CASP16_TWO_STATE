@@ -204,4 +204,4 @@ plt.xticks(rotation=90, fontsize=8)
 plt.yticks(fontsize=18)
 
 # Save the plot as an image file
-plt.savefig('../PLOTS/T1228_combined_GDT_TS_plot.png')
+plt.savefig('../PLOTS/T1228_GDT_TS_plot.png')

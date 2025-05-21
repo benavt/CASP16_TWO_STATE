@@ -4,7 +4,7 @@ This repository contains scripts and analysis tools for evaluating protein struc
 
 ## Overview
 
-The repository implements a comprehensive analysis pipeline for CASP16 targets that exhibit two-state conformations. It processes and combines scores from different reference structures and model versions, generating both quantitative metrics and visualizations for assessment.
+The repository implements a comprehensive analysis pipeline for CASP16 targets that exhibit two-state conformations. It processes and combines scores from different reference structures and model versions, generating quantitative metrics for assessment.
 
 ### Key Features
 
@@ -15,14 +15,11 @@ The repository implements a comprehensive analysis pipeline for CASP16 targets t
   - TM-score
   - TM-align
 - Generation of combined scores for two-state conformations
-- Visualization tools for comparing predictions against different reference structures
-- Automated plotting of scatter plots and stacked bar charts
 
 ## Repository Structure
 
 ```
 .
-├── PLOTS/                  # Directory containing generated plots
 ├── T1228/                  # Analysis for target T1228
 │   ├── get_global_gdt.py   # Global GDT score analysis
 │   ├── get_lddt.py         # lDDT score analysis
@@ -41,10 +38,7 @@ Each target directory contains scripts that:
 1. Load prediction scores from CSV files
 2. Process scores for different model versions (v1 and v2)
 3. Combine scores from different reference structures
-4. Generate visualizations:
-   - Scatter plots comparing V1A vs V1B scores
-   - Stacked bar charts showing combined scores
-5. Save results as CSV files and plots
+4. Save results as CSV files
 
 ### Key Metrics
 
@@ -57,7 +51,7 @@ Each target directory contains scripts that:
 
 1. Ensure all required Python packages are installed:
    ```bash
-   pip install pandas matplotlib adjustText
+   pip install pandas
    ```
 
 2. Run the analysis for all targets:
@@ -73,21 +67,12 @@ Each target directory contains scripts that:
 
 ## Output
 
-The analysis generates:
-
-1. CSV files containing:
-   - Combined scores for each group
-   - Best scores against each reference structure
-   - Model versions used for best predictions
-
-2. Visualization plots in the `PLOTS/` directory:
-   - Scatter plots comparing V1A vs V1B scores
-   - Stacked bar charts showing combined scores
-   - All plots include proper labeling and legends
+The analysis generates CSV files containing:
+- Combined scores for each group
+- Best scores against each reference structure
+- Model versions used for best predictions
 
 ## Dependencies
 
 - Python 3.x
 - pandas
-- matplotlib
-- adjustText
