@@ -94,7 +94,6 @@ def assessment(ID):
     plt.tight_layout()
     #plt.show()
     # Save the plot as an image file
-    plt.savefig(f'{ID}_combined_metric_plot.png')
-
+    plt.savefig(f'./PLOTS/{ID}_combined_metric_plot.png')
 assessment('T1228')
 assessment('T1239')

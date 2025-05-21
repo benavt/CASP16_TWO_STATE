@@ -105,15 +105,17 @@ def assessment(ID, score):
     y_range = y_max - y_min
     plt.xlim(x_min - x_range * padding, x_max + x_range * padding)
     plt.ylim(y_min - y_range * padding, y_max + y_range * padding)
-    texts = [plt.text(combined_df[f"best_v1_ref"].iloc[i], combined_df[f"best_v2_ref"].iloc[i], txt, fontsize=8) for i, txt in enumerate(combined_df['Group'])]
+    texts = [plt.text(combined_df[f"best_v1_ref"].iloc[i], combined_df[f"best_v2_ref"].iloc[i], txt, fontsize=14) for i, txt in enumerate(combined_df['Group'].str.replace('TS', ''))]
     adjust_text(texts, arrowprops=dict(arrowstyle='->', color='red'))
-    plt.xlabel(f'Best {score} v1 ref', fontsize=14)
-    plt.ylabel(f'Best {score} v2 ref', fontsize=14)
-    plt.title(f'Scatter plot of best {score} scores for {ID} V1 vs V2', fontsize=16)
-    plt.legend()
+    plt.xlabel(f'Best {score} v1 ref', fontsize=18)
+    plt.ylabel(f'Best {score} v2 ref', fontsize=18)
+    plt.title(f'Scatter plot of best {score} scores for {ID} V1 vs V2', fontsize=18)
+    plt.legend(fontsize=16)
+    plt.xticks(fontsize=18)
+    plt.yticks(fontsize=18)
     plt.tight_layout()
     # Save the plot as an image file
-    plt.savefig(f'{ID}_{score}_scatter_plot.png')
+    plt.savefig(f'../PLOTS/{ID}_{score}_scatter_plot.png')
     # plt.show()
     plt.cla()
     combined_df['Combined_Score'] = combined_df['best_v1_ref'] + combined_df['best_v2_ref']
@@ -122,17 +124,18 @@ def assessment(ID, score):
     # Sort the combined_df by 'Combined_Score' in descending order
     combined_df = combined_df.sort_values(by='Combined_Score', ascending=False)
     # Save the combined metric to a CSV file
-    combined_df.to_csv(f'{ID}_{score}_two_state_1.csv', index=False)
+    combined_df.to_csv(f'{ID}_{score}_two_state.csv', index=False)
     # Create a stacked bar chart
     plt.figure(figsize=(10, 6))
-    plt.bar(combined_df['Group'], combined_df[f'best_{score}_v1_ref'], label=f'<GDT_TS> (V1A)')
-    plt.bar(combined_df['Group'], combined_df[f'best_{score}_v2_ref'], bottom=combined_df[f'best_{score}_v1_ref'], label=f'<GDT_TS> (V1B)')
+    plt.bar(combined_df['Group'].str.replace('TS', ''), combined_df[f'best_{score}_v1_ref'], label=f'<GDT_TS> (V1A)')
+    plt.bar(combined_df['Group'].str.replace('TS', ''), combined_df[f'best_{score}_v2_ref'], bottom=combined_df[f'best_{score}_v1_ref'], label=f'<GDT_TS> (V1B)')
     plt.xlabel('Group', fontsize=18)
     plt.ylabel('Two-State Score', fontsize=18)
     plt.title(f'Aggregate {score} scores for {ID} V1A and V1B', fontsize=18)
     plt.legend(loc='upper right', fontsize=16)
     plt.xticks(rotation=90, fontsize=14)
+    plt.yticks(fontsize=18)
     plt.tight_layout()
     # Save the plot as an image file
-    plt.savefig(f'{ID}_{score}_two_state_1.png')
+    plt.savefig(f'../PLOTS/{ID}_{score}_two_state.png')
 assessment("M1228", "Global_GDT")
