@@ -23,7 +23,6 @@ The repository implements a comprehensive analysis pipeline for CASP16 targets t
 ├── T1228/                  # Analysis for target T1228
 │   ├── get_global_gdt.py   # Global GDT score analysis
 │   ├── get_lddt.py         # lDDT score analysis
-│   └── get_combined_metric.py  # Combined metric analysis
 ├── T1239/                  # Analysis for target T1239
 ├── T1249/                  # Analysis for target T1249
 ├── M1228/                  # Analysis for target M1228
