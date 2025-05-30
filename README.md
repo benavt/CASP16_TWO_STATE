@@ -57,6 +57,11 @@ Processes the gathered data to compute two-state scores for each target and scor
 Each output CSV file in the `OUTPUT/` directory contains the following columns:
 
 - **Group**: The submission group identifier (e.g., TS314).
+- **Combined_Score**: The sum of the two best scores for the group, depending on which combination produced the Best_Score.
+- **Best_v1_ref**: The best score for this group using a v1 reference (from the best combination).
+- **Best_v2_ref**: The best score for this group using a v2 reference (from the best combination).
+- **V1_Model_For_Combined_Score**: The group and model version/number string (e.g., TS314_v1_4) for the model that produced Best_v1_ref.
+- **V2_Model_For_Combined_Score**: The group and model version/number string (e.g., TS314_v2_5) for the model that produced Best_v2_ref.
 - **Best_Score**: The highest score among all model/version combinations for this group.
 - **Best_Source**: The model/version combination (v1_v1, v1_v2, v2_v1, v2_v2) that produced the Best_Score.
 - **v1_v1_Score**: Best score for this group using v1 model against v1 reference.
@@ -67,9 +72,6 @@ Each output CSV file in the `OUTPUT/` directory contains the following columns:
 - **v1_v2_ModelNumber**: Model number of the model that produced the v1_v2_Score.
 - **v2_v1_ModelNumber**: Model number of the model that produced the v2_v1_Score.
 - **v2_v2_ModelNumber**: Model number of the model that produced the v2_v2_Score.
-- **Combined_Score**: The sum of the two best scores for the group, depending on which combination produced the Best_Score.
-- **Best_v1_ref**: The best score for this group using a v1 reference (from the best combination).
-- **Best_v2_ref**: The best score for this group using a v2 reference (from the best combination).
 
 ## Workflow
 

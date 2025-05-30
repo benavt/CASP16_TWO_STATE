@@ -100,28 +100,43 @@ def get_best_fit(v1_df, v2_df, score):
         cumulative_score = 0
         best_v1_ref = 0
         best_v2_ref = 0
+        best_v1_ref_model_number = 0
+        best_v2_ref_model_number = 0
         if best_source == 'v1_v1':
             cumulative_score = v1_v1_best + v2_v2_best
             best_v1_ref = v1_v1_best
             best_v2_ref = v2_v2_best
+            best_v1_ref_model_number = 'v1' + '_' + str(v1_v1_model_number)
+            best_v2_ref_model_number = 'v2' + '_' + str(v2_v2_model_number)
         elif best_source == 'v1_v2':
             cumulative_score = v1_v2_best + v2_v1_best
             best_v1_ref = v1_v2_best
             best_v2_ref = v2_v1_best
+            best_v1_ref_model_number = 'v2' + '_' + str(v1_v2_model_number)
+            best_v2_ref_model_number = 'v1' + '_' + str(v2_v1_model_number)
         elif best_source == 'v2_v1':
             cumulative_score = v2_v1_best + v1_v2_best
             best_v2_ref = v2_v1_best
             best_v1_ref = v1_v2_best
+            best_v2_ref_model_number = 'v1' + '_' + str(v2_v1_model_number)
+            best_v1_ref_model_number = 'v2' + '_' + str(v1_v2_model_number)
         elif best_source == 'v2_v2':
             cumulative_score = v2_v2_best + v1_v1_best
             best_v2_ref = v2_v2_best
             best_v1_ref = v1_v1_best
+            best_v2_ref_model_number = 'v2' + '_' + str(v2_v2_model_number)
+            best_v1_ref_model_number = 'v1' + '_' + str(v1_v1_model_number)
         else:
             raise
 
         # Store results
         results.append({
             'Group': group,
+            'Combined_Score': cumulative_score,
+            'Best_v1_ref': best_v1_ref,
+            'Best_v2_ref': best_v2_ref,
+            'V1_Model_For_Combined_Score': group + '_' + best_v1_ref_model_number,
+            'V2_Model_For_Combined_Score': group + '_' + best_v2_ref_model_number,
             'Best_Score': best_score,
             'Best_Source': best_source,
             'v1_v1_Score': v1_v1_best,
@@ -131,10 +146,7 @@ def get_best_fit(v1_df, v2_df, score):
             'v1_v1_ModelNumber': v1_v1_model_number,
             'v1_v2_ModelNumber': v1_v2_model_number,
             'v2_v1_ModelNumber': v2_v1_model_number,
-            'v2_v2_ModelNumber': v2_v2_model_number,
-            'Combined_Score': cumulative_score,
-            'Best_v1_ref': best_v1_ref,
-            'Best_v2_ref': best_v2_ref
+            'v2_v2_ModelNumber': v2_v2_model_number
         })
 
     # Convert results to DataFrame
