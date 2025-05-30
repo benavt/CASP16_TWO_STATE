@@ -52,6 +52,25 @@ Processes the gathered data to compute two-state scores for each target and scor
   - Input files are expected in `DATA/`.
   - Output CSVs and plots are saved in `OUTPUT/` and `PLOTS/` respectively.
 
+## Output CSV Columns
+
+Each output CSV file in the `OUTPUT/` directory contains the following columns:
+
+- **Group**: The submission group identifier (e.g., TS314).
+- **Best_Score**: The highest score among all model/version combinations for this group.
+- **Best_Source**: The model/version combination (v1_v1, v1_v2, v2_v1, v2_v2) that produced the Best_Score.
+- **v1_v1_Score**: Best score for this group using v1 model against v1 reference.
+- **v1_v2_Score**: Best score for this group using v2 model against v1 reference.
+- **v2_v1_Score**: Best score for this group using v1 model against v2 reference.
+- **v2_v2_Score**: Best score for this group using v2 model against v2 reference.
+- **v1_v1_ModelNumber**: Model number of the model that produced the v1_v1_Score.
+- **v1_v2_ModelNumber**: Model number of the model that produced the v1_v2_Score.
+- **v2_v1_ModelNumber**: Model number of the model that produced the v2_v1_Score.
+- **v2_v2_ModelNumber**: Model number of the model that produced the v2_v2_Score.
+- **Combined_Score**: The sum of the two best scores for the group, depending on which combination produced the Best_Score.
+- **Best_v1_ref**: The best score for this group using a v1 reference (from the best combination).
+- **Best_v2_ref**: The best score for this group using a v2 reference (from the best combination).
+
 ## Workflow
 
 1. **Gather Data:**
