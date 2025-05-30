@@ -208,6 +208,7 @@ def create_scatter(
     texts_main = []
     texts_inset = []
     for i, (xv, yv, txt) in enumerate(zip(x, y, group_labels)):
+        txt = str(txt)
         if inset and inset_xlim and inset_ylim and (inset_xlim[0] <= xv <= inset_xlim[1] and inset_ylim[0] <= yv <= inset_ylim[1]):
             texts_inset.append(ax_inset.text(xv, yv, txt.replace('TS', ''), fontsize=8))
         else:
@@ -348,11 +349,12 @@ def assessment(ID, score):
 
 TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT", "TMscore"], 
                      "M1239": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT", "TMscore"], 
-                     "R1203": ["GDT_TS", "GlobalLDDT"], 
+                     "R1203": ["GDT_TS", "GlobalLDDT", "Composite_Score_4"], 
                      "T1228": ["GDT_TS", "GlobalLDDT"], 
                      "T1239": ["GDT_TS", "GlobalLDDT"], 
                      "T1249": ["AvgDockQ", "GlobalLDDT"]}
-
+assessment("R1203", "Composite_Score_4")
+raise Exception("Stop here")
 for ID, scores in TARGET_SCORE_DICT.items():
     for score in scores:
         try:
