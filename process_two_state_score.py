@@ -209,9 +209,9 @@ def create_scatter(
     texts_inset = []
     for i, (xv, yv, txt) in enumerate(zip(x, y, group_labels)):
         if inset and inset_xlim and inset_ylim and (inset_xlim[0] <= xv <= inset_xlim[1] and inset_ylim[0] <= yv <= inset_ylim[1]):
-            texts_inset.append(ax_inset.text(xv, yv, txt, fontsize=8))
+            texts_inset.append(ax_inset.text(xv, yv, txt.replace('TS', ''), fontsize=8))
         else:
-            texts_main.append(ax_main.text(xv, yv, txt, fontsize=8))
+            texts_main.append(ax_main.text(xv, yv, txt.replace('TS', ''), fontsize=8))
     if adjust_texts:
         if texts_inset:
             adjust_text(texts_inset, 
@@ -254,86 +254,80 @@ def assessment(ID, score):
     combined_df.to_csv(f'./OUTPUT/{ID}_{score}_two_state.csv', index=False)
     
 
-    if ID == "T1228":
-        if score == "GlobalLDDT":
-            fig, ax_main, ax_inset = create_scatter(combined_df[f"Best_v1_ref"], \
-                   combined_df[f"Best_v2_ref"], \
-                   combined_df['Group'], f'{score} Score (V1)', \
-                   f'{score} Score (V2)', f'Scatter plot of {score} scores for \n {ID} V1 vs V2 reference states', \
-                   save_path=f'./PLOTS/{ID}_{score}_scatter_plot.png',
-                   inset=True,
-                   inset_position=[0.2, 0.05, 0.475, 0.475],   # [left, bottom, width, height]
-                   inset_xlim=[0.74, 0.78],
-                   inset_ylim=[0.70, 0.75],
-                   inset_xticks=[0.74, 0.75, 0.76, 0.77, 0.78],  # [0.0, 0.5]
-                   inset_yticks=[0.70, 0.72, 0.74, 0.75],
-                   highlight_inset_rect=True,
-                   rect_xy=(0.74, 0.70),
-                   rect_width=0.04,
-                   rect_height=0.05,
-                   )
-    elif ID == "T1249":
-        if score == "GlobalLDDT":
-            fig, ax_main, ax_inset = create_scatter(combined_df[f"Best_v1_ref"], \
-                   combined_df[f"Best_v2_ref"], \
-                   combined_df['Group'], f'{score} Score (V1)', \
-                   f'{score} Score (V2)', f'Scatter plot of {score} scores for \n {ID} V1 vs V2 reference states', \
-                   save_path=f'./PLOTS/{ID}_{score}_scatter_plot.png',
-                   inset=True,
-                   inset_position=[0.25, 0.05, 0.475, 0.475],   # [left, bottom, width, height]
-                   inset_xlim=[0.74, 0.82],
-                   inset_ylim=[0.70, 0.8],
-                   inset_xticks=[0.74, 0.76, 0.78, 0.80, 0.82],
-                   inset_yticks=[0.70, 0.72, 0.74, 0.76, 0.78, 0.80],
-                   highlight_inset_rect=True,
-                   rect_xy=(0.74, 0.70),
-                   rect_width=0.08,
-                   rect_height=0.1,
-                   )
-    elif ID == "T1239":
-        if score == "GlobalLDDT":
-            fig, ax_main, ax_inset = create_scatter(combined_df[f"Best_v1_ref"], \
-                   combined_df[f"Best_v2_ref"], \
-                   combined_df['Group'], f'{score} Score (V1)', \
-                   f'{score} Score (V2)', f'Scatter plot of {score} scores for \n {ID} V1 vs V2 reference states', \
-                   save_path=f'./PLOTS/{ID}_{score}_scatter_plot.png',
-                   inset=True,
-                   inset_position=[0.25, 0.05, 0.475, 0.475],   # [left, bottom, width, height]
-                   inset_xlim=[0.66, 0.84],
-                   inset_ylim=[0.72, 0.86],
-                   inset_xticks=[0.66, 0.72, 0.78, 0.84],
-                   inset_yticks=[0.72, 0.78, 0.84, 0.86],
-                   highlight_inset_rect=True,
-                   rect_xy=(0.66, 0.72),
-                   rect_width=0.18,
-                   rect_height=0.14,
-                   )
-    elif ID == "R1203":
-        if score == "GlobalLDDT":
-            fig, ax_main, ax_inset = create_scatter(combined_df[f"Best_v1_ref"], \
-                   combined_df[f"Best_v2_ref"], \
-                   combined_df['Group'], f'{score} Score (V1)', \
-                   f'{score} Score (V2)', f'Scatter plot of {score} scores for \n {ID} V1 vs V2 reference states', \
-                   save_path=f'./PLOTS/{ID}_{score}_scatter_plot.png',
-                   inset=True,
-                   inset_position=[0.25, 0.05, 0.475, 0.475],   # [left, bottom, width, height]
-                   inset_xlim=[0.68, 0.84],
-                   inset_ylim=[0.68, 0.84],
-                   inset_xticks=[0.68, 0.74, 0.80, 0.84],
-                   inset_yticks=[0.68, 0.74, 0.80, 0.84],
-                   highlight_inset_rect=True,
-                   rect_xy=(0.68, 0.68),
-                   rect_width=0.16,
-                   rect_height=0.16,
-                   )
+    if ID == "T1228" and score == 'GlobalLDDT':
+        fig, ax_main, ax_inset = create_scatter(combined_df[f"Best_v1_ref"], \
+                combined_df[f"Best_v2_ref"], \
+                combined_df['Group'], f'{score} Score (V1)', \
+                f'{score} Score (V2)', f'Scatter plot of {score} scores for \n {ID} V1 vs V2 reference states', \
+                save_path=f'./PLOTS/{ID}_{score}_scatter_plot.png',
+                inset=True,
+                inset_position=[0.2, 0.05, 0.475, 0.475],   # [left, bottom, width, height]
+                inset_xlim=[0.74, 0.78],
+                inset_ylim=[0.70, 0.75],
+                inset_xticks=[0.74, 0.75, 0.76, 0.77, 0.78],  # [0.0, 0.5]
+                inset_yticks=[0.70, 0.72, 0.74, 0.75],
+                highlight_inset_rect=True,
+                rect_xy=(0.74, 0.70),
+                rect_width=0.04,
+                rect_height=0.05,
+                )
+    elif ID == "T1249" and score == "GlobalLDDT":
+        fig, ax_main, ax_inset = create_scatter(combined_df[f"Best_v1_ref"], \
+                combined_df[f"Best_v2_ref"], \
+                combined_df['Group'], f'{score} Score (V1)', \
+                f'{score} Score (V2)', f'Scatter plot of {score} scores for \n {ID} V1 vs V2 reference states', \
+                save_path=f'./PLOTS/{ID}_{score}_scatter_plot.png',
+                inset=True,
+                inset_position=[0.25, 0.05, 0.475, 0.475],   # [left, bottom, width, height]
+                inset_xlim=[0.74, 0.82],
+                inset_ylim=[0.70, 0.8],
+                inset_xticks=[0.74, 0.76, 0.78, 0.80, 0.82],
+                inset_yticks=[0.70, 0.72, 0.74, 0.76, 0.78, 0.80],
+                highlight_inset_rect=True,
+                rect_xy=(0.74, 0.70),
+                rect_width=0.08,
+                rect_height=0.1,
+                )
+    elif ID == "T1239" and score == "GlobalLDDT":
+        fig, ax_main, ax_inset = create_scatter(combined_df[f"Best_v1_ref"], \
+                combined_df[f"Best_v2_ref"], \
+                combined_df['Group'], f'{score} Score (V1)', \
+                f'{score} Score (V2)', f'Scatter plot of {score} scores for \n {ID} V1 vs V2 reference states', \
+                save_path=f'./PLOTS/{ID}_{score}_scatter_plot.png',
+                inset=True,
+                inset_position=[0.25, 0.05, 0.475, 0.475],   # [left, bottom, width, height]
+                inset_xlim=[0.66, 0.84],
+                inset_ylim=[0.72, 0.86],
+                inset_xticks=[0.66, 0.72, 0.78, 0.84],
+                inset_yticks=[0.72, 0.78, 0.84, 0.86],
+                highlight_inset_rect=True,
+                rect_xy=(0.66, 0.72),
+                rect_width=0.18,
+                rect_height=0.14,
+                )
+    elif ID == "R1203" and score == "GlobalLDDT":
+        fig, ax_main, ax_inset = create_scatter(combined_df[f"Best_v1_ref"], \
+                combined_df[f"Best_v2_ref"], \
+                combined_df['Group'], f'{score} Score (V1)', \
+                f'{score} Score (V2)', f'Scatter plot of {score} scores for \n {ID} V1 vs V2 reference states', \
+                save_path=f'./PLOTS/{ID}_{score}_scatter_plot.png',
+                inset=True,
+                inset_position=[0.25, 0.05, 0.475, 0.475],   # [left, bottom, width, height]
+                inset_xlim=[0.68, 0.84],
+                inset_ylim=[0.68, 0.84],
+                inset_xticks=[0.68, 0.74, 0.80, 0.84],
+                inset_yticks=[0.68, 0.74, 0.80, 0.84],
+                highlight_inset_rect=True,
+                rect_xy=(0.68, 0.68),
+                rect_width=0.16,
+                rect_height=0.16,
+                )
     else:
         fig, ax_main = create_scatter(combined_df[f"Best_v1_ref"], \
                     combined_df[f"Best_v2_ref"], \
                     combined_df['Group'], f'{score} Score (V1)', \
                     f'{score} Score (V2)', f'Scatter plot of {score} scores for \n {ID} V1 vs V2 reference states', \
                     save_path=f'./PLOTS/{ID}_{score}_scatter_plot.png')
-
-    
 
     
     # Create a stacked bar chart
@@ -344,7 +338,7 @@ def assessment(ID, score):
     plt.ylabel('Two-State Score', fontsize=18)
     plt.title(f'Aggregate {score} scores for \n {ID} V1 and V2 reference states', fontsize=18)
     plt.legend(loc='upper right', fontsize=16)
-    plt.xticks(rotation=90, fontsize=11)
+    plt.xticks(rotation=90, fontsize=10)
     plt.yticks(fontsize=18)
     plt.tight_layout()
     # Save the plot as an image file
