@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from adjustText import adjust_text  
 from tqdm import tqdm
+import csv
 
 def get_v1_ref_df(ID, score):
     file = f'./DATA/{ID}_v1_{score}_scores.csv'
@@ -19,8 +20,16 @@ def get_v2_ref_df(ID, score):
     df = pd.read_csv(file)
     return df
 
-def get_best_fit(v1_df, v2_df, score):
+def get_group_name_lookup():
+    lookup = {}
+    with open('group_number_name_correspondance.csv', newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            lookup[row['Group Number'].zfill(3)] = row['Group Name']
+    return lookup
 
+def get_best_fit(v1_df, v2_df, score):
+    group_name_lookup = get_group_name_lookup()
     if 'Model Version' not in v1_df.columns or 'Model Version' not in v2_df.columns:
         v1_df_by_model_v1 = v1_df
         v2_df_by_model_v2 = v2_df
@@ -129,9 +138,14 @@ def get_best_fit(v1_df, v2_df, score):
         else:
             raise
 
+        # Extract group number from group string (e.g., TS314 -> 314)
+        group_number = str(int(''.join(filter(str.isdigit, group)))).zfill(3)
+        group_name = group_name_lookup.get(group_number, "Unknown").strip()
+
         # Store results
         results.append({
             'Group': group,
+            'Group_Name': group_name,
             'Combined_Score': cumulative_score,
             'Best_v1_ref': best_v1_ref,
             'Best_v2_ref': best_v2_ref,
