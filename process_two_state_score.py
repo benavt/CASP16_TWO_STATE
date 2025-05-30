@@ -56,11 +56,29 @@ def get_best_fit(v1_df, v2_df, score):
     # Loop through each group
     for group in groups:
         # Get best scores for each version/model combination for this group
-        v1_v1_best = v1_df_by_model_v1[v1_df_by_model_v1['Group'] == group][score].max() if len(v1_df_by_model_v1[v1_df_by_model_v1['Group'] == group]) > 0 else 0.0
-        v1_v2_best = v1_df_by_model_v2[v1_df_by_model_v2['Group'] == group][score].max() if len(v1_df_by_model_v2[v1_df_by_model_v2['Group'] == group]) > 0 else 0.0
-        v2_v1_best = v2_df_by_model_v1[v2_df_by_model_v1['Group'] == group][score].max() if len(v2_df_by_model_v1[v2_df_by_model_v1['Group'] == group]) > 0 else 0.0
-        v2_v2_best = v2_df_by_model_v2[v2_df_by_model_v2['Group'] == group][score].max() if len(v2_df_by_model_v2[v2_df_by_model_v2['Group'] == group]) > 0 else 0.0
+        v1_v1_group = v1_df_by_model_v1[v1_df_by_model_v1['Group'] == group]
+        v1_v2_group = v1_df_by_model_v2[v1_df_by_model_v2['Group'] == group]
+        v2_v1_group = v2_df_by_model_v1[v2_df_by_model_v1['Group'] == group]
+        v2_v2_group = v2_df_by_model_v2[v2_df_by_model_v2['Group'] == group]
 
+        v1_v1_best = v1_v1_group[score].max() if len(v1_v1_group) > 0 else 0.0
+        v1_v2_best = v1_v2_group[score].max() if len(v1_v2_group) > 0 else 0.0
+        v2_v1_best = v2_v1_group[score].max() if len(v2_v1_group) > 0 else 0.0
+        v2_v2_best = v2_v2_group[score].max() if len(v2_v2_group) > 0 else 0.0
+
+        # Get model numbers for the best scores
+        v1_v1_model_number = (
+            v1_v1_group.loc[v1_v1_group[score].idxmax(), 'Model Number'] if len(v1_v1_group) > 0 else None
+        )
+        v1_v2_model_number = (
+            v1_v2_group.loc[v1_v2_group[score].idxmax(), 'Model Number'] if len(v1_v2_group) > 0 else None
+        )
+        v2_v1_model_number = (
+            v2_v1_group.loc[v2_v1_group[score].idxmax(), 'Model Number'] if len(v2_v1_group) > 0 else None
+        )
+        v2_v2_model_number = (
+            v2_v2_group.loc[v2_v2_group[score].idxmax(), 'Model Number'] if len(v2_v2_group) > 0 else None
+        )
 
         # Find the best overall score for this group
         scores = [s for s in [v1_v1_best, v1_v2_best, v2_v1_best, v2_v2_best] if s != 0.0]
@@ -110,6 +128,10 @@ def get_best_fit(v1_df, v2_df, score):
             'v1_v2_Score': v1_v2_best,
             'v2_v1_Score': v2_v1_best,
             'v2_v2_Score': v2_v2_best,
+            'v1_v1_ModelNumber': v1_v1_model_number,
+            'v1_v2_ModelNumber': v1_v2_model_number,
+            'v2_v1_ModelNumber': v2_v1_model_number,
+            'v2_v2_ModelNumber': v2_v2_model_number,
             'Combined_Score': cumulative_score,
             'Best_v1_ref': best_v1_ref,
             'Best_v2_ref': best_v2_ref
@@ -353,8 +375,8 @@ TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT",
                      "T1228": ["GDT_TS", "GlobalLDDT"], 
                      "T1239": ["GDT_TS", "GlobalLDDT"], 
                      "T1249": ["AvgDockQ", "GlobalLDDT"]}
-assessment("R1203", "Composite_Score_4")
-raise Exception("Stop here")
+
+
 for ID, scores in TARGET_SCORE_DICT.items():
     for score in scores:
         try:
