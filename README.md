@@ -11,7 +11,6 @@ CASP_DATA_PROCESSING/
 ├── PLOTS/     # Generated plots and visualizations
 ├── gather_data.py
 ├── process_two_state_score.py
-├── find_missing_datapoints.py
 ```
 
 ## Prerequisites
@@ -53,25 +52,12 @@ Processes the gathered data to compute two-state scores for each target and scor
   - Input files are expected in `DATA/`.
   - Output CSVs and plots are saved in `OUTPUT/` and `PLOTS/` respectively.
 
-### 3. `find_missing_datapoints.py`
-Scans the `OUTPUT/` directory for missing score data points in the generated CSVs and prints a summary to the console.
-
-- **Usage:**
-  ```bash
-  python find_missing_datapoints.py
-  ```
-- **Note:**
-  - Only checks files with prefixes `T1228`, `T1239`, `T1249`.
-  - Looks for zero values in the columns: `v1_v1_Score`, `v1_v2_Score`, `v2_v1_Score`, `v2_v2_Score`.
-
 ## Workflow
 
 1. **Gather Data:**
    - Run `gather_data.py` to collect all necessary data files into `DATA/`.
 2. **Process Scores:**
    - Run `process_two_state_score.py` to generate summary CSVs and plots.
-3. **Check for Missing Data:**
-   - Run `find_missing_datapoints.py` to identify any missing or zeroed data points in the outputs.
 
 ## License
 
