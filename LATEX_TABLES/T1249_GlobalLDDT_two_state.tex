@@ -1,12 +1,13 @@
 % In your preamble:
 \begin{table}[ht]
 \centering
-\caption{Results for T1249 GlobalLDDT two state}
+\caption{Results for T1249 GlobalLDDT Two-State Score}
 \label{tab:T1249_GlobalLDDT_two_state}
+\scriptsize
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{llrrrll}
 \toprule
-Group & Group\_Name & Combined\_Score & Best\_v1\_ref & Best\_v2\_ref & V1\_Model\_For\_Combined\_Score & V2\_Model\_For\_Combined\_Score \\ 
+Group & Group\_Name & Two-State\_Score & V1\_GlobalLDDT & V2\_GlobalLDDT & V1\_Model & V2\_Model \\ 
 \midrule
 TS304 & AF3-server & 1.6000 & 0.7890 & 0.8110 & TS304\_v1\_2o & TS304\_v2\_1o \\ 
 TS393 & GuijunLab-QA & 1.5740 & 0.7800 & 0.7940 & TS393\_v1\_6o & TS393\_v2\_6o \\ 
@@ -75,7 +76,7 @@ TS489 & Fernandez-Recio & 1.0760 & 0.5480 & 0.5280 & TS489\_v1\_3o & TS489\_v2\_
 TS117 & Vakser & 1.0730 & 0.6540 & 0.4190 & TS117\_v2\_2o & TS117\_v1\_2o \\ 
 TS196 & HYU\_MLLAB & 1.0670 & 0.5100 & 0.5570 & TS196\_v2\_3o & TS196\_v1\_1o \\ 
 TS085 & Bates & 0.9760 & 0.4290 & 0.5470 & TS085\_v1\_5o & TS085\_v2\_5o \\ 
-TS040 & DELCLAB & 0.7190 & 0.7190 & 0.0000 & TS040\_v2\_3o & TS040\_v1\_None \\ 
+TS040 & DELCLAB & 0.7190 & 0.7190 & 0.0000 & TS040\_v2\_3o & N/A$^{1}$ \\ 
 TS139 & DeepFold-refine & 0.6480 & 0.2480 & 0.4000 & TS139\_v2\_4o & TS139\_v1\_5o \\ 
 TS114 & COAST & 0.3600 & 0.1780 & 0.1820 & TS114\_v1\_4o & TS114\_v2\_4o \\ 
 TS337 & APOLLO & 0.3500 & 0.1730 & 0.1770 & TS337\_v1\_1o & TS337\_v2\_1o \\ 
@@ -84,4 +85,5 @@ TS023 & FTBiot0119 & 0.3170 & 0.1580 & 0.1590 & TS023\_v1\_3o & TS023\_v2\_3o \\
 \bottomrule
 \end{tabular}%
 }
+\begin{flushleft}\footnotesize $^{1}$ Model either not submitted or analyzed\end{flushleft}
 \end{table}
