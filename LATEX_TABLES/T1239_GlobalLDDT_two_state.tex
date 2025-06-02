@@ -1,12 +1,13 @@
 % In your preamble:
 \begin{table}[ht]
 \centering
-\caption{Results for T1239 GlobalLDDT two state}
+\caption{Results for T1239 GlobalLDDT Two-State Score}
 \label{tab:T1239_GlobalLDDT_two_state}
+\scriptsize
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{llrrrll}
 \toprule
-Group & Group\_Name & Combined\_Score & Best\_v1\_ref & Best\_v2\_ref & V1\_Model\_For\_Combined\_Score & V2\_Model\_For\_Combined\_Score \\ 
+Group & Group\_Name & Two-State\_Score & V1\_GlobalLDDT & V2\_GlobalLDDT & V1\_Model & V2\_Model \\ 
 \midrule
 TS028 & NKRNA-s & 1.6655 & 0.8158 & 0.8497 & TS028\_v1\_4 & TS028\_v2\_1 \\ 
 TS208 & falcon2 & 1.6631 & 0.8084 & 0.8547 & TS208\_v1\_4 & TS208\_v2\_4 \\ 
@@ -75,14 +76,15 @@ TS015 & PEZYFoldings & 1.3430 & 0.6454 & 0.6976 & TS015\_v2\_6 & TS015\_v1\_6 \\
 TS196 & HYU\_MLLAB & 1.2661 & 0.6042 & 0.6619 & TS196\_v1\_1 & TS196\_v2\_3 \\ 
 TS351 & digiwiser-ensemble & 1.2309 & 0.5902 & 0.6407 & TS351\_v1\_1 & TS351\_v2\_1 \\ 
 TS120 & Cerebra & 1.1244 & 0.5439 & 0.5805 & TS120\_v1\_4 & TS120\_v2\_3 \\ 
-TS475 & ptq & 0.7713 & 0.0000 & 0.7713 & TS475\_v1\_None & TS475\_v2\_5 \\ 
-TS269 & CSSB\_server & 0.7631 & 0.0000 & 0.7631 & TS269\_v1\_None & TS269\_v2\_2 \\ 
-TS075 & GHZ-ISM & 0.7619 & 0.0000 & 0.7619 & TS075\_v1\_None & TS075\_v2\_2 \\ 
-TS284 & Unicorn & 0.7619 & 0.0000 & 0.7619 & TS284\_v1\_None & TS284\_v2\_2 \\ 
-TS311 & RAGfold\_Prot1 & 0.7573 & 0.0000 & 0.7573 & TS311\_v2\_None & TS311\_v1\_1 \\ 
-TS361 & Cerebra\_server & 0.5805 & 0.0000 & 0.5805 & TS361\_v2\_None & TS361\_v1\_3 \\ 
-TS105 & PFSC-PFVM & 0.0684 & 0.0000 & 0.0684 & TS105\_v2\_None & TS105\_v1\_3 \\ 
+TS475 & ptq & 0.7713 & 0.0000 & 0.7713 & N/A$^{1}$ & TS475\_v2\_5 \\ 
+TS269 & CSSB\_server & 0.7631 & 0.0000 & 0.7631 & N/A$^{1}$ & TS269\_v2\_2 \\ 
+TS075 & GHZ-ISM & 0.7619 & 0.0000 & 0.7619 & N/A$^{1}$ & TS075\_v2\_2 \\ 
+TS284 & Unicorn & 0.7619 & 0.0000 & 0.7619 & N/A$^{1}$ & TS284\_v2\_2 \\ 
+TS311 & RAGfold\_Prot1 & 0.7573 & 0.0000 & 0.7573 & N/A$^{1}$ & TS311\_v1\_1 \\ 
+TS361 & Cerebra\_server & 0.5805 & 0.0000 & 0.5805 & N/A$^{1}$ & TS361\_v1\_3 \\ 
+TS105 & PFSC-PFVM & 0.0684 & 0.0000 & 0.0684 & N/A$^{1}$ & TS105\_v1\_3 \\ 
 \bottomrule
 \end{tabular}%
 }
+\begin{flushleft}\footnotesize $^{1}$ Model either not submitted or analyzed\end{flushleft}
 \end{table}

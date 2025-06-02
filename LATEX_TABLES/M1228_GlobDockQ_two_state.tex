@@ -1,12 +1,13 @@
 % In your preamble:
 \begin{table}[ht]
 \centering
-\caption{Results for M1228 GlobDockQ two state}
+\caption{Results for M1228 GlobDockQ Two-State Score}
 \label{tab:M1228_GlobDockQ_two_state}
+\scriptsize
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{llrrrll}
 \toprule
-Group & Group\_Name & Combined\_Score & Best\_v1\_ref & Best\_v2\_ref & V1\_Model\_For\_Combined\_Score & V2\_Model\_For\_Combined\_Score \\ 
+Group & Group\_Name & Two-State\_Score & V1\_GlobDockQ & V2\_GlobDockQ & V1\_Model & V2\_Model \\ 
 \midrule
 TS294 & KiharaLab & 0.7160 & 0.3440 & 0.3720 & TS294\_v1\_1 & TS294\_v2\_1 \\ 
 TS033 & Diff & 0.6780 & 0.3190 & 0.3590 & TS033\_v1\_4 & TS033\_v2\_5 \\ 
@@ -33,8 +34,9 @@ TS014 & Cool-PSP & 0.5250 & 0.2930 & 0.2320 & TS014\_v1\_4 & TS014\_v2\_4 \\
 TS028 & NKRNA-s & 0.5160 & 0.2400 & 0.2760 & TS028\_v1\_4 & TS028\_v2\_4 \\ 
 TS167 & OpenComplex & 0.4760 & 0.2220 & 0.2540 & TS167\_v1\_4 & TS167\_v2\_2 \\ 
 TS450 & OpenComplex\_Server & 0.4760 & 0.2220 & 0.2540 & TS450\_v1\_4 & TS450\_v2\_2 \\ 
-TS323 & Yan & 0.0000 & 0.0000 & 0.0000 & TS323\_v1\_None & TS323\_v2\_None \\ 
+TS323 & Yan & 0.0000 & 0.0000 & 0.0000 & N/A$^{1}$ & N/A$^{1}$ \\ 
 \bottomrule
 \end{tabular}%
 }
+\begin{flushleft}\footnotesize $^{1}$ Model either not submitted or analyzed\end{flushleft}
 \end{table}

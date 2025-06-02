@@ -1,12 +1,13 @@
 % In your preamble:
 \begin{table}[ht]
 \centering
-\caption{Results for T1249 AvgDockQ two state}
+\caption{Results for T1249 AvgDockQ Two-State Score}
 \label{tab:T1249_AvgDockQ_two_state}
+\scriptsize
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{llrrrll}
 \toprule
-Group & Group\_Name & Combined\_Score & Best\_v1\_ref & Best\_v2\_ref & V1\_Model\_For\_Combined\_Score & V2\_Model\_For\_Combined\_Score \\ 
+Group & Group\_Name & Two-State\_Score & V1\_AvgDockQ & V2\_AvgDockQ & V1\_Model & V2\_Model \\ 
 \midrule
 TS393 & GuijunLab-QA & 0.9730 & 0.4750 & 0.4980 & TS393\_v1\_3o & TS393\_v2\_6o \\ 
 TS304 & AF3-server & 0.9410 & 0.4300 & 0.5110 & TS304\_v1\_2o & TS304\_v2\_1o \\ 
@@ -67,7 +68,7 @@ TS208 & falcon2 & 0.4780 & 0.3740 & 0.1040 & TS208\_v2\_4o & TS208\_v1\_5o \\
 TS110 & MIEnsembles-Server & 0.4770 & 0.4500 & 0.0270 & TS110\_v2\_1o & TS110\_v1\_4o \\ 
 TS147 & Zheng-Multimer & 0.4760 & 0.4500 & 0.0260 & TS147\_v2\_1o & TS147\_v1\_3o \\ 
 TS117 & Vakser & 0.4080 & 0.0180 & 0.3900 & TS117\_v1\_2o & TS117\_v2\_3o \\ 
-TS040 & DELCLAB & 0.3910 & 0.3910 & 0.0000 & TS040\_v2\_3o & TS040\_v1\_None \\ 
+TS040 & DELCLAB & 0.3910 & 0.3910 & 0.0000 & TS040\_v2\_3o & N/A$^{1}$ \\ 
 TS419 & CSSB-Human & 0.3860 & 0.2620 & 0.1240 & TS419\_v1\_3o & TS419\_v2\_1o \\ 
 TS221 & CSSB\_FAKER & 0.3860 & 0.2620 & 0.1240 & TS221\_v1\_3o & TS221\_v2\_1o \\ 
 TS286 & CSSB\_experimental & 0.3860 & 0.2620 & 0.1240 & TS286\_v1\_3o & TS286\_v2\_1o \\ 
@@ -84,4 +85,5 @@ TS023 & FTBiot0119 & 0.0240 & 0.0140 & 0.0100 & TS023\_v1\_3o & TS023\_v2\_1o \\
 \bottomrule
 \end{tabular}%
 }
+\begin{flushleft}\footnotesize $^{1}$ Model either not submitted or analyzed\end{flushleft}
 \end{table}

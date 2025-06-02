@@ -1,12 +1,13 @@
 % In your preamble:
 \begin{table}[ht]
 \centering
-\caption{Results for T1239 GDT TS two state}
+\caption{Results for T1239 GDT TS Two-State Score}
 \label{tab:T1239_GDT_TS_two_state}
+\scriptsize
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{llrrrll}
 \toprule
-Group & Group\_Name & Combined\_Score & Best\_v1\_ref & Best\_v2\_ref & V1\_Model\_For\_Combined\_Score & V2\_Model\_For\_Combined\_Score \\ 
+Group & Group\_Name & Two-State\_Score & V1\_GDT_TS & V2\_GDT_TS & V1\_Model & V2\_Model \\ 
 \midrule
 TS462 & Zheng & 1.1979 & 0.7081 & 0.4899 & TS462\_v2\_2 & TS462\_v1\_1 \\ 
 TS235 & isyslab-hust & 1.1416 & 0.7131 & 0.4285 & TS235\_v2\_4 & TS235\_v1\_1 \\ 
@@ -74,15 +75,16 @@ TS015 & PEZYFoldings & 0.8379 & 0.4500 & 0.3879 & TS015\_v1\_4 & TS015\_v2\_1 \\
 TS196 & HYU\_MLLAB & 0.7841 & 0.3894 & 0.3947 & TS196\_v1\_2 & TS196\_v2\_2 \\ 
 TS388 & DeepFold-server & 0.7591 & 0.3792 & 0.3799 & TS388\_v1\_3 & TS388\_v2\_2 \\ 
 TS120 & Cerebra & 0.6143 & 0.3148 & 0.2995 & TS120\_v1\_3 & TS120\_v2\_2 \\ 
-TS475 & ptq & 0.4919 & 0.4919 & 0.0000 & TS475\_v2\_1 & TS475\_v1\_None \\ 
+TS475 & ptq & 0.4919 & 0.4919 & 0.0000 & TS475\_v2\_1 & N/A$^{1}$ \\ 
 TS351 & digiwiser-ensemble & 0.4873 & 0.2445 & 0.2428 & TS351\_v1\_1 & TS351\_v2\_1 \\ 
-TS269 & CSSB\_server & 0.4818 & 0.4818 & 0.0000 & TS269\_v2\_4 & TS269\_v1\_None \\ 
-TS075 & GHZ-ISM & 0.4665 & 0.4665 & 0.0000 & TS075\_v2\_4 & TS075\_v1\_None \\ 
-TS284 & Unicorn & 0.4665 & 0.4665 & 0.0000 & TS284\_v2\_4 & TS284\_v1\_None \\ 
-TS311 & RAGfold\_Prot1 & 0.4225 & 0.4225 & 0.0000 & TS311\_v1\_1 & TS311\_v2\_None \\ 
-TS361 & Cerebra\_server & 0.3140 & 0.3140 & 0.0000 & TS361\_v1\_2 & TS361\_v2\_None \\ 
-TS105 & PFSC-PFVM & 0.0420 & 0.0420 & 0.0000 & TS105\_v1\_3 & TS105\_v2\_None \\ 
+TS269 & CSSB\_server & 0.4818 & 0.4818 & 0.0000 & TS269\_v2\_4 & N/A$^{1}$ \\ 
+TS075 & GHZ-ISM & 0.4665 & 0.4665 & 0.0000 & TS075\_v2\_4 & N/A$^{1}$ \\ 
+TS284 & Unicorn & 0.4665 & 0.4665 & 0.0000 & TS284\_v2\_4 & N/A$^{1}$ \\ 
+TS311 & RAGfold\_Prot1 & 0.4225 & 0.4225 & 0.0000 & TS311\_v1\_1 & N/A$^{1}$ \\ 
+TS361 & Cerebra\_server & 0.3140 & 0.3140 & 0.0000 & TS361\_v1\_2 & N/A$^{1}$ \\ 
+TS105 & PFSC-PFVM & 0.0420 & 0.0420 & 0.0000 & TS105\_v1\_3 & N/A$^{1}$ \\ 
 \bottomrule
 \end{tabular}%
 }
+\begin{flushleft}\footnotesize $^{1}$ Model either not submitted or analyzed\end{flushleft}
 \end{table}
