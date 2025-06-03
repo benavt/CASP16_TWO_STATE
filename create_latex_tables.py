@@ -31,7 +31,7 @@ def make_latex_table(df, caption, label, score_name):
         "\\resizebox{\\textwidth}{!}{%\n"
         "\\begin{tabular}{llrrrll}\n"
         "\\toprule\n"
-        f"Group & Group\\_Name & Two-State\\_Score & V1\\_{score_name} & V2\\_{score_name} & V1\\_Model & V2\\_Model \\\\ \n"
+        f"Group & Group\\_Name & Two-State\\_Score & V1\\_{score_name.replace('_', r'\_')} & V2\\_{score_name.replace('_', r'\_')} & V1\\_Model & V2\\_Model \\\\ \n"
         "\\midrule\n"
     )
     body = ""
