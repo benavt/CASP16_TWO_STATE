@@ -51,7 +51,13 @@ def make_latex_table(df, caption, label, score_name):
                 if col in ['Group', 'Group_Name', 'V1_Model_For_Combined_Score', 'V2_Model_For_Combined_Score']:
                     row_vals.append(escape_underscores(val))
                 else:
-                    row_vals.append(val)
+                    # Convert string to float and format to two decimal places
+
+                    try:
+                        float_val = float(val)
+                        row_vals.append(f"{float_val:.2f}")
+                    except (ValueError, TypeError):
+                        row_vals.append(val)
         body += (
             f"{row_vals[0]} & {row_vals[1]} & {row_vals[2]} & {row_vals[3]} & {row_vals[4]} & {row_vals[5]} & {row_vals[6]} \\\\ \n"
         )
@@ -61,7 +67,7 @@ def make_latex_table(df, caption, label, score_name):
         "}\n"
     )
     if has_na_sup:
-        footer += "\\begin{flushleft}\\footnotesize $^{1}$ Model either not submitted or analyzed\\end{flushleft}\n"
+        footer += "\\begin{flushleft}\\footnotesize $^{1}$ Model either not submitted or not assessed\\end{flushleft}\n"
     footer += "\\end{table}\n"
     return header + body + footer
 
