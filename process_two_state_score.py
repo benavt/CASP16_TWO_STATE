@@ -28,7 +28,7 @@ def get_group_name_lookup():
             lookup[row['Group Number'].zfill(3)] = row['Group Name']
     return lookup
 
-def get_best_fit(v1_df, v2_df, score):
+def get_best_fit(ID, v1_df, v2_df, score):
     group_name_lookup = get_group_name_lookup()
     if 'Model Version' not in v1_df.columns or 'Model Version' not in v2_df.columns:
         v1_df_by_model_v1 = v1_df
@@ -41,70 +41,123 @@ def get_best_fit(v1_df, v2_df, score):
         v2_df_by_model_v1 = v2_df[v2_df['Model Version'] == 'v1']
         v2_df_by_model_v2 = v2_df[v2_df['Model Version'] == 'v2']
     
-    # Get indices of max scores for each group, excluding groups where all scores are NaN
-    v1_v1_indices = v1_df_by_model_v1.groupby('Group')[score].idxmax()
-    v1_v2_indices = v1_df_by_model_v2.groupby('Group')[score].idxmax()
-    v2_v1_indices = v2_df_by_model_v1.groupby('Group')[score].idxmax()
-    v2_v2_indices = v2_df_by_model_v2.groupby('Group')[score].idxmax()
-
-    # Filter out groups where idxmax returned NaN (all scores were NaN)
-    v1_df_by_model_v1 = v1_df_by_model_v1.loc[v1_v1_indices.dropna()]
-    v1_df_by_model_v2 = v1_df_by_model_v2.loc[v1_v2_indices.dropna()]
-    v2_df_by_model_v1 = v2_df_by_model_v1.loc[v2_v1_indices.dropna()]
-    v2_df_by_model_v2 = v2_df_by_model_v2.loc[v2_v2_indices.dropna()]
-
-    v1_df_by_model_v1 = v1_df_by_model_v1.sort_values(by=score, ascending=False)
-    v1_df_by_model_v2 = v1_df_by_model_v2.sort_values(by=score, ascending=False)
-    v2_df_by_model_v1 = v2_df_by_model_v1.sort_values(by=score, ascending=False)
-    v2_df_by_model_v2 = v2_df_by_model_v2.sort_values(by=score, ascending=False)
 
     # Initialize empty lists to store results
     groups = pd.concat([v1_df['Group'], v2_df['Group']]).unique()
     results = []
 
+    one_group_only = False
+    if ID == 'R1203':
+        one_group_only = True
+
     # Loop through each group
     for group in groups:
-        # Get best scores for each version/model combination for this group
-        v1_v1_group = v1_df_by_model_v1[v1_df_by_model_v1['Group'] == group]
-        v1_v2_group = v1_df_by_model_v2[v1_df_by_model_v2['Group'] == group]
-        v2_v1_group = v2_df_by_model_v1[v2_df_by_model_v1['Group'] == group]
-        v2_v2_group = v2_df_by_model_v2[v2_df_by_model_v2['Group'] == group]
 
-        v1_v1_best = v1_v1_group[score].max() if len(v1_v1_group) > 0 else 0.0
-        v1_v2_best = v1_v2_group[score].max() if len(v1_v2_group) > 0 else 0.0
-        v2_v1_best = v2_v1_group[score].max() if len(v2_v1_group) > 0 else 0.0
-        v2_v2_best = v2_v2_group[score].max() if len(v2_v2_group) > 0 else 0.0
+        if not(one_group_only):
 
-        # Get model numbers for the best scores
-        v1_v1_model_number = (
-            v1_v1_group.loc[v1_v1_group[score].idxmax(), 'Model Number'] if len(v1_v1_group) > 0 else None
-        )
-        v1_v2_model_number = (
-            v1_v2_group.loc[v1_v2_group[score].idxmax(), 'Model Number'] if len(v1_v2_group) > 0 else None
-        )
-        v2_v1_model_number = (
-            v2_v1_group.loc[v2_v1_group[score].idxmax(), 'Model Number'] if len(v2_v1_group) > 0 else None
-        )
-        v2_v2_model_number = (
-            v2_v2_group.loc[v2_v2_group[score].idxmax(), 'Model Number'] if len(v2_v2_group) > 0 else None
-        )
+            # Get indices of max scores for each group, excluding groups where all scores are NaN
+            v1_v1_indices = v1_df_by_model_v1.groupby('Group')[score].idxmax()
+            v1_v2_indices = v1_df_by_model_v2.groupby('Group')[score].idxmax()
+            v2_v1_indices = v2_df_by_model_v1.groupby('Group')[score].idxmax()
+            v2_v2_indices = v2_df_by_model_v2.groupby('Group')[score].idxmax()
 
-        # Find the best overall score for this group
-        scores = [s for s in [v1_v1_best, v1_v2_best, v2_v1_best, v2_v2_best] if s != 0.0]
-        if scores:  
-            best_score = max(scores)
-            # Determine which version/model combination produced the best score
-            if best_score == v1_v1_best:
+            # Filter out groups where idxmax returned NaN (all scores were NaN)
+            v1_df_by_model_v1 = v1_df_by_model_v1.loc[v1_v1_indices.dropna()]
+            v1_df_by_model_v2 = v1_df_by_model_v2.loc[v1_v2_indices.dropna()]
+            v2_df_by_model_v1 = v2_df_by_model_v1.loc[v2_v1_indices.dropna()]
+            v2_df_by_model_v2 = v2_df_by_model_v2.loc[v2_v2_indices.dropna()]
+
+            v1_df_by_model_v1 = v1_df_by_model_v1.sort_values(by=score, ascending=False)
+            v1_df_by_model_v2 = v1_df_by_model_v2.sort_values(by=score, ascending=False)
+            v2_df_by_model_v1 = v2_df_by_model_v1.sort_values(by=score, ascending=False)
+            v2_df_by_model_v2 = v2_df_by_model_v2.sort_values(by=score, ascending=False)
+
+            # Get best scores for each version/model combination for this group
+            v1_v1_group = v1_df_by_model_v1[v1_df_by_model_v1['Group'] == group]
+            v1_v2_group = v1_df_by_model_v2[v1_df_by_model_v2['Group'] == group]
+            v2_v1_group = v2_df_by_model_v1[v2_df_by_model_v1['Group'] == group]
+            v2_v2_group = v2_df_by_model_v2[v2_df_by_model_v2['Group'] == group]
+
+            v1_v1_best = v1_v1_group[score].max() if len(v1_v1_group) > 0 else 0.0
+            v1_v2_best = v1_v2_group[score].max() if len(v1_v2_group) > 0 else 0.0
+            v2_v1_best = v2_v1_group[score].max() if len(v2_v1_group) > 0 else 0.0
+            v2_v2_best = v2_v2_group[score].max() if len(v2_v2_group) > 0 else 0.0
+
+            # Get model numbers for the best scores
+            v1_v1_model_number = (
+                v1_v1_group.loc[v1_v1_group[score].idxmax(), 'Model Number'] if len(v1_v1_group) > 0 else None
+            )
+            v1_v2_model_number = (
+                v1_v2_group.loc[v1_v2_group[score].idxmax(), 'Model Number'] if len(v1_v2_group) > 0 else None
+            )
+            v2_v1_model_number = (
+                v2_v1_group.loc[v2_v1_group[score].idxmax(), 'Model Number'] if len(v2_v1_group) > 0 else None
+            )
+            v2_v2_model_number = (
+                v2_v2_group.loc[v2_v2_group[score].idxmax(), 'Model Number'] if len(v2_v2_group) > 0 else None
+            )
+
+            # Find the best overall score for this group
+            scores = [s for s in [v1_v1_best, v1_v2_best, v2_v1_best, v2_v2_best] if s != 0.0]
+            if scores:  
+                best_score = max(scores)
+                # Determine which version/model combination produced the best score
+                if best_score == v1_v1_best:
+                    best_source = 'v1_v1'
+                elif best_score == v2_v2_best:
+                    best_source = 'v2_v2'
+                elif best_score == v1_v2_best:
+                    best_source = 'v1_v2'
+                elif best_score == v2_v1_best:
+                    best_source = 'v2_v1'
+            else:
+                best_score = 0.0
                 best_source = 'v1_v1'
-            elif best_score == v2_v2_best:
-                best_source = 'v2_v2'
-            elif best_score == v1_v2_best:
-                best_source = 'v1_v2'
-            elif best_score == v2_v1_best:
-                best_source = 'v2_v1'
         else:
-            best_score = 0.0
-            best_source = 'v1_v1'
+            v1_df_by_model_v1 = v1_df_by_model_v1.sort_values(by=score, ascending=False)
+            v1_df_by_model_v2 = v1_df_by_model_v2.sort_values(by=score, ascending=False)
+            v2_df_by_model_v1 = v2_df_by_model_v1.sort_values(by=score, ascending=False)
+            v2_df_by_model_v2 = v2_df_by_model_v2.sort_values(by=score, ascending=False)
+
+            # Get best scores for each version/model combination for this group
+            v1_v1_group = v1_df_by_model_v1[v1_df_by_model_v1['Group'] == group]
+            v1_v2_group = v1_df_by_model_v2[v1_df_by_model_v2['Group'] == group]
+            v2_v1_group = v2_df_by_model_v1[v2_df_by_model_v1['Group'] == group]
+            v2_v2_group = v2_df_by_model_v2[v2_df_by_model_v2['Group'] == group]
+
+            v1_v1_best = v1_v1_group[score].max() if len(v1_v1_group) > 0 else 0.0
+            v2_v2_best = v2_v2_group[score].max() if len(v2_v2_group) > 0 else 0.0
+            v1_v2_best = None
+            v2_v1_best = None
+            v1_v2_model_number = None
+            v2_v1_model_number = None
+
+            if v1_v1_best > v2_v2_best:
+                best_source = 'v1_v1'
+                best_score = v1_v1_best
+                v1_v1_model_number = (
+                    v1_v1_group.loc[v1_v1_group[score].idxmax(), 'Model Number'] if len(v1_v1_group) > 0 else None
+                )
+                v2_v2_group = v2_v2_group[v2_v2_group['Model Number'] != v1_v1_model_number]
+
+                v2_v2_model_number = (
+                    v2_v2_group.loc[v2_v2_group[score].idxmax(), 'Model Number'] if len(v2_v2_group) > 0 else None
+                )
+                v2_v2_best = v2_v2_group[score].max() if len(v2_v2_group) > 0 else 0.0
+            else:
+                best_source = 'v2_v2'
+                best_score = v2_v2_best
+                v2_v2_model_number = (
+                    v2_v2_group.loc[v2_v2_group[score].idxmax(), 'Model Number'] if len(v2_v2_group) > 0 else None
+                )
+                v1_v1_group = v1_v1_group[v1_v1_group['Model Number'] != v2_v2_model_number]
+
+                v1_v1_model_number = (
+                    v1_v1_group.loc[v1_v1_group[score].idxmax(), 'Model Number'] if len(v1_v1_group) > 0 else None
+                )
+                v1_v1_best = v1_v1_group[score].max() if len(v1_v1_group) > 0 else 0.0
+
+
 
         cumulative_score = 0
         best_v1_ref = 0
@@ -296,7 +349,7 @@ def assessment(ID, score):
     
     v1_df = get_v1_ref_df(ID, score)
     v2_df = get_v2_ref_df(ID, score)
-    combined_df = get_best_fit(v1_df, v2_df, score)
+    combined_df = get_best_fit(ID, v1_df, v2_df, score)
     # Sort the combined_df by 'Combined_Score' in descending order
     combined_df = combined_df.sort_values(by='Combined_Score', ascending=False)
     # Save the combined metric to a CSV file
@@ -402,6 +455,10 @@ TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT",
                      "T1239": ["GDT_TS", "GlobalLDDT"], 
                      "T1249": ["AvgDockQ", "GlobalLDDT"]}
 
+assessment("R1203", "GlobalLDDT")
+assessment("R1203", "Composite_Score_4")
+assessment("R1203", "GDT_TS")
+raise Exception("Stop here")
 
 for ID, scores in TARGET_SCORE_DICT.items():
     for score in scores:
