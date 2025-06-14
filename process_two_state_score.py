@@ -331,11 +331,11 @@ def create_scatter(
                         avoid_text=True,
                         avoid_points=True,
                         avoid_self=True)
-    ax_main.set_xlabel(xlabel, fontsize=18)
-    ax_main.set_ylabel(ylabel, fontsize=18)
-    ax_main.set_title(title, fontsize=18)
-    ax_main.legend(fontsize=16)
-    ax_main.tick_params(axis='both', labelsize=16)
+    ax_main.set_xlabel(xlabel, fontsize=20)
+    ax_main.set_ylabel(ylabel, fontsize=20)
+    ax_main.set_title(title, fontsize=20)
+    ax_main.legend(fontsize=20)
+    ax_main.tick_params(axis='both', labelsize=20)
     plt.tight_layout()
     if save_path:
         fig.savefig(save_path, dpi=dpi, bbox_inches='tight')
@@ -444,8 +444,47 @@ def assessment(ID, score):
     plt.yticks(fontsize=18)
     plt.tight_layout()
     # Save the plot as an image file
-    
     plt.savefig(f'./PLOTS/{ID}_{score}_two_state.png', dpi=300)
+    plt.close()
+
+    # Create a horizontal stacked bar chart
+    # Calculate figure size based on number of data points
+    num_groups = len(combined_df)
+    # Base height per group (in inches) - adjust this value to control spacing
+    height_per_group = 0.4  # inches per group
+    min_height = 6  # minimum height in inches
+    max_height = 20  # maximum height in inches
+    
+    # Calculate dynamic height
+    dynamic_height = max(min_height, min(max_height, num_groups * height_per_group))
+    fig_width = 12  # fixed width
+    
+    plt.figure(figsize=(fig_width, dynamic_height))
+    # Reverse the order of the data for horizontal plot
+    reversed_df = combined_df.iloc[::-1]
+    
+    # Get group names from the CSV file
+    group_name_lookup = get_group_name_lookup()
+    group_names = []
+    for group in reversed_df['Group']:
+        group_number = str(int(''.join(filter(str.isdigit, group)))).zfill(3)
+        group_name = group_name_lookup.get(group_number, group).strip()
+        group_names.append(group_name)
+    
+    # Calculate bar height based on font size (12pt) with padding
+    bar_height = 0.9
+    plt.barh(group_names, reversed_df[f'Best_v1_ref'], height=bar_height, label=f'<{score}> (V1)')
+    plt.barh(group_names, reversed_df[f'Best_v2_ref'], left=reversed_df[f'Best_v1_ref'], height=bar_height, label=f'<{score}> (V2)')
+    plt.ylabel('Submission Group', fontsize=18)
+    plt.xlabel('Two-State Score', fontsize=18)
+    plt.title(f'Aggregate {score} scores for \n {ID} V1 and V2 reference states', fontsize=18)
+    plt.legend(loc='lower right', fontsize=16)
+    plt.yticks(fontsize=12)
+    plt.xticks(fontsize=18)
+    plt.tight_layout()
+    # Save the horizontal plot as an image file
+    plt.savefig(f'./PLOTS/{ID}_{score}_two_state_horizontal.png', dpi=300)
+    plt.close()
 
 
 TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT", "TMscore"], 
@@ -455,10 +494,6 @@ TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT",
                      "T1239": ["GDT_TS", "GlobalLDDT"], 
                      "T1249": ["AvgDockQ", "GlobalLDDT"]}
 
-assessment("R1203", "GlobalLDDT")
-assessment("R1203", "Composite_Score_4")
-assessment("R1203", "GDT_TS")
-raise Exception("Stop here")
 
 for ID, scores in TARGET_SCORE_DICT.items():
     for score in scores:
