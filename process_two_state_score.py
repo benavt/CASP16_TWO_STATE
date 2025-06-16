@@ -451,7 +451,7 @@ def assessment(ID, score):
     # Calculate figure size based on number of data points
     num_groups = len(combined_df)
     # Base height per group (in inches) - adjust this value to control spacing
-    height_per_group = 0.4  # inches per group
+    height_per_group = 0.35  # inches per group
     min_height = 6  # minimum height in inches
     max_height = 20  # maximum height in inches
     
@@ -469,7 +469,7 @@ def assessment(ID, score):
     for group in reversed_df['Group']:
         group_number = str(int(''.join(filter(str.isdigit, group)))).zfill(3)
         group_name = group_name_lookup.get(group_number, group).strip()
-        group_names.append(group_name)
+        group_names.append(group_name + ' (' + group_number + ')')
     
     # Calculate bar height based on font size (12pt) with padding
     bar_height = 0.9
@@ -493,6 +493,7 @@ TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT",
                      "T1228": ["GDT_TS", "GlobalLDDT"], 
                      "T1239": ["GDT_TS", "GlobalLDDT"], 
                      "T1249": ["AvgDockQ", "GlobalLDDT"]}
+
 
 
 for ID, scores in TARGET_SCORE_DICT.items():
