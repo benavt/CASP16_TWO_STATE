@@ -47,7 +47,7 @@ def get_best_fit(ID, v1_df, v2_df, score):
     results = []
 
     one_group_only = False
-    if ID == 'R1203':
+    if ID == 'R1203' or ID == 'T1214':
         one_group_only = True
 
     # Loop through each group
@@ -243,7 +243,8 @@ def create_scatter(
     rect_height=None,
     adjust_texts=True,
     save_path=None,
-    dpi=300
+    dpi=300,
+    legend_position='upper right'
 ):
     """
     Create a scatterplot with optional inset.
@@ -263,6 +264,7 @@ def create_scatter(
         adjust_texts: Whether to adjust text to avoid overlap
         save_path: If provided, save the figure to this path
         dpi: Dots per inch for saving
+        legend_position: Position for the legend
     Returns:
         fig, ax_main, ax_inset (if inset=True)
     """
@@ -334,7 +336,14 @@ def create_scatter(
     ax_main.set_xlabel(xlabel, fontsize=20)
     ax_main.set_ylabel(ylabel, fontsize=20)
     ax_main.set_title(title, fontsize=20)
-    ax_main.legend(fontsize=20)
+    
+    # Automatic legend placement to find best location with maximum white space
+    legend = ax_main.legend(fontsize=16, bbox_to_anchor=(1.05, 1), loc='upper left')
+    
+    # Try to find the best position automatically
+    # This will place the legend in the location with the most white space
+    ax_main.legend(fontsize=16, loc='best')
+    
     ax_main.tick_params(axis='both', labelsize=20)
     plt.tight_layout()
     if save_path:
@@ -372,6 +381,7 @@ def assessment(ID, score):
                 rect_xy=(0.74, 0.70),
                 rect_width=0.04,
                 rect_height=0.05,
+                legend_position='upper left'
                 )
     elif ID == "T1249" and score == "GlobalLDDT":
         fig, ax_main, ax_inset = create_scatter(combined_df[f"Best_v1_ref"], \
@@ -389,6 +399,7 @@ def assessment(ID, score):
                 rect_xy=(0.74, 0.70),
                 rect_width=0.08,
                 rect_height=0.1,
+                legend_position='upper left'
                 )
     elif ID == "T1239" and score == "GlobalLDDT":
         fig, ax_main, ax_inset = create_scatter(combined_df[f"Best_v1_ref"], \
@@ -406,6 +417,7 @@ def assessment(ID, score):
                 rect_xy=(0.66, 0.72),
                 rect_width=0.18,
                 rect_height=0.14,
+                legend_position='upper left'
                 )
     elif ID == "R1203" and score == "GlobalLDDT":
         fig, ax_main, ax_inset = create_scatter(combined_df[f"Best_v1_ref"], \
@@ -423,13 +435,51 @@ def assessment(ID, score):
                 rect_xy=(0.68, 0.68),
                 rect_width=0.16,
                 rect_height=0.16,
+                legend_position='upper left'
+                )
+    elif ID == "T1214" and score == "GlobalLDDT":
+        fig, ax_main, ax_inset = create_scatter(combined_df[f"Best_v1_ref"], \
+                combined_df[f"Best_v2_ref"], \
+                combined_df['Group'], f'{score} Score (V1)', \
+                f'{score} Score (V2)', f'Scatter plot of {score} scores for \n {ID} V1 vs V2 reference states', \
+                save_path=f'./PLOTS/{ID}_{score}_scatter_plot.png',
+                inset=True,
+                inset_position=[0.25, 0.05, 0.475, 0.475],   # [left, bottom, width, height]
+                inset_xlim=[0.78, 0.90],
+                inset_ylim=[0.78, 0.96],
+                inset_xticks=[0.78, 0.84, 0.90],
+                inset_yticks=[0.78, 0.84, 0.90, 0.96],
+                highlight_inset_rect=True,
+                rect_xy=(0.78, 0.78),
+                rect_width=0.12,
+                rect_height=0.18,
+                legend_position='upper left'
+                )
+    elif ID == "T1214" and score == "GDT_TS":
+        fig, ax_main, ax_inset = create_scatter(combined_df[f"Best_v1_ref"], \
+                combined_df[f"Best_v2_ref"], \
+                combined_df['Group'], f'{score} Score (V1)', \
+                f'{score} Score (V2)', f'Scatter plot of {score} scores for \n {ID} V1 vs V2 reference states', \
+                save_path=f'./PLOTS/{ID}_{score}_scatter_plot.png',
+                inset=True,
+                inset_position=[0.25, 0.05, 0.475, 0.475],   # [left, bottom, width, height]
+                inset_xlim=[88, 98],
+                inset_ylim=[90, 100],
+                inset_xticks=[88, 92, 96],
+                inset_yticks=[90, 94, 98],
+                highlight_inset_rect=True,
+                rect_xy=(88, 90),
+                rect_width=10,
+                rect_height=10,
+                legend_position='upper left'
                 )
     else:
         fig, ax_main = create_scatter(combined_df[f"Best_v1_ref"], \
                     combined_df[f"Best_v2_ref"], \
                     combined_df['Group'], f'{score} Score (V1)', \
                     f'{score} Score (V2)', f'Scatter plot of {score} scores for \n {ID} V1 vs V2 reference states', \
-                    save_path=f'./PLOTS/{ID}_{score}_scatter_plot.png')
+                    save_path=f'./PLOTS/{ID}_{score}_scatter_plot.png'
+                    )
 
     
     # Create a stacked bar chart
@@ -490,11 +540,10 @@ def assessment(ID, score):
 TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT", "TMscore"], 
                      "M1239": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT", "TMscore"], 
                      "R1203": ["GDT_TS", "GlobalLDDT", "Composite_Score_4"], 
+                     "T1214": ["GDT_TS", "GlobalLDDT"],
                      "T1228": ["GDT_TS", "GlobalLDDT"], 
                      "T1239": ["GDT_TS", "GlobalLDDT"], 
                      "T1249": ["AvgDockQ", "GlobalLDDT"]}
-
-
 
 for ID, scores in TARGET_SCORE_DICT.items():
     for score in scores:
