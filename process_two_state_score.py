@@ -4,6 +4,13 @@ from adjustText import adjust_text
 from tqdm import tqdm
 import csv
 
+def frange(start, stop, step):
+    vals = []
+    while start <= stop:
+        vals.append(start)
+        start += step
+    return vals
+
 def get_v1_ref_df(ID, score):
     file = f'./DATA/{ID}_v1_{score}_scores.csv'
     df = pd.read_csv(file)
@@ -195,31 +202,31 @@ def get_best_fit(ID, v1_df, v2_df, score):
         group_number = str(int(''.join(filter(str.isdigit, group)))).zfill(3)
         group_name = group_name_lookup.get(group_number, "Unknown").strip()
 
-        # Store results
-        results.append({
-            'Group': group,
-            'Group_Name': group_name,
-            'Combined_Score': cumulative_score,
-            'Best_v1_ref': best_v1_ref,
-            'Best_v2_ref': best_v2_ref,
-            'V1_Model_For_Combined_Score': group + '_' + best_v1_ref_model_number,
-            'V2_Model_For_Combined_Score': group + '_' + best_v2_ref_model_number,
-            'Best_Score': best_score,
-            'Best_Source': best_source,
-            'v1_v1_Score': v1_v1_best,
-            'v1_v2_Score': v1_v2_best,
-            'v2_v1_Score': v2_v1_best,
-            'v2_v2_Score': v2_v2_best,
-            'v1_v1_ModelNumber': v1_v1_model_number,
-            'v1_v2_ModelNumber': v1_v2_model_number,
-            'v2_v1_ModelNumber': v2_v1_model_number,
-            'v2_v2_ModelNumber': v2_v2_model_number
-        })
+        if cumulative_score > 0: # only include groups with a positive cumulative score
+            # Store results
+            results.append({
+                'Group': group,
+                'Group_Name': group_name,
+                'Combined_Score': cumulative_score,
+                'Best_v1_ref': best_v1_ref,
+                'Best_v2_ref': best_v2_ref,
+                'V1_Model_For_Combined_Score': group + '_' + best_v1_ref_model_number,
+                'V2_Model_For_Combined_Score': group + '_' + best_v2_ref_model_number,
+                'Best_Score': best_score,
+                'Best_Source': best_source,
+                'v1_v1_Score': v1_v1_best,
+                'v1_v2_Score': v1_v2_best,
+                'v2_v1_Score': v2_v1_best,
+                'v2_v2_Score': v2_v2_best,
+                'v1_v1_ModelNumber': v1_v1_model_number,
+                'v1_v2_ModelNumber': v1_v2_model_number,
+                'v2_v1_ModelNumber': v2_v1_model_number,
+                'v2_v2_ModelNumber': v2_v2_model_number
+            })
 
     # Convert results to DataFrame
     results_df = pd.DataFrame(results)
     return results_df
-
 
 def create_scatter(
     x,
@@ -244,7 +251,14 @@ def create_scatter(
     adjust_texts=True,
     save_path=None,
     dpi=300,
-    legend_position='upper right'
+    legend_position='upper right',
+    score = None,
+    xlim=None,           # New optional parameter for x-axis range
+    ylim=None,           # New optional parameter for y-axis range
+    xticks=None,         # New optional parameter for x-axis ticks
+    yticks=None,         # New optional parameter for y-axis ticks
+    text_fontsize=8,     # New optional parameter for text fontsize
+    AF3_baseline=False   # New optional parameter for AF3 baseline highlighting
 ):
     """
     Create a scatterplot with optional inset.
@@ -265,27 +279,63 @@ def create_scatter(
         save_path: If provided, save the figure to this path
         dpi: Dots per inch for saving
         legend_position: Position for the legend
+        xlim, ylim: Explicit x/y axis range for main plot (overrides main_xlim/main_ylim if provided)
+        xticks, yticks: Explicit x/y axis tick values for main plot
+        text_fontsize: Font size for group label texts (default 8)
     Returns:
         fig, ax_main, ax_inset (if inset=True)
     """
+
     fig, ax_main = plt.subplots(figsize=(10, 6))
     max_val = max(max(x), max(y))
+    max_val_for_plotting = max_val
+    if xlim is not None and ylim is not None:
+        max_val_for_plotting = max(max_val, max(xlim), max(ylim))
+    max_val = max(max_val, max_val_for_plotting)
+
     ax_main.plot([0, max_val], [0, max_val], 'r-', label='y=x')
     scatter = ax_main.scatter(x, y, c='blue', label=legend_label)
 
+    # --- AF3 Baseline Highlighting ---
+    if AF3_baseline:
+        for i, (xv, yv, txt) in enumerate(zip(x, y, group_labels)):
+            group_num = str(int(''.join(filter(str.isdigit, str(txt))))).zfill(3)
+            if group_num == '304':
+                ax_main.axhline(yv, color='gray', linestyle='--', linewidth=2)
+                ax_main.axvline(xv, color='gray', linestyle='--', linewidth=2)
+                # Shade the area y > y_304 and x > x_304
+                x_min, x_max = ax_main.get_xlim()
+                y_min, y_max = ax_main.get_ylim()
+                ax_main.fill_betweenx([yv, y_max], xv, x_max, color='yellow', alpha=0.2, zorder=0)
+    # --- End AF3 Baseline Highlighting ---
+
     # Set axis bounds with padding for main plot if not provided
-    if main_xlim is None:
+    if xlim is not None:
+        ax_main.set_xlim(*xlim)
+    elif main_xlim is None:
         x_min, x_max = min(x), max(x)
         padding = 0.05
         x_range = x_max - x_min
         main_xlim = (x_min - x_range * padding, x_max + x_range * padding)
-    if main_ylim is None:
+        ax_main.set_xlim(*main_xlim)
+    else:
+        ax_main.set_xlim(*main_xlim)
+
+    if ylim is not None:
+        ax_main.set_ylim(*ylim)
+    elif main_ylim is None:
         y_min, y_max = min(y), max(y)
         padding = 0.05
         y_range = y_max - y_min
         main_ylim = (y_min - y_range * padding, y_max + y_range * padding)
-    ax_main.set_xlim(*main_xlim)
-    ax_main.set_ylim(*main_ylim)
+        ax_main.set_ylim(*main_ylim)
+    else:
+        ax_main.set_ylim(*main_ylim)
+
+    if xticks is not None:
+        ax_main.set_xticks(xticks)
+    if yticks is not None:
+        ax_main.set_yticks(yticks)
 
     ax_inset = None
     if inset:
@@ -306,6 +356,18 @@ def create_scatter(
         if highlight_inset_rect and rect_xy and rect_width and rect_height:
             rect = plt.Rectangle(rect_xy, rect_width, rect_height, fill=False, color='red', linestyle='--')
             ax_main.add_patch(rect)
+        # --- AF3 Baseline Highlighting ---
+        if AF3_baseline:
+            for i, (xv, yv, txt) in enumerate(zip(x, y, group_labels)):
+                group_num = str(int(''.join(filter(str.isdigit, str(txt))))).zfill(3)
+                if group_num == '304':
+                    ax_inset.axhline(yv, color='gray', linestyle='--', linewidth=2)
+                    ax_inset.axvline(xv, color='gray', linestyle='--', linewidth=2)
+                    # Shade the area y > y_304 and x > x_304
+                    x_min, x_max = ax_inset.get_xlim()
+                    y_min, y_max = ax_inset.get_ylim()
+                    ax_inset.fill_betweenx([yv, y_max], xv, x_max, color='yellow', alpha=0.2, zorder=0)
+        # --- End AF3 Baseline Highlighting ---
 
     # Add labels and adjust text for main plot and inset
     texts_main = []
@@ -313,9 +375,9 @@ def create_scatter(
     for i, (xv, yv, txt) in enumerate(zip(x, y, group_labels)):
         txt = str(txt)
         if inset and inset_xlim and inset_ylim and (inset_xlim[0] <= xv <= inset_xlim[1] and inset_ylim[0] <= yv <= inset_ylim[1]):
-            texts_inset.append(ax_inset.text(xv, yv, txt.replace('TS', ''), fontsize=8))
+            texts_inset.append(ax_inset.text(xv, yv, txt.replace('TS', ''), fontsize=text_fontsize))
         else:
-            texts_main.append(ax_main.text(xv, yv, txt.replace('TS', ''), fontsize=8))
+            texts_main.append(ax_main.text(xv, yv, txt.replace('TS', ''), fontsize=text_fontsize))
     if adjust_texts:
         if texts_inset:
             adjust_text(texts_inset, 
@@ -354,6 +416,87 @@ def create_scatter(
     else:
         return fig, ax_main
 
+def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, outfile_suffix = ""):
+    import matplotlib.pyplot as plt
+    num_groups = len(combined_df)
+    per_group, min_size, max_size = 0.35, 6, 20
+    dynamic_size = max(min_size, min(max_size, num_groups * per_group))
+    if horizontal:
+        fig_size = (12, dynamic_size)
+        bar_func, stack_param, line_func, line_param = plt.Axes.barh, 'left', plt.Axes.axvline, 'x'
+        limit_set, label_prim, label_sec = plt.Axes.set_ylim, 'ylabel', 'xlabel'
+        legend_loc, tick_fs_prim, tick_fs_sec, rot_prim = 'lower right', 12, 18, 0
+    else:
+        fig_size = (dynamic_size, 10)
+        bar_func, stack_param, line_func, line_param = plt.Axes.bar, 'bottom', plt.Axes.axhline, 'y'
+        limit_set, label_prim, label_sec = plt.Axes.set_xlim, 'xlabel', 'ylabel'
+        legend_loc, tick_fs_prim, tick_fs_sec, rot_prim = 'upper right', 10, 18, 90
+    fig, ax = plt.subplots(figsize=fig_size)
+    group_labels_raw = combined_df['Group'].str.replace('TS', '')
+    if horizontal:
+        df_to_use = combined_df.iloc[::-1]
+        group_name_lookup = get_group_name_lookup()
+        group_labels, check_labels = [], []
+        for group in df_to_use['Group']:
+            group_id = str(int(''.join(filter(str.isdigit, group)))).zfill(3)
+            group_name = group_name_lookup.get(group_id, group).strip()
+            group_labels.append(f"{group_name} ({group_id})")
+            check_labels.append(group_id)
+        bar_size_param, bar_size = 'height', 0.9
+    else:
+        df_to_use = combined_df
+        group_labels = group_labels_raw
+        check_labels = group_labels.values
+        bar_size_param, bar_size = 'width', 0.9
+    v1_colors = ['#1A80BB'] * num_groups
+    v2_colors = ['#EA801C'] * num_groups
+    if '304' in check_labels:
+        idx_304 = list(check_labels).index('304')
+        if not star:
+            v1_colors[idx_304] = '#4F81BD'  # bluish
+            v2_colors[idx_304] = '#FFA500'  # orangish
+    if num_groups > 100:
+        bar_kwargs_v1 = {bar_size_param: bar_size, 'label': f'<{score}> (V1)', 'color': v1_colors}
+        bar_kwargs_v2 = {bar_size_param: bar_size, 'label': f'<{score}> (V2)', 'color': v2_colors, stack_param: df_to_use[f'Best_v1_ref']}
+    else:
+        bar_kwargs_v1 = {bar_size_param: bar_size, 'label': f'<{score}> (V1)', 'edgecolor': 'black', 'linewidth': 1, 'color': v1_colors}
+        bar_kwargs_v2 = {bar_size_param: bar_size, 'label': f'<{score}> (V2)', 'edgecolor': 'black', 'linewidth': 1, 'color': v2_colors, stack_param: df_to_use[f'Best_v1_ref']}
+    bars_v1 = bar_func(ax, group_labels, df_to_use[f'Best_v1_ref'], **bar_kwargs_v1)
+    bars_v2 = bar_func(ax, group_labels, df_to_use[f'Best_v2_ref'], **bar_kwargs_v2)
+    if '304' in check_labels:
+        idx_304 = list(check_labels).index('304')
+        total_score = df_to_use[f'Best_v1_ref'].iloc[idx_304] + df_to_use[f'Best_v2_ref'].iloc[idx_304]
+        line_func(ax, **{line_param: total_score, 'color': 'green', 'linestyle': '--', 'linewidth': 4, 'label': 'AF3 Baseline Score'})
+        if star:
+            # Add a gray star above (vertical) or to the right (horizontal) of the bar for group 304
+            if horizontal:
+                # y position is idx_304, x position is total_score
+                ax.scatter(total_score + 0.02 * ax.get_xlim()[1], idx_304, marker='*', s=300, color='gray', edgecolor='black', zorder=5)
+            else:
+                # x position is idx_304, y position is total_score
+                ax.scatter(idx_304, total_score + 0.02 * ax.get_ylim()[1], marker='*', s=300, color='gray', edgecolor='black', zorder=5)
+    limit_set(ax, -0.5, len(group_labels) - 0.5)
+    getattr(ax, f'set_{label_prim}')('Submission Group', fontsize=18)
+    getattr(ax, f'set_{label_sec}')('Two-State Score', fontsize=18)
+    ax.set_title(f'Aggregate {score} scores for \n {ID} V1 and V2 reference states', fontsize=18)
+    ax.legend(loc=legend_loc, fontsize=16)
+    if horizontal:
+        ax.set_yticks(range(len(group_labels)))
+        ax.set_yticklabels(group_labels, fontsize=tick_fs_prim)
+        ax.set_xticks(ax.get_xticks())
+        ax.set_xticklabels(ax.get_xticklabels(), fontsize=tick_fs_sec)
+    else:
+        ax.set_xticks(range(len(group_labels)))
+        ax.set_xticklabels(group_labels, rotation=rot_prim, fontsize=tick_fs_prim)
+        ax.set_yticks(ax.get_yticks())
+        ax.set_yticklabels(ax.get_yticklabels(), fontsize=tick_fs_sec)
+    plt.tight_layout()
+    for spine in ax.spines.values():
+        spine.set_linewidth(3)
+        spine.set_edgecolor('black')
+    plt.savefig(f'./PLOTS/{ID}_{score}_two_state{outfile_suffix}.png', dpi=300)
+    plt.close()
+
 def assessment(ID, score):
     
     v1_df = get_v1_ref_df(ID, score)
@@ -361,180 +504,183 @@ def assessment(ID, score):
     combined_df = get_best_fit(ID, v1_df, v2_df, score)
     # Sort the combined_df by 'Combined_Score' in descending order
     combined_df = combined_df.sort_values(by='Combined_Score', ascending=False)
+    # Convert GDT_TS scores to percentage
+    if score == 'GDT_TS':
+        combined_df['Best_v1_ref'] = combined_df['Best_v1_ref'] * 100
+        combined_df['Best_v2_ref'] = combined_df['Best_v2_ref'] * 100
+
     # Save the combined metric to a CSV file
     combined_df.to_csv(f'./OUTPUT/{ID}_{score}_two_state.csv', index=False)
     
+    kwargs = {}
+    # Set text fontsize for specific IDs
+    if ID in ["M1239", "M1228"]:
+        kwargs['text_fontsize'] = 12
 
+    # Default scatter plot parameters
+    kwargs.update({
+        'x': combined_df[f"Best_v1_ref"],
+        'y': combined_df[f"Best_v2_ref"],
+        'group_labels': combined_df['Group'],
+        'xlabel': f'{score} Score (V1)',
+        'ylabel': f'{score} Score (V2)',
+        'title': f'Scatter plot of {score} scores for \n {ID} V1 vs V2 reference states',
+        'save_path': f'./PLOTS/{ID}_{score}_scatter_plot.png',
+        'score': score
+    })
+
+    # Special cases for insets and axis limits
     if ID == "T1228" and score == 'GlobalLDDT':
-        fig, ax_main, ax_inset = create_scatter(combined_df[f"Best_v1_ref"], \
-                combined_df[f"Best_v2_ref"], \
-                combined_df['Group'], f'{score} Score (V1)', \
-                f'{score} Score (V2)', f'Scatter plot of {score} scores for \n {ID} V1 vs V2 reference states', \
-                save_path=f'./PLOTS/{ID}_{score}_scatter_plot.png',
-                inset=True,
-                inset_position=[0.2, 0.05, 0.475, 0.475],   # [left, bottom, width, height]
-                inset_xlim=[0.74, 0.78],
-                inset_ylim=[0.70, 0.75],
-                inset_xticks=[0.74, 0.75, 0.76, 0.77, 0.78],  # [0.0, 0.5]
-                inset_yticks=[0.70, 0.72, 0.74, 0.75],
-                highlight_inset_rect=True,
-                rect_xy=(0.74, 0.70),
-                rect_width=0.04,
-                rect_height=0.05,
-                legend_position='upper left'
-                )
+        kwargs.update({
+            'inset': True,
+            'inset_position': [0.2, 0.05, 0.475, 0.475],
+            'inset_xlim': [0.74, 0.78],
+            'inset_ylim': [0.70, 0.75],
+            'inset_xticks': [0.74, 0.75, 0.76, 0.77, 0.78],
+            'inset_yticks': [0.70, 0.72, 0.74, 0.75],
+            'highlight_inset_rect': True,
+            'rect_xy': (0.74, 0.70),
+            'rect_width': 0.04,
+            'rect_height': 0.05,
+            'legend_position': 'upper left',
+        })
     elif ID == "T1249" and score == "GlobalLDDT":
-        fig, ax_main, ax_inset = create_scatter(combined_df[f"Best_v1_ref"], \
-                combined_df[f"Best_v2_ref"], \
-                combined_df['Group'], f'{score} Score (V1)', \
-                f'{score} Score (V2)', f'Scatter plot of {score} scores for \n {ID} V1 vs V2 reference states', \
-                save_path=f'./PLOTS/{ID}_{score}_scatter_plot.png',
-                inset=True,
-                inset_position=[0.25, 0.05, 0.475, 0.475],   # [left, bottom, width, height]
-                inset_xlim=[0.74, 0.82],
-                inset_ylim=[0.70, 0.8],
-                inset_xticks=[0.74, 0.76, 0.78, 0.80, 0.82],
-                inset_yticks=[0.70, 0.72, 0.74, 0.76, 0.78, 0.80],
-                highlight_inset_rect=True,
-                rect_xy=(0.74, 0.70),
-                rect_width=0.08,
-                rect_height=0.1,
-                legend_position='upper left'
-                )
+        kwargs.update({
+            'inset': True,
+            'inset_position': [0.25, 0.05, 0.475, 0.475],
+            'inset_xlim': [0.74, 0.82],
+            'inset_ylim': [0.70, 0.8],
+            'inset_xticks': [0.74, 0.76, 0.78, 0.80, 0.82],
+            'inset_yticks': [0.70, 0.72, 0.74, 0.76, 0.78, 0.80],
+            'highlight_inset_rect': True,
+            'rect_xy': (0.74, 0.70),
+            'rect_width': 0.08,
+            'rect_height': 0.1,
+            'legend_position': 'upper left',
+        })
     elif ID == "T1239" and score == "GlobalLDDT":
-        fig, ax_main, ax_inset = create_scatter(combined_df[f"Best_v1_ref"], \
-                combined_df[f"Best_v2_ref"], \
-                combined_df['Group'], f'{score} Score (V1)', \
-                f'{score} Score (V2)', f'Scatter plot of {score} scores for \n {ID} V1 vs V2 reference states', \
-                save_path=f'./PLOTS/{ID}_{score}_scatter_plot.png',
-                inset=True,
-                inset_position=[0.25, 0.05, 0.475, 0.475],   # [left, bottom, width, height]
-                inset_xlim=[0.66, 0.84],
-                inset_ylim=[0.72, 0.86],
-                inset_xticks=[0.66, 0.72, 0.78, 0.84],
-                inset_yticks=[0.72, 0.78, 0.84, 0.86],
-                highlight_inset_rect=True,
-                rect_xy=(0.66, 0.72),
-                rect_width=0.18,
-                rect_height=0.14,
-                legend_position='upper left'
-                )
+        kwargs.update({
+            'inset': True,
+            'inset_position': [0.25, 0.05, 0.475, 0.475],
+            'inset_xlim': [0.66, 0.84],
+            'inset_ylim': [0.72, 0.86],
+            'inset_xticks': [0.66, 0.72, 0.78, 0.84],
+            'inset_yticks': [0.72, 0.78, 0.84, 0.86],
+            'highlight_inset_rect': True,
+            'rect_xy': (0.66, 0.72),
+            'rect_width': 0.18,
+            'rect_height': 0.14,
+            'legend_position': 'upper left',
+        })
     elif ID == "R1203" and score == "GlobalLDDT":
-        fig, ax_main, ax_inset = create_scatter(combined_df[f"Best_v1_ref"], \
-                combined_df[f"Best_v2_ref"], \
-                combined_df['Group'], f'{score} Score (V1)', \
-                f'{score} Score (V2)', f'Scatter plot of {score} scores for \n {ID} V1 vs V2 reference states', \
-                save_path=f'./PLOTS/{ID}_{score}_scatter_plot.png',
-                inset=True,
-                inset_position=[0.25, 0.05, 0.475, 0.475],   # [left, bottom, width, height]
-                inset_xlim=[0.68, 0.84],
-                inset_ylim=[0.68, 0.84],
-                inset_xticks=[0.68, 0.74, 0.80, 0.84],
-                inset_yticks=[0.68, 0.74, 0.80, 0.84],
-                highlight_inset_rect=True,
-                rect_xy=(0.68, 0.68),
-                rect_width=0.16,
-                rect_height=0.16,
-                legend_position='upper left'
-                )
+        kwargs.update({
+            'inset': True,
+            'inset_position': [0.25, 0.05, 0.475, 0.475],
+            'inset_xlim': [0.68, 0.84],
+            'inset_ylim': [0.68, 0.84],
+            'inset_xticks': [0.68, 0.74, 0.80, 0.84],
+            'inset_yticks': [0.68, 0.74, 0.80, 0.84],
+            'highlight_inset_rect': True,
+            'rect_xy': (0.68, 0.68),
+            'rect_width': 0.16,
+            'rect_height': 0.16,
+            'legend_position': 'upper left',
+        })
     elif ID == "T1214" and score == "GlobalLDDT":
-        fig, ax_main, ax_inset = create_scatter(combined_df[f"Best_v1_ref"], \
-                combined_df[f"Best_v2_ref"], \
-                combined_df['Group'], f'{score} Score (V1)', \
-                f'{score} Score (V2)', f'Scatter plot of {score} scores for \n {ID} V1 vs V2 reference states', \
-                save_path=f'./PLOTS/{ID}_{score}_scatter_plot.png',
-                inset=True,
-                inset_position=[0.25, 0.05, 0.475, 0.475],   # [left, bottom, width, height]
-                inset_xlim=[0.78, 0.90],
-                inset_ylim=[0.78, 0.96],
-                inset_xticks=[0.78, 0.84, 0.90],
-                inset_yticks=[0.78, 0.84, 0.90, 0.96],
-                highlight_inset_rect=True,
-                rect_xy=(0.78, 0.78),
-                rect_width=0.12,
-                rect_height=0.18,
-                legend_position='upper left'
-                )
+        kwargs.update({
+            'inset': True,
+            'inset_position': [0.25, 0.05, 0.475, 0.475],
+            'inset_xlim': [0.78, 0.90],
+            'inset_ylim': [0.78, 0.96],
+            'inset_xticks': [0.78, 0.84, 0.90],
+            'inset_yticks': [0.78, 0.84, 0.90, 0.96],
+            'highlight_inset_rect': True,
+            'rect_xy': (0.78, 0.78),
+            'rect_width': 0.12,
+            'rect_height': 0.18,
+            'legend_position': 'upper left',
+        })
     elif ID == "T1214" and score == "GDT_TS":
-        fig, ax_main, ax_inset = create_scatter(combined_df[f"Best_v1_ref"], \
-                combined_df[f"Best_v2_ref"], \
-                combined_df['Group'], f'{score} Score (V1)', \
-                f'{score} Score (V2)', f'Scatter plot of {score} scores for \n {ID} V1 vs V2 reference states', \
-                save_path=f'./PLOTS/{ID}_{score}_scatter_plot.png',
-                inset=True,
-                inset_position=[0.25, 0.05, 0.475, 0.475],   # [left, bottom, width, height]
-                inset_xlim=[88, 98],
-                inset_ylim=[90, 100],
-                inset_xticks=[88, 92, 96],
-                inset_yticks=[90, 94, 98],
-                highlight_inset_rect=True,
-                rect_xy=(88, 90),
-                rect_width=10,
-                rect_height=10,
-                legend_position='upper left'
-                )
-    else:
-        fig, ax_main = create_scatter(combined_df[f"Best_v1_ref"], \
-                    combined_df[f"Best_v2_ref"], \
-                    combined_df['Group'], f'{score} Score (V1)', \
-                    f'{score} Score (V2)', f'Scatter plot of {score} scores for \n {ID} V1 vs V2 reference states', \
-                    save_path=f'./PLOTS/{ID}_{score}_scatter_plot.png'
-                    )
+        kwargs.update({
+            'inset': True,
+            'inset_position': [0.25, 0.05, 0.475, 0.475],
+            'inset_xlim': [88, 98],
+            'inset_ylim': [90, 100],
+            'inset_xticks': [88, 92, 96],
+            'inset_yticks': [90, 94, 98],
+            'highlight_inset_rect': True,
+            'rect_xy': (88, 90),
+            'rect_width': 10,
+            'rect_height': 10,
+            'legend_position': 'upper left',
+        })
+    elif ID == "M1228" and score == "TMscore":
+        kwargs.update({
+            'main_xlim': (0.6, 0.8),
+            'ylim': (0.65, 0.85),
+            'xticks': [round(x, 2) for x in list(frange(0.6, 0.8+0.001, 0.05))],
+            'yticks': [round(y, 2) for y in list(frange(0.65, 0.85+0.001, 0.05))],
+            'AF3_baseline': True
+        })
+    elif ID == "M1228" and score == "GDT_TS":
+        kwargs.update({
+            'main_xlim': (10, 40),
+            'ylim': (10, 40),
+            'xticks': [round(x, 2) for x in list(frange(10, 40+0.001, 5))],
+            'yticks': [round(y, 2) for y in list(frange(10, 40+0.001, 5))],
+            'AF3_baseline': True
+        })
+    elif ID == "M1228" and score == "GlobDockQ":
+        kwargs.update({
+            'main_xlim': (20, 40),
+            'ylim': (20, 40),
+            'xticks': [round(x, 2) for x in list(frange(20, 40+0.001, 5))],
+            'yticks': [round(y, 2) for y in list(frange(20, 40+0.001, 5))],
+            'AF3_baseline': True
+        })
+    elif ID == "M1239" and score == "GDT_TS":
+        print(f"Creating scatter plot for {ID} {score}.")
+        kwargs.update({
+            'xlim': (14, 30),
+            'ylim': (14, 30),
+            'xticks': [round(x, 2) for x in list(frange(14, 30+0.001, 2))],
+            'yticks': [round(y, 2) for y in list(frange(14, 30+0.001, 2))],
+        })
+    elif ID == "M1239" and score == "GlobalLDDT":
+        print(f"Creating scatter plot for {ID} {score}.")
+        kwargs.update({
+            'xlim': (0.35, 0.75),
+            'ylim': (0.35, 0.75),
+            'xticks': [round(x, 2) for x in list(frange(0.35, 0.75+0.001, 0.05))],
+            'yticks': [round(y, 2) for y in list(frange(0.35, 0.75+0.001, 0.05))],
+        })
+    elif ID == "M1239" and score == "GlobDockQ":
+        print(f"Creating scatter plot for {ID} {score}.")
+        kwargs.update({
+            'xlim': (0.15, 0.40),
+            'ylim': (0.15, 0.40),
+            'xticks': [round(x, 2) for x in list(frange(0.15, 0.40+0.001, 0.05))],
+            'yticks': [round(y, 2) for y in list(frange(0.15, 0.40+0.001, 0.05))],
+        })
 
-    
-    # Create a stacked bar chart
-    plt.figure(figsize=(10, 6))
-    plt.bar(combined_df['Group'].str.replace('TS', ''), combined_df[f'Best_v1_ref'], label=f'<{score}> (V1)')
-    plt.bar(combined_df['Group'].str.replace('TS', ''), combined_df[f'Best_v2_ref'], bottom=combined_df[f'Best_v1_ref'], label=f'<{score}> (V2)')
-    plt.xlabel('Submission Group', fontsize=18)
-    plt.ylabel('Two-State Score', fontsize=18)
-    plt.title(f'Aggregate {score} scores for \n {ID} V1 and V2 reference states', fontsize=18)
-    plt.legend(loc='upper right', fontsize=16)
-    plt.xticks(rotation=90, fontsize=10)
-    plt.yticks(fontsize=18)
-    plt.tight_layout()
-    # Save the plot as an image file
-    plt.savefig(f'./PLOTS/{ID}_{score}_two_state.png', dpi=300)
-    plt.close()
+    # Call create_scatter once with all kwargs
+    result = create_scatter(**kwargs)
 
-    # Create a horizontal stacked bar chart
-    # Calculate figure size based on number of data points
-    num_groups = len(combined_df)
-    # Base height per group (in inches) - adjust this value to control spacing
-    height_per_group = 0.35  # inches per group
-    min_height = 6  # minimum height in inches
-    max_height = 20  # maximum height in inches
+
+    print("Creating stacked bar plots...")
+    create_stacked_bar(combined_df, ID, score, horizontal=False, star=True, outfile_suffix = "_vertical_star")
+    create_stacked_bar(combined_df, ID, score, horizontal=True, star=True, outfile_suffix = "_horizontal_star")
+    create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, outfile_suffix = "_vertical_no_star")
+    create_stacked_bar(combined_df, ID, score, horizontal=True, star=False, outfile_suffix = "_horizontal_no_star")
+    print(f"Done creating stacked bar plots for {ID} {score}")
+    return
+    # raise Exception("Stop here")
+    print(f"Creating vertical stacked bar plot for {ID} {score}.")
+    create_vertical_stacked_bar(combined_df, ID, score)
     
-    # Calculate dynamic height
-    dynamic_height = max(min_height, min(max_height, num_groups * height_per_group))
-    fig_width = 12  # fixed width
-    
-    plt.figure(figsize=(fig_width, dynamic_height))
-    # Reverse the order of the data for horizontal plot
-    reversed_df = combined_df.iloc[::-1]
-    
-    # Get group names from the CSV file
-    group_name_lookup = get_group_name_lookup()
-    group_names = []
-    for group in reversed_df['Group']:
-        group_number = str(int(''.join(filter(str.isdigit, group)))).zfill(3)
-        group_name = group_name_lookup.get(group_number, group).strip()
-        group_names.append(group_name + ' (' + group_number + ')')
-    
-    # Calculate bar height based on font size (12pt) with padding
-    bar_height = 0.9
-    plt.barh(group_names, reversed_df[f'Best_v1_ref'], height=bar_height, label=f'<{score}> (V1)')
-    plt.barh(group_names, reversed_df[f'Best_v2_ref'], left=reversed_df[f'Best_v1_ref'], height=bar_height, label=f'<{score}> (V2)')
-    plt.ylabel('Submission Group', fontsize=18)
-    plt.xlabel('Two-State Score', fontsize=18)
-    plt.title(f'Aggregate {score} scores for \n {ID} V1 and V2 reference states', fontsize=18)
-    plt.legend(loc='lower right', fontsize=16)
-    plt.yticks(fontsize=12)
-    plt.xticks(fontsize=18)
-    plt.tight_layout()
-    # Save the horizontal plot as an image file
-    plt.savefig(f'./PLOTS/{ID}_{score}_two_state_horizontal.png', dpi=300)
-    plt.close()
+    print(f"Creating horizontal stacked bar plot for {ID} {score}.")
+    create_horizontal_stacked_bar(combined_df, ID, score)
+
 
 
 TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT", "TMscore"], 
@@ -544,6 +690,15 @@ TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT",
                      "T1228": ["GDT_TS", "GlobalLDDT"], 
                      "T1239": ["GDT_TS", "GlobalLDDT"], 
                      "T1249": ["AvgDockQ", "GlobalLDDT"]}
+
+# assessment("M1228", "TMscore")
+# assessment("M1228", "GDT_TS")
+# assessment("T1228", "GDT_TS")
+# assessment("M1228", "BestDockQ")
+# assessment("M1239", "GDT_TS")
+# assessment("M1239", "GlobalLDDT")
+# assessment("M1239", "GlobDockQ")
+# raise Exception("Stop here")
 
 for ID, scores in TARGET_SCORE_DICT.items():
     for score in scores:
