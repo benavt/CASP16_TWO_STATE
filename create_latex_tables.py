@@ -85,7 +85,7 @@ def make_t1214_sigma4_table():
     """Create special T1214 Sigma4 score table from T1214_Group_vs_Best_Composite_Score_4.csv"""
     
     # Read the T1214 data
-    t1214_data = pd.read_csv('T1214_Group_vs_Best_Composite_Score_4.csv')
+    t1214_data = pd.read_csv('composite_score_4_2_best_scores.csv')
     
     # Get group name lookup using the same function as process_two_state_score.py
     group_name_lookup = get_group_name_lookup()
