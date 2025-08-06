@@ -286,7 +286,7 @@ def create_scatter(
         fig, ax_main, ax_inset (if inset=True)
     """
 
-    fig, ax_main = plt.subplots(figsize=(10, 6))
+    fig, ax_main = plt.subplots(figsize=(8, 8))
     max_val = max(max(x), max(y))
     max_val_for_plotting = max_val
     if xlim is not None and ylim is not None:
