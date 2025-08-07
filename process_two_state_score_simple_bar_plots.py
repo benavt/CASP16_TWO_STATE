@@ -229,6 +229,9 @@ def get_best_fit(ID, v1_df, v2_df, score):
     return results_df
 
 def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, outfile_suffix = ""):
+    score = score.replace('Updated_','')
+    if score == 'Composite_Score_4':
+        score = 'Σ4'
     import matplotlib.pyplot as plt
     num_groups = len(combined_df)
     per_group, min_size, max_size = 0.35, 6, 20
@@ -237,12 +240,12 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, out
         fig_size = (12, dynamic_size)
         bar_func, stack_param, line_func, line_param = plt.Axes.barh, 'left', plt.Axes.axvline, 'x'
         limit_set, label_prim, label_sec = plt.Axes.set_ylim, 'ylabel', 'xlabel'
-        legend_loc, tick_fs_prim, tick_fs_sec, rot_prim = 'lower right', 18, 18, 0
+        legend_loc, tick_fs_prim, tick_fs_sec, rot_prim = 'lower right', 24, 32, 0
     else:
         fig_size = (dynamic_size, 10)
         bar_func, stack_param, line_func, line_param = plt.Axes.bar, 'bottom', plt.Axes.axhline, 'y'
         limit_set, label_prim, label_sec = plt.Axes.set_xlim, 'xlabel', 'ylabel'
-        legend_loc, tick_fs_prim, tick_fs_sec, rot_prim = 'upper right', 18, 18, 90
+        legend_loc, tick_fs_prim, tick_fs_sec, rot_prim = 'upper right', 24, 32, 90
     fig, ax = plt.subplots(figsize=fig_size)
     group_labels_raw = combined_df['Group'].str.replace('TS', '')
     if horizontal:
@@ -264,17 +267,17 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, out
     v2_colors = ['#FA7E0F'] * num_groups
 
     if num_groups > 100:
-        bar_kwargs_v1 = {bar_size_param: bar_size, 'label': f'<{score.replace('Updated_','')}> (V1)', 'color': v1_colors}
-        bar_kwargs_v2 = {bar_size_param: bar_size, 'label': f'<{score.replace('Updated_','')}> (V2)', 'color': v2_colors, stack_param: df_to_use[f'Best_v1_ref']}
+        bar_kwargs_v1 = {bar_size_param: bar_size, 'label': f'{score} (V1)', 'color': v1_colors}
+        bar_kwargs_v2 = {bar_size_param: bar_size, 'label': f'{score} (V2)', 'color': v2_colors, stack_param: df_to_use[f'Best_v1_ref']}
     else:
-        bar_kwargs_v1 = {bar_size_param: bar_size, 'label': f'<{score.replace('Updated_','')}> (V1)','color': v1_colors}
-        bar_kwargs_v2 = {bar_size_param: bar_size, 'label': f'<{score.replace('Updated_','')}> (V2)', 'color': v2_colors, stack_param: df_to_use[f'Best_v1_ref']}
+        bar_kwargs_v1 = {bar_size_param: bar_size, 'label': f'{score} (V1)','color': v1_colors}
+        bar_kwargs_v2 = {bar_size_param: bar_size, 'label': f'{score} (V2)', 'color': v2_colors, stack_param: df_to_use[f'Best_v1_ref']}
     bars_v1 = bar_func(ax, group_labels, df_to_use[f'Best_v1_ref'], **bar_kwargs_v1)
     bars_v2 = bar_func(ax, group_labels, df_to_use[f'Best_v2_ref'], **bar_kwargs_v2)
     if '304' in check_labels:
         idx_304 = list(check_labels).index('304')
         total_score = df_to_use[f'Best_v1_ref'].iloc[idx_304] + df_to_use[f'Best_v2_ref'].iloc[idx_304]
-        line_func(ax, **{line_param: total_score, 'color': 'grey', 'linestyle': '--', 'linewidth': 4, 'label': 'AF3 Baseline Score'})
+        line_func(ax, **{line_param: total_score, 'color': 'grey', 'linestyle': '--', 'linewidth': 4, 'label': 'AF3 Score'})
         if star:
             # Add a gray star above (vertical) or to the right (horizontal) of the bar for group 304
             if horizontal:
@@ -284,10 +287,10 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, out
                 # x position is idx_304, y position is total_score
                 ax.scatter(idx_304, total_score + 0.02 * ax.get_ylim()[1], marker='*', s=300, color='gray', edgecolor='black', zorder=5)
     limit_set(ax, -0.5, len(group_labels) - 0.5)
-    getattr(ax, f'set_{label_prim}')('Submission Group', fontsize=18)
-    getattr(ax, f'set_{label_sec}')('Two-State Score', fontsize=18)
-    ax.set_title(f'Aggregate {score.replace('Updated_','')} scores for \n {ID} V1 and V2 reference states', fontsize=18)
-    ax.legend(loc=legend_loc, fontsize=16)
+    getattr(ax, f'set_{label_prim}')('Group', fontsize= 32)
+    getattr(ax, f'set_{label_sec}')('Two-State Score', fontsize=32)
+    ax.set_title(f'Two-State {score} scores for \n {ID} V1 and V2 reference states', fontsize=18)
+    ax.legend(loc=legend_loc, fontsize=28)
     if horizontal:
         ax.set_yticks(range(len(group_labels)))
         ax.set_yticklabels(group_labels, fontsize=tick_fs_prim)
@@ -322,8 +325,8 @@ def assessment(ID, score):
   
 
     print("Creating stacked bar plots...")
-    create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, outfile_suffix = "_vertical_simple")
-    create_stacked_bar(combined_df, ID, score, horizontal=True, star=False, outfile_suffix = "_horizontal_simple")
+    create_stacked_bar(combined_df, ID, score, horizontal=True, star=False, outfile_suffix = "_vertical_simple")
+    create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, outfile_suffix = "_horizontal_simple")
     print(f"Done creating stacked bar plots for {ID} {score}")
 
 
@@ -335,6 +338,8 @@ TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT",
                      "T1228": ["GDT_TS", "GlobalLDDT"], 
                      "T1239": ["GDT_TS", "GlobalLDDT"], 
                      "T1249": ["AvgDockQ", "GlobalLDDT"]}
+# assessment("R1203", "Composite_Score_4")
+# raise Exception("Stop here")
 
 for ID, scores in TARGET_SCORE_DICT.items():
     for score in scores:
