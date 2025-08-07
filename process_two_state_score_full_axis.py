@@ -369,6 +369,66 @@ def create_scatter(
                     ax_inset.fill_betweenx([yv, y_max], xv, x_max, color='yellow', alpha=0.2, zorder=0)
         # --- End AF3 Baseline Highlighting ---
 
+    # Add labels and adjust text for main plot and inset
+    texts_main = []
+    texts_inset = []
+    
+    # Calculate combined scores (x + y) for each group
+    combined_scores = [xv + yv for xv, yv in zip(x, y)]
+    
+    # Create a list of tuples with (combined_score, index, group_label)
+    score_index_pairs = [(score, i, str(group_labels[i])) for i, score in enumerate(combined_scores)]
+    
+    # Sort by combined score in descending order and get top 5
+    score_index_pairs.sort(key=lambda x: x[0], reverse=True)
+    top_5_indices = [pair[1] for pair in score_index_pairs[:5]]
+    
+    # Find indices for TS462 and TS304
+    ts462_index = None
+    ts304_index = None
+    for i, (xv, yv, txt) in enumerate(zip(x, y, group_labels)):
+        txt = str(txt)
+        # Extract group number from group label (e.g., "TS462" -> "462")
+        group_number = ''.join(filter(str.isdigit, txt))
+        if group_number == '462':
+            ts462_index = i
+        if group_number == '304':
+            ts304_index = i
+    
+    # Create set of indices to label (top 5 + TS462 + TS304)
+    indices_to_label = set(top_5_indices)
+    # Add TS462 and TS304 if they exist and are not already in top 5
+    if ts462_index is not None and ts462_index not in indices_to_label:
+        indices_to_label.add(ts462_index)
+    if ts304_index is not None and ts304_index not in indices_to_label:
+        indices_to_label.add(ts304_index)
+    
+    # Add labels only for the selected groups
+    for i, (xv, yv, txt) in enumerate(zip(x, y, group_labels)):
+        if i in indices_to_label:
+            txt = str(txt)
+            if inset and inset_xlim and inset_ylim and (inset_xlim[0] <= xv <= inset_xlim[1] and inset_ylim[0] <= yv <= inset_ylim[1]):
+                texts_inset.append(ax_inset.text(xv, yv, txt.replace('TS', ''), fontsize=text_fontsize))
+            else:
+                texts_main.append(ax_main.text(xv, yv, txt.replace('TS', ''), fontsize=text_fontsize))
+    
+    if adjust_texts:
+        if texts_inset:
+            adjust_text(texts_inset, 
+                        ax=ax_inset, 
+                        arrowprops=dict(arrowstyle='->', color='red', lw=0.5),
+                        expand_points=(1.1, 1.1),
+                        force_points=(0.1, 0.1))
+        if texts_main:
+            adjust_text(texts_main, 
+                        ax=ax_main, 
+                        arrowprops=dict(arrowstyle='->', color='red', lw=0.5),
+                        expand_points=(2.0, 2.0),
+                        force_text=(0.5, 0.5),
+                        force_points=(0.5, 0.5),
+                        avoid_text=True,
+                        avoid_points=True,
+                        avoid_self=True)
 
     ax_main.set_xlabel(xlabel, fontsize=20)
     ax_main.set_ylabel(ylabel, fontsize=20)

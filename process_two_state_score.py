@@ -456,11 +456,11 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, out
             v1_colors[idx_304] = '#4F81BD'  # bluish
             v2_colors[idx_304] = '#FFA500'  # orangish
     if num_groups > 100:
-        bar_kwargs_v1 = {bar_size_param: bar_size, 'label': f'<{score}> (V1)', 'color': v1_colors}
-        bar_kwargs_v2 = {bar_size_param: bar_size, 'label': f'<{score}> (V2)', 'color': v2_colors, stack_param: df_to_use[f'Best_v1_ref']}
+        bar_kwargs_v1 = {bar_size_param: bar_size, 'label': f'<{score.replace('Updated_','')}> (V1)', 'color': v1_colors}
+        bar_kwargs_v2 = {bar_size_param: bar_size, 'label': f'<{score.replace('Updated_','')}> (V2)', 'color': v2_colors, stack_param: df_to_use[f'Best_v1_ref']}
     else:
-        bar_kwargs_v1 = {bar_size_param: bar_size, 'label': f'<{score}> (V1)', 'edgecolor': 'black', 'linewidth': 1, 'color': v1_colors}
-        bar_kwargs_v2 = {bar_size_param: bar_size, 'label': f'<{score}> (V2)', 'edgecolor': 'black', 'linewidth': 1, 'color': v2_colors, stack_param: df_to_use[f'Best_v1_ref']}
+        bar_kwargs_v1 = {bar_size_param: bar_size, 'label': f'<{score.replace('Updated_','')}> (V1)', 'edgecolor': 'black', 'linewidth': 1, 'color': v1_colors}
+        bar_kwargs_v2 = {bar_size_param: bar_size, 'label': f'<{score.replace('Updated_','')}> (V2)', 'edgecolor': 'black', 'linewidth': 1, 'color': v2_colors, stack_param: df_to_use[f'Best_v1_ref']}
     bars_v1 = bar_func(ax, group_labels, df_to_use[f'Best_v1_ref'], **bar_kwargs_v1)
     bars_v2 = bar_func(ax, group_labels, df_to_use[f'Best_v2_ref'], **bar_kwargs_v2)
     if '304' in check_labels:
@@ -478,7 +478,7 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, out
     limit_set(ax, -0.5, len(group_labels) - 0.5)
     getattr(ax, f'set_{label_prim}')('Submission Group', fontsize=18)
     getattr(ax, f'set_{label_sec}')('Two-State Score', fontsize=18)
-    ax.set_title(f'Aggregate {score} scores for \n {ID} V1 and V2 reference states', fontsize=18)
+    ax.set_title(f'Aggregate {score.replace('Updated_','')} scores for \n {ID} V1 and V2 reference states', fontsize=18)
     ax.legend(loc=legend_loc, fontsize=16)
     if horizontal:
         ax.set_yticks(range(len(group_labels)))
