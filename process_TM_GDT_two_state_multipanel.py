@@ -4,6 +4,8 @@ from adjustText import adjust_text
 from tqdm import tqdm
 import csv
 
+from process_two_state_score_full_axis import create_scatter
+
 def frange(start, stop, step):
     vals = []
     while start <= stop:
@@ -228,210 +230,106 @@ def get_best_fit(ID, v1_df, v2_df, score):
     results_df = pd.DataFrame(results)
     return results_df
 
-def create_scatter(
-    x,
-    y,
-    group_labels,
-    xlabel,
-    ylabel,
-    title,
-    legend_label='Submission Groups',
-    main_xlim=None,
-    main_ylim=None,
-    inset=False,
-    inset_position=[0.5, 0.05, 0.475, 0.475],
-    inset_xlim=None,
-    inset_ylim=None,
-    inset_xticks=None,
-    inset_yticks=None,
-    highlight_inset_rect=False,
-    rect_xy=None,
-    rect_width=None,
-    rect_height=None,
-    adjust_texts=True,
-    save_path=None,
-    dpi=300,
-    legend_position='upper right',
-    score = None,
-    xlim=None,           # New optional parameter for x-axis range
-    ylim=None,           # New optional parameter for y-axis range
-    xticks=None,         # New optional parameter for x-axis ticks
-    yticks=None,         # New optional parameter for y-axis ticks
-    text_fontsize=12,     # New optional parameter for text fontsize
-    AF3_baseline=False,   # New optional parameter for AF3 baseline highlighting
-    ax=None              # Optional parameter for existing axes object
-):
-    """
-    Create a scatterplot with optional inset.
-    Parameters:
-        x, y: Data for scatterplot
-        group_labels: Labels for each point
-        xlabel, ylabel, title: Axis and plot labels
-        legend_label: Label for legend
-        main_xlim, main_ylim: Tuple for main plot axis limits
-        inset: Whether to create an inset
-        inset_position: [left, bottom, width, height] for inset axes
-        inset_xlim, inset_ylim: Tuple for inset axis limits
-        inset_xticks, inset_yticks: Ticks for inset axes
-        highlight_inset_rect: Whether to draw a rectangle on main plot
-        rect_xy: (x, y) for rectangle lower left
-        rect_width, rect_height: Rectangle width and height
-        adjust_texts: Whether to adjust text to avoid overlap
-        save_path: If provided, save the figure to this path
-        dpi: Dots per inch for saving
-        legend_position: Position for the legend
-        xlim, ylim: Explicit x/y axis range for main plot (overrides main_xlim/main_ylim if provided)
-        xticks, yticks: Explicit x/y axis tick values for main plot
-        text_fontsize: Font size for group label texts (default 12)
-        AF3_baseline: Whether to highlight AF3 baseline (default False)
-        ax: Optional existing axes object to plot on (default None)
-    Returns:
-        fig, ax_main, ax_inset (if inset=True)
-    """
-
-    # Use provided axes or create new ones
-    if ax is not None:
-        ax_main = ax
-        fig = ax.figure
-        ax_main.clear()  # Clear the existing axes
-    else:
-        fig, ax_main = plt.subplots(figsize=(8, 8))
-    
-    max_val = max(max(x), max(y))
-    max_val_for_plotting = max_val
-    if xlim is not None and ylim is not None:
-        max_val_for_plotting = max(max_val, max(xlim), max(ylim))
-    max_val = max(max_val, max_val_for_plotting)
-
-    ax_main.plot([0, max_val], [0, max_val], color='black', linestyle='--', label='y=x')
-    scatter = ax_main.scatter(x, y, c='blue', label=legend_label, s=100)
-
-    # --- AF3 Baseline Highlighting ---
-    if AF3_baseline:
-        for i, (xv, yv, txt) in enumerate(zip(x, y, group_labels)):
-            group_num = str(int(''.join(filter(str.isdigit, str(txt))))).zfill(3)
-            if group_num == '304':
-                ax_main.axhline(yv, color='gray', linestyle='--', linewidth=2)
-                ax_main.axvline(xv, color='gray', linestyle='--', linewidth=2)
-                # Shade the area y > y_304 and x > x_304
-                x_min, x_max = ax_main.get_xlim()
-                y_min, y_max = ax_main.get_ylim()
-                ax_main.fill_betweenx([yv, y_max], xv, x_max, color='yellow', alpha=0.2, zorder=0)
-    # --- End AF3 Baseline Highlighting ---
-
-    # Set axis bounds with padding for main plot if not provided
-    if xlim is not None:
-        ax_main.set_xlim(*xlim)
-    elif main_xlim is None:
-        x_min, x_max = min(x), max(x)
-        padding = 0.05
-        x_range = x_max - x_min
-        main_xlim = (x_min - x_range * padding, x_max + x_range * padding)
-        ax_main.set_xlim(*main_xlim)
-    else:
-        ax_main.set_xlim(*main_xlim)
-
-    if ylim is not None:
-        ax_main.set_ylim(*ylim)
-    elif main_ylim is None:
-        y_min, y_max = min(y), max(y)
-        padding = 0.05
-        y_range = y_max - y_min
-        main_ylim = (y_min - y_range * padding, y_max + y_range * padding)
-        ax_main.set_ylim(*main_ylim)
-    else:
-        ax_main.set_ylim(*main_ylim)
-
-    if xticks is not None:
-        ax_main.set_xticks(xticks)
-    if yticks is not None:
-        ax_main.set_yticks(yticks)
-  
-    ax_main.set_xlabel(xlabel, fontsize=30)
-    ax_main.set_ylabel(ylabel, fontsize=30)
-    ax_main.set_title(title, fontsize=20)
-    
-    # Add grid with dashed lines at each x-tick and y-tick
-    ax_main.grid(True, linestyle='--', alpha=0.7)
-    
-    ax_main.tick_params(axis='both', labelsize=25)
-    if ax is None:  # Only call tight_layout if we created a new figure
-        plt.tight_layout()
-    if save_path:
-        fig.savefig(save_path, dpi=dpi, bbox_inches='tight')
-        if ax is None:  # Only close the figure if we created it
-            plt.close(fig)
-
-    return fig, ax_main
-
-def assessment(ID, score):
-    
-    v1_df = get_v1_ref_df(ID, score)
-    v2_df = get_v2_ref_df(ID, score)
-    combined_df = get_best_fit(ID, v1_df, v2_df, score)
-    # Sort the combined_df by 'Combined_Score' in descending order
-    combined_df = combined_df.sort_values(by='Combined_Score', ascending=False)
-    # Convert GDT_TS scores to percentage
-    if score == 'GDT_TS':
-        combined_df['Best_v1_ref'] = combined_df['Best_v1_ref'] * 100
-        combined_df['Best_v2_ref'] = combined_df['Best_v2_ref'] * 100
-
-    # Save the combined metric to a CSV file
-    combined_df.to_csv(f'./OUTPUT/{ID}_{score}_two_state.csv', index=False)
-    
-    kwargs = {}
-    # Set text fontsize for specific IDs
-    if ID in ["M1239", "M1228"]:
-        kwargs['text_fontsize'] = 16
-    if score == 'TMscore':
-        label = 'TM-score'
-    else:
-        label = score
-
-    # Default scatter plot parameters
-    kwargs.update({
-        'x': combined_df[f"Best_v1_ref"],
-        'y': combined_df[f"Best_v2_ref"],
-        'group_labels': combined_df['Group'],
-        'xlabel': f'{label} (V1)',
-        'ylabel': f'{label} (V2)',
-        'title': f'{ID} {label}',
-        'save_path': f'./PLOTS/{ID}_{score}_scatter_plot_full_axis.png',
-        'score': score
-    })
-
-    if score == 'TMscore':
-        kwargs.update({
-            'xlim': (0.0, 1.0),
-            'ylim': (0.0, 1.0),
-            'xticks': [0.0, 0.5, 1.0],
-            'yticks': [0.0, 0.5, 1.0],
-        })
-    elif score == 'GDT_TS':
-        kwargs.update({
-            'xlim': (0.0, 100.0),
-            'ylim': (0.0, 100.0),
-            'xticks': [0, 50, 100],
-            'yticks': [0, 50, 100],
-        })
-    # Call create_scatter once with all kwargs
-    result = create_scatter(**kwargs)
-    return
 
 TARGET_SCORE_DICT = {"M1228": ["GDT_TS", "TMscore"], 
                      "M1239": ["GDT_TS", "TMscore"], 
-                     "R1203": ["GDT_TS", "TMscore"], 
+                     "T1249": ["GDT_TS", "TMscore"], 
                      "T1228": ["GDT_TS", "TMscore"], 
                      "T1239": ["GDT_TS", "TMscore"],
-                     "T1249": ["GDT_TS", "TMscore"]}
+                     "R1203": ["GDT_TS", "TMscore"],
+                     }
+
+def assessment(TARGET_SCORE_DICT):
+
+    TARGET_SCORE_df_dict = {}
+    for ID, scores in TARGET_SCORE_DICT.items():
+        for score in scores:
+            try:
+                v1_df = get_v1_ref_df(ID, score)
+                v2_df = get_v2_ref_df(ID, score)
+                combined_df = get_best_fit(ID, v1_df, v2_df, score)
+                # Sort the combined_df by 'Combined_Score' in descending order
+                combined_df = combined_df.sort_values(by='Combined_Score', ascending=False)
+                # Convert GDT_TS scores to percentage
+                if score == 'GDT_TS':
+                    combined_df['Best_v1_ref'] = combined_df['Best_v1_ref'] * 100
+                    combined_df['Best_v2_ref'] = combined_df['Best_v2_ref'] * 100
+
+                # Save the combined metric to a CSV file
+                combined_df.to_csv(f'./OUTPUT/{ID}_{score}_two_state.csv', index=False)
+                TARGET_SCORE_df_dict[ID+'_'+score] = combined_df
+                print(f"[SUCCESS] Processed {ID} {score}")
+            except Exception as e:
+                TARGET_SCORE_df_dict[ID+'_'+score] = None
+                print(f"[ERROR] Error processing {ID} {score}: {e}")
+                continue
+
+    order_of_id_scores = ['M1228_TMscore', 'T1228_TMscore', 'M1228_GDT_TS', 'T1228_GDT_TS', 
+                          'M1239_TMscore', 'T1239_TMscore', 'M1239_GDT_TS', 'T1239_GDT_TS', 
+                          'T1249_TMscore', 'R1203_TMscore', 'T1249_GDT_TS', 'R1203_GDT_TS']
 
 
-for ID, scores in TARGET_SCORE_DICT.items():
-    for score in scores:
-        try:
-            assessment(ID, score)
-            print(f"[SUCCESS] Processed {ID} {score}")
-        except Exception as e:
-            print(f"[ERROR] Error processing {ID} {score}: {e}")
+    # INSERT_YOUR_CODE
+    # Create a multi-panel figure with 3 rows and 4 columns of subplots
+    import matplotlib.pyplot as plt
+
+    fig, axes = plt.subplots(3, 4, figsize=(24, 18))
+    axes = axes.flatten()
+
+    print(TARGET_SCORE_df_dict.keys())
+    print(len(TARGET_SCORE_df_dict.keys()))
+    # Plot the same scatter on all subplots as a placeholder
+    for i, ax in enumerate(axes):
+
+        ID_score = order_of_id_scores[i]
+        print(ID_score)
+        df = TARGET_SCORE_df_dict[ID_score]
+        if df is None:
             continue
+        score = '_'.join(ID_score.split('_')[1:])
+        ID = ID_score.split('_')[0]
+
+        kwargs = {}
+        # Default scatter plot parameters
+        kwargs.update({
+            'x': df[f"Best_v1_ref"],
+            'y': df[f"Best_v2_ref"],
+            'group_labels': df['Group'],
+            'xlabel': f'{score} (V1)',
+            'ylabel': f'{score} (V2)',
+            'title': f'{ID}',
+            'score': score
+        })
+        if score == 'TMscore':
+            kwargs.update({
+                'xlim': (0.0, 1.0),
+                'ylim': (0.0, 1.0),
+                'xticks': [0.0, 0.5, 1.0],
+                'yticks': [0.0, 0.5, 1.0],
+            })
+        elif score == 'GDT_TS':
+            kwargs.update({
+                'xlim': (0.0, 100.0),
+                'ylim': (0.0, 100.0),
+                'xticks': [0, 50, 100],
+                'yticks': [0, 50, 100],
+            })
+        else:
+            raise Exception(f"Score {score} not supported")
+    
+        kwargs['ax'] = ax
+        subfix, subax = create_scatter(**kwargs)
+        # ax = subax
+
+    plt.tight_layout()
+    
+
+    plt.savefig(f'./PLOTS/GDT_TM_multi_panel.png', dpi=300, bbox_inches='tight')
+    plt.close(fig)
+
+    return
+
+
+assessment(TARGET_SCORE_DICT)
+
 
