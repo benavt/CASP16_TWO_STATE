@@ -257,8 +257,9 @@ def create_scatter(
     ylim=None,           # New optional parameter for y-axis range
     xticks=None,         # New optional parameter for x-axis ticks
     yticks=None,         # New optional parameter for y-axis ticks
-    text_fontsize=8,     # New optional parameter for text fontsize
-    AF3_baseline=False   # New optional parameter for AF3 baseline highlighting
+    text_fontsize=12,     # New optional parameter for text fontsize
+    AF3_baseline=False,   # New optional parameter for AF3 baseline highlighting
+    ax=None              # Optional parameter for existing axes object
 ):
     """
     Create a scatterplot with optional inset.
@@ -281,20 +282,29 @@ def create_scatter(
         legend_position: Position for the legend
         xlim, ylim: Explicit x/y axis range for main plot (overrides main_xlim/main_ylim if provided)
         xticks, yticks: Explicit x/y axis tick values for main plot
-        text_fontsize: Font size for group label texts (default 8)
+        text_fontsize: Font size for group label texts (default 12)
+        AF3_baseline: Whether to highlight AF3 baseline (default False)
+        ax: Optional existing axes object to plot on (default None)
     Returns:
         fig, ax_main, ax_inset (if inset=True)
     """
 
-    fig, ax_main = plt.subplots(figsize=(8, 8))
+    # Use provided axes or create new ones
+    if ax is not None:
+        ax_main = ax
+        fig = ax.figure
+        ax_main.clear()  # Clear the existing axes
+    else:
+        fig, ax_main = plt.subplots(figsize=(8, 8))
+    
     max_val = max(max(x), max(y))
     max_val_for_plotting = max_val
     if xlim is not None and ylim is not None:
         max_val_for_plotting = max(max_val, max(xlim), max(ylim))
     max_val = max(max_val, max_val_for_plotting)
 
-    ax_main.plot([0, max_val], [0, max_val], 'r-', label='y=x')
-    scatter = ax_main.scatter(x, y, c='blue', label=legend_label)
+    ax_main.plot([0, max_val], [0, max_val], color='black', linestyle='--', label='y=x')
+    scatter = ax_main.scatter(x, y, c='blue', label=legend_label, s=100)
 
     # --- AF3 Baseline Highlighting ---
     if AF3_baseline:
@@ -336,201 +346,23 @@ def create_scatter(
         ax_main.set_xticks(xticks)
     if yticks is not None:
         ax_main.set_yticks(yticks)
-
-    ax_inset = None
-    if inset:
-        ax_inset = ax_main.inset_axes(inset_position)
-        ax_inset.plot([0, max_val], [0, max_val], 'r-')
-        ax_inset.scatter(x, y, c='blue')
-        if inset_xlim:
-            ax_inset.set_xlim(*inset_xlim)
-        if inset_ylim:
-            ax_inset.set_ylim(*inset_ylim)
-        if inset_xticks:
-            ax_inset.set_xticks(inset_xticks)
-        if inset_yticks:
-            ax_inset.set_yticks(inset_yticks)
-        ax_inset.tick_params(labelsize=8)
-        ax_inset.grid(True, linestyle='--', alpha=0.7)
-        # Add rectangle in main plot to show zoomed region
-        if highlight_inset_rect and rect_xy and rect_width and rect_height:
-            rect = plt.Rectangle(rect_xy, rect_width, rect_height, fill=False, color='red', linestyle='--')
-            ax_main.add_patch(rect)
-        # --- AF3 Baseline Highlighting ---
-        if AF3_baseline:
-            for i, (xv, yv, txt) in enumerate(zip(x, y, group_labels)):
-                group_num = str(int(''.join(filter(str.isdigit, str(txt))))).zfill(3)
-                if group_num == '304':
-                    ax_inset.axhline(yv, color='gray', linestyle='--', linewidth=2)
-                    ax_inset.axvline(xv, color='gray', linestyle='--', linewidth=2)
-                    # Shade the area y > y_304 and x > x_304
-                    x_min, x_max = ax_inset.get_xlim()
-                    y_min, y_max = ax_inset.get_ylim()
-                    ax_inset.fill_betweenx([yv, y_max], xv, x_max, color='yellow', alpha=0.2, zorder=0)
-        # --- End AF3 Baseline Highlighting ---
-
-    # Add labels and adjust text for main plot and inset
-    texts_main = []
-    texts_inset = []
-    
-    # Calculate combined scores (x + y) for each group
-    combined_scores = [xv + yv for xv, yv in zip(x, y)]
-    
-    # Create a list of tuples with (combined_score, index, group_label)
-    score_index_pairs = [(score, i, str(group_labels[i])) for i, score in enumerate(combined_scores)]
-    
-    # Sort by combined score in descending order and get top 5
-    score_index_pairs.sort(key=lambda x: x[0], reverse=True)
-    top_5_indices = [pair[1] for pair in score_index_pairs[:5]]
-    
-    # Find indices for TS462 and TS304
-    ts462_index = None
-    ts304_index = None
-    for i, (xv, yv, txt) in enumerate(zip(x, y, group_labels)):
-        txt = str(txt)
-        # Extract group number from group label (e.g., "TS462" -> "462")
-        group_number = ''.join(filter(str.isdigit, txt))
-        if group_number == '462':
-            ts462_index = i
-        if group_number == '304':
-            ts304_index = i
-    
-    # Create set of indices to label (top 5 + TS462 + TS304)
-    indices_to_label = set(top_5_indices)
-    # Add TS462 and TS304 if they exist and are not already in top 5
-    if ts462_index is not None and ts462_index not in indices_to_label:
-        indices_to_label.add(ts462_index)
-    if ts304_index is not None and ts304_index not in indices_to_label:
-        indices_to_label.add(ts304_index)
-    
-    # Add labels only for the selected groups
-    for i, (xv, yv, txt) in enumerate(zip(x, y, group_labels)):
-        if i in indices_to_label:
-            txt = str(txt)
-            if inset and inset_xlim and inset_ylim and (inset_xlim[0] <= xv <= inset_xlim[1] and inset_ylim[0] <= yv <= inset_ylim[1]):
-                texts_inset.append(ax_inset.text(xv, yv, txt.replace('TS', ''), fontsize=text_fontsize))
-            else:
-                texts_main.append(ax_main.text(xv, yv, txt.replace('TS', ''), fontsize=text_fontsize))
-    
-    if adjust_texts:
-        if texts_inset:
-            adjust_text(texts_inset, 
-                        ax=ax_inset, 
-                        arrowprops=dict(arrowstyle='->', color='red', lw=0.5),
-                        expand_points=(1.1, 1.1),
-                        force_points=(0.1, 0.1))
-        if texts_main:
-            adjust_text(texts_main, 
-                        ax=ax_main, 
-                        arrowprops=dict(arrowstyle='->', color='red', lw=0.5),
-                        expand_points=(2.0, 2.0),
-                        force_text=(0.5, 0.5),
-                        force_points=(0.5, 0.5),
-                        avoid_text=True,
-                        avoid_points=True,
-                        avoid_self=True)
-
-    ax_main.set_xlabel(xlabel, fontsize=20)
-    ax_main.set_ylabel(ylabel, fontsize=20)
+  
+    ax_main.set_xlabel(xlabel, fontsize=30)
+    ax_main.set_ylabel(ylabel, fontsize=30)
     ax_main.set_title(title, fontsize=20)
     
-    # Automatic legend placement to find best location with maximum white space
-    legend = ax_main.legend(fontsize=16, bbox_to_anchor=(1.05, 1), loc='upper left')
+    # Add grid with dashed lines at each x-tick and y-tick
+    ax_main.grid(True, linestyle='--', alpha=0.7)
     
-    # Try to find the best position automatically
-    # This will place the legend in the location with the most white space
-    ax_main.legend(fontsize=16, loc='best')
-    
-    ax_main.tick_params(axis='both', labelsize=20)
-    plt.tight_layout()
+    ax_main.tick_params(axis='both', labelsize=25)
+    if ax is None:  # Only call tight_layout if we created a new figure
+        plt.tight_layout()
     if save_path:
         fig.savefig(save_path, dpi=dpi, bbox_inches='tight')
-        plt.close(fig)
-    if inset:
-        return fig, ax_main, ax_inset
-    else:
-        return fig, ax_main
+        if ax is None:  # Only close the figure if we created it
+            plt.close(fig)
 
-def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, outfile_suffix = ""):
-    import matplotlib.pyplot as plt
-    num_groups = len(combined_df)
-    per_group, min_size, max_size = 0.35, 6, 20
-    dynamic_size = max(min_size, min(max_size, num_groups * per_group))
-    if horizontal:
-        fig_size = (12, dynamic_size)
-        bar_func, stack_param, line_func, line_param = plt.Axes.barh, 'left', plt.Axes.axvline, 'x'
-        limit_set, label_prim, label_sec = plt.Axes.set_ylim, 'ylabel', 'xlabel'
-        legend_loc, tick_fs_prim, tick_fs_sec, rot_prim = 'lower right', 12, 18, 0
-    else:
-        fig_size = (dynamic_size, 10)
-        bar_func, stack_param, line_func, line_param = plt.Axes.bar, 'bottom', plt.Axes.axhline, 'y'
-        limit_set, label_prim, label_sec = plt.Axes.set_xlim, 'xlabel', 'ylabel'
-        legend_loc, tick_fs_prim, tick_fs_sec, rot_prim = 'upper right', 10, 18, 90
-    fig, ax = plt.subplots(figsize=fig_size)
-    group_labels_raw = combined_df['Group'].str.replace('TS', '')
-    if horizontal:
-        df_to_use = combined_df.iloc[::-1]
-        group_name_lookup = get_group_name_lookup()
-        group_labels, check_labels = [], []
-        for group in df_to_use['Group']:
-            group_id = str(int(''.join(filter(str.isdigit, group)))).zfill(3)
-            group_name = group_name_lookup.get(group_id, group).strip()
-            group_labels.append(f"{group_name} ({group_id})")
-            check_labels.append(group_id)
-        bar_size_param, bar_size = 'height', 0.9
-    else:
-        df_to_use = combined_df
-        group_labels = group_labels_raw
-        check_labels = group_labels.values
-        bar_size_param, bar_size = 'width', 0.9
-    v1_colors = ['#1A80BB'] * num_groups
-    v2_colors = ['#EA801C'] * num_groups
-    if '304' in check_labels:
-        idx_304 = list(check_labels).index('304')
-        if not star:
-            v1_colors[idx_304] = '#4F81BD'  # bluish
-            v2_colors[idx_304] = '#FFA500'  # orangish
-    if num_groups > 100:
-        bar_kwargs_v1 = {bar_size_param: bar_size, 'label': f'<{score}> (V1)', 'color': v1_colors}
-        bar_kwargs_v2 = {bar_size_param: bar_size, 'label': f'<{score}> (V2)', 'color': v2_colors, stack_param: df_to_use[f'Best_v1_ref']}
-    else:
-        bar_kwargs_v1 = {bar_size_param: bar_size, 'label': f'<{score}> (V1)', 'edgecolor': 'black', 'linewidth': 1, 'color': v1_colors}
-        bar_kwargs_v2 = {bar_size_param: bar_size, 'label': f'<{score}> (V2)', 'edgecolor': 'black', 'linewidth': 1, 'color': v2_colors, stack_param: df_to_use[f'Best_v1_ref']}
-    bars_v1 = bar_func(ax, group_labels, df_to_use[f'Best_v1_ref'], **bar_kwargs_v1)
-    bars_v2 = bar_func(ax, group_labels, df_to_use[f'Best_v2_ref'], **bar_kwargs_v2)
-    if '304' in check_labels:
-        idx_304 = list(check_labels).index('304')
-        total_score = df_to_use[f'Best_v1_ref'].iloc[idx_304] + df_to_use[f'Best_v2_ref'].iloc[idx_304]
-        line_func(ax, **{line_param: total_score, 'color': 'green', 'linestyle': '--', 'linewidth': 4, 'label': 'AF3 Baseline Score'})
-        if star:
-            # Add a gray star above (vertical) or to the right (horizontal) of the bar for group 304
-            if horizontal:
-                # y position is idx_304, x position is total_score
-                ax.scatter(total_score + 0.02 * ax.get_xlim()[1], idx_304, marker='*', s=300, color='gray', edgecolor='black', zorder=5)
-            else:
-                # x position is idx_304, y position is total_score
-                ax.scatter(idx_304, total_score + 0.02 * ax.get_ylim()[1], marker='*', s=300, color='gray', edgecolor='black', zorder=5)
-    limit_set(ax, -0.5, len(group_labels) - 0.5)
-    getattr(ax, f'set_{label_prim}')('Submission Group', fontsize=18)
-    getattr(ax, f'set_{label_sec}')('Two-State Score', fontsize=18)
-    ax.set_title(f'Aggregate {score} scores for \n {ID} V1 and V2 reference states', fontsize=18)
-    ax.legend(loc=legend_loc, fontsize=16)
-    if horizontal:
-        ax.set_yticks(range(len(group_labels)))
-        ax.set_yticklabels(group_labels, fontsize=tick_fs_prim)
-        ax.set_xticks(ax.get_xticks())
-        ax.set_xticklabels(ax.get_xticklabels(), fontsize=tick_fs_sec)
-    else:
-        ax.set_xticks(range(len(group_labels)))
-        ax.set_xticklabels(group_labels, rotation=rot_prim, fontsize=tick_fs_prim)
-        ax.set_yticks(ax.get_yticks())
-        ax.set_yticklabels(ax.get_yticklabels(), fontsize=tick_fs_sec)
-    plt.tight_layout()
-    for spine in ax.spines.values():
-        spine.set_linewidth(3)
-        spine.set_edgecolor('black')
-    plt.savefig(f'./PLOTS/{ID}_{score}_two_state{outfile_suffix}.png', dpi=300)
-    plt.close()
+    return fig, ax_main
 
 def assessment(ID, score):
     
@@ -550,16 +382,20 @@ def assessment(ID, score):
     kwargs = {}
     # Set text fontsize for specific IDs
     if ID in ["M1239", "M1228"]:
-        kwargs['text_fontsize'] = 12
+        kwargs['text_fontsize'] = 16
+    if score == 'TMscore':
+        label = 'TM-score'
+    else:
+        label = score
 
     # Default scatter plot parameters
     kwargs.update({
         'x': combined_df[f"Best_v1_ref"],
         'y': combined_df[f"Best_v2_ref"],
         'group_labels': combined_df['Group'],
-        'xlabel': f'{score} Score (V1)',
-        'ylabel': f'{score} Score (V2)',
-        'title': f'Scatter plot of {score} scores for \n {ID} V1 vs V2 reference states',
+        'xlabel': f'{label} (V1)',
+        'ylabel': f'{label} (V2)',
+        'title': f'{ID} {label}',
         'save_path': f'./PLOTS/{ID}_{score}_scatter_plot_full_axis.png',
         'score': score
     })
@@ -568,28 +404,26 @@ def assessment(ID, score):
         kwargs.update({
             'xlim': (0.0, 1.0),
             'ylim': (0.0, 1.0),
-            'xticks': [round(x, 2) for x in list(frange(0.0, 1.0+0.001, 0.1))],
-            'yticks': [round(y, 2) for y in list(frange(0.0, 1.0+0.001, 0.1))],
+            'xticks': [0.0, 0.5, 1.0],
+            'yticks': [0.0, 0.5, 1.0],
         })
     elif score == 'GDT_TS':
         kwargs.update({
             'xlim': (0.0, 100.0),
             'ylim': (0.0, 100.0),
-            'xticks': [round(x, 2) for x in list(frange(0.0, 100.0+0.001, 10.0))],
-            'yticks': [round(y, 2) for y in list(frange(0.0, 100.0+0.001, 10.0))],
+            'xticks': [0, 50, 100],
+            'yticks': [0, 50, 100],
         })
-   
     # Call create_scatter once with all kwargs
     result = create_scatter(**kwargs)
     return
 
-
-
 TARGET_SCORE_DICT = {"M1228": ["GDT_TS", "TMscore"], 
                      "M1239": ["GDT_TS", "TMscore"], 
                      "R1203": ["GDT_TS", "TMscore"], 
-                     "T1228": ["GDT_TS"], 
-                     "T1239": ["GDT_TS"]}
+                     "T1228": ["GDT_TS", "TMscore"], 
+                     "T1239": ["GDT_TS", "TMscore"],
+                     "T1249": ["GDT_TS", "TMscore"]}
 
 
 for ID, scores in TARGET_SCORE_DICT.items():
