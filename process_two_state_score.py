@@ -689,17 +689,7 @@ TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT",
                      "T1214": ["GDT_TS", "GlobalLDDT"],
                      "T1228": ["GDT_TS", "GlobalLDDT"], 
                      "T1239": ["GDT_TS", "GlobalLDDT"], 
-                     "T1249": ["AvgDockQ", "GlobalLDDT"]}
-assessment("R1203", "Updated_Composite_Score_4")
-raise Exception("Stop here")
-# assessment("M1228", "TMscore")
-# assessment("M1228", "GDT_TS")
-# assessment("T1228", "GDT_TS")
-# assessment("M1228", "BestDockQ")
-# assessment("M1239", "GDT_TS")
-# assessment("M1239", "GlobalLDDT")
-# assessment("M1239", "GlobDockQ")
-# raise Exception("Stop here")
+                     "T1249": ["AvgDockQ", "GlobalLDDT", "GDT_TS", "TMscore"]}
 
 for ID, scores in TARGET_SCORE_DICT.items():
     for score in scores:

@@ -337,7 +337,7 @@ TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT",
                      "T1214": ["GDT_TS", "GlobalLDDT"],
                      "T1228": ["GDT_TS", "GlobalLDDT"], 
                      "T1239": ["GDT_TS", "GlobalLDDT"], 
-                     "T1249": ["AvgDockQ", "GlobalLDDT"]}
+                     "T1249": ["AvgDockQ", "GlobalLDDT", "GDT_TS", "TMscore"]}
 
 for ID, scores in TARGET_SCORE_DICT.items():
     for score in scores:
