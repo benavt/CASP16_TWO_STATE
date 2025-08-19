@@ -129,7 +129,7 @@ def make_t1214_sigma4_table():
         "\\resizebox{\\textwidth}{!}{%\n"
         "\\begin{tabular}{llrr}\n"
         "\\toprule\n"
-        "Group & Group\\_Name & $\\sigma_4$ Score & Model \\\\ \n"
+        "Group & Group\\_Name & $\\Sigma_4$ Score & Model \\\\ \n"
         "\\midrule\n"
     )
     
