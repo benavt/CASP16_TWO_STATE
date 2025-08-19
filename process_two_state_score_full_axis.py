@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from adjustText import adjust_text  
 from tqdm import tqdm
 import csv
+from os.path import exists
 
 def frange(start, stop, step):
     vals = []
@@ -19,7 +20,9 @@ def get_v1_ref_df(ID, score):
 def get_v2_ref_df(ID, score):
     version = 'v2'
     if ID == "T1228":
-        version = 'v2_1'
+        version = 'v1_1'
+        if not(exists(f'./DATA/{ID}_{version}_{score}_scores.csv')):
+            version = 'v2_1'
     elif ID == "T1239":
         version = 'v1_1'
 
@@ -373,8 +376,10 @@ def assessment(ID, score):
     combined_df = combined_df.sort_values(by='Combined_Score', ascending=False)
     # Convert GDT_TS scores to percentage
     if score == 'GDT_TS':
-        combined_df['Best_v1_ref'] = combined_df['Best_v1_ref'] * 100
-        combined_df['Best_v2_ref'] = combined_df['Best_v2_ref'] * 100
+        if max(combined_df['Best_v1_ref']) < 1:
+            combined_df['Best_v1_ref'] = combined_df['Best_v1_ref'] * 100
+        if max(combined_df['Best_v2_ref']) < 1:
+            combined_df['Best_v2_ref'] = combined_df['Best_v2_ref'] * 100
 
     # Save the combined metric to a CSV file
     combined_df.to_csv(f'./OUTPUT/{ID}_{score}_two_state.csv', index=False)
