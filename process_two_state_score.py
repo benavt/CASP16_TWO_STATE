@@ -528,12 +528,23 @@ def assessment(ID, score):
         'x': combined_df[f"Best_v1_ref"],
         'y': combined_df[f"Best_v2_ref"],
         'group_labels': combined_df['Group'],
-        'xlabel': f'{score} Score (V1)',
-        'ylabel': f'{score} Score (V2)',
-        'title': f'Scatter plot of {score} scores for \n {ID} V1 vs V2 reference states',
         'save_path': f'./PLOTS/{ID}_{score}_scatter_plot.png',
         'score': score
     })
+
+    if score == 'TMscore':
+        kwargs.update({
+            'xlabel': f'TM-score (V1)',
+            'ylabel': f'TM-score (V2)',
+            'title': f'Scatter plot of Combined TM-score for \n {ID} V1 vs V2 reference states',
+        })
+    else:
+        kwargs.update({
+            'xlabel': f'{score} Score (V1)',
+            'ylabel': f'{score} Score (V2)',
+            'title': f'Scatter plot of Combined {score} scores for \n {ID} V1 vs V2 reference states',
+        })
+
 
     # Special cases for insets and axis limits
     if ID == "T1228" and score == 'GlobalLDDT':
