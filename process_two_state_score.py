@@ -647,9 +647,9 @@ def assessment(ID, score):
     elif ID == "M1239" and score == "GDT_TS":
         print(f"Creating scatter plot for {ID} {score}.")
         kwargs.update({
-            'xlim': (14, 30),
+            'xlim': (14, 32),
             'ylim': (14, 30),
-            'xticks': [round(x, 2) for x in list(frange(14, 30+0.001, 2))],
+            'xticks': [round(x, 2) for x in list(frange(14, 32+0.001, 2))],
             'yticks': [round(y, 2) for y in list(frange(14, 30+0.001, 2))],
         })
     elif ID == "M1239" and score == "GlobalLDDT":
