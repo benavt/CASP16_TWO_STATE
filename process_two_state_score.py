@@ -702,10 +702,10 @@ def assessment(ID, score):
 
 
     print("Creating stacked bar plots...")
-    create_stacked_bar(combined_df, ID, score, horizontal=False, star=True, outfile_suffix = "_vertical_star")
-    create_stacked_bar(combined_df, ID, score, horizontal=True, star=True, outfile_suffix = "_horizontal_star")
-    create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, outfile_suffix = "_vertical_no_star")
-    create_stacked_bar(combined_df, ID, score, horizontal=True, star=False, outfile_suffix = "_horizontal_no_star")
+    create_stacked_bar(combined_df, ID, score, horizontal=True, star=True, outfile_suffix = "_vertical_star")
+    create_stacked_bar(combined_df, ID, score, horizontal=False, star=True, outfile_suffix = "_horizontal_star")
+    create_stacked_bar(combined_df, ID, score, horizontal=True, star=False, outfile_suffix = "_vertical_no_star")
+    create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, outfile_suffix = "_horizontal_no_star")
     print(f"Done creating stacked bar plots for {ID} {score}")
 
 
