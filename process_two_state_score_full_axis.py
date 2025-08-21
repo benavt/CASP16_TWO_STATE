@@ -15,6 +15,7 @@ def frange(start, stop, step):
 def get_v1_ref_df(ID, score):
     file = f'./DATA/{ID}_v1_{score}_scores.csv'
     df = pd.read_csv(file)
+    df = df.dropna()
     return df
 
 def get_v2_ref_df(ID, score):
@@ -28,6 +29,7 @@ def get_v2_ref_df(ID, score):
 
     file = f'./DATA/{ID}_{version}_{score}_scores.csv'
     df = pd.read_csv(file)
+    df = df.dropna()
     return df
 
 def get_group_name_lookup():
