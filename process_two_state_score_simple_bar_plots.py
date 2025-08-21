@@ -41,7 +41,12 @@ def get_group_name_lookup():
 
 def get_best_fit(ID, v1_df, v2_df, score):
     group_name_lookup = get_group_name_lookup()
-    if 'Model Version' not in v1_df.columns or 'Model Version' not in v2_df.columns:
+    if (
+        'Model Version' not in v1_df.columns or 
+        'Model Version' not in v2_df.columns or
+        (('Model Version' in v1_df.columns and v1_df['Model Version'].isna().all()) and
+         ('Model Version' in v2_df.columns and v2_df['Model Version'].isna().all()))
+    ):
         v1_df_by_model_v1 = v1_df
         v2_df_by_model_v2 = v2_df
         v1_df_by_model_v2 = v1_df
@@ -240,7 +245,7 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, out
     num_groups = len(combined_df)
     per_group, min_size, max_size = 0.35, 6, 20
     dynamic_size = max(min_size, min(max_size, num_groups * per_group))
-    print(dynamic_size)
+
     if horizontal:
         if ID != "M1228":
             fig_size = (12, dynamic_size)
@@ -251,7 +256,7 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, out
         if ID != "M1228":
             legend_loc, tick_fs_prim, tick_fs_sec, rot_prim = 'lower right', 24, 32, 0
         else:
-            legend_loc, tick_fs_prim, tick_fs_sec, rot_prim = 'lower right', 20, 24, 0
+            legend_loc, tick_fs_prim, tick_fs_sec, rot_prim = 'lower right', 24, 32, 0
     else:
         if ID != "M1228":
             fig_size = (12, dynamic_size)
@@ -262,7 +267,7 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, out
         if ID != "M1228":
             legend_loc, tick_fs_prim, tick_fs_sec, rot_prim = 'upper right', 24, 32, 90
         else:
-            legend_loc, tick_fs_prim, tick_fs_sec, rot_prim = 'upper right', 24, 24, 90
+            legend_loc, tick_fs_prim, tick_fs_sec, rot_prim = 'upper right', 32, 32, 90
     fig, ax = plt.subplots(figsize=fig_size)
     group_labels_raw = combined_df['Group'].str.replace('TS', '')
     if horizontal:
@@ -367,11 +372,12 @@ def assessment(ID, score):
 TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT", "TMscore"], 
                      "M1239": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT", "TMscore"], 
                      "R1203": ["GDT_TS", "GlobalLDDT", "Updated_Composite_Score_4", "TMscore"], 
-                     "T1214": ["GDT_TS", "GlobalLDDT"],
+                     "T1214": ["GDT_TS", "GlobalLDDT", "TMscore"],
                      "T1228": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1239": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1249": ["AvgDockQ", "GlobalLDDT", "GDT_TS", "TMscore"]}
-
+assessment("T1214", "TMscore")
+raise Exception("Stop here")
 
 for ID, scores in TARGET_SCORE_DICT.items():
     for score in scores:
