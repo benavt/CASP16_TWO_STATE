@@ -240,8 +240,12 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, out
     num_groups = len(combined_df)
     per_group, min_size, max_size = 0.35, 6, 20
     dynamic_size = max(min_size, min(max_size, num_groups * per_group))
+    print(dynamic_size)
     if horizontal:
-        fig_size = (12, dynamic_size)
+        if ID != "M1228":
+            fig_size = (12, dynamic_size)
+        else:
+            fig_size = (15, 10)
         bar_func, stack_param, line_func, line_param = plt.Axes.barh, 'left', plt.Axes.axvline, 'x'
         limit_set, label_prim, label_sec = plt.Axes.set_ylim, 'ylabel', 'xlabel'
         if ID != "M1228":
@@ -249,13 +253,16 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, out
         else:
             legend_loc, tick_fs_prim, tick_fs_sec, rot_prim = 'lower right', 20, 24, 0
     else:
-        fig_size = (dynamic_size, 10)
+        if ID != "M1228":
+            fig_size = (12, dynamic_size)
+        else:
+            fig_size = (15, 10)
         bar_func, stack_param, line_func, line_param = plt.Axes.bar, 'bottom', plt.Axes.axhline, 'y'
         limit_set, label_prim, label_sec = plt.Axes.set_xlim, 'xlabel', 'ylabel'
         if ID != "M1228":
             legend_loc, tick_fs_prim, tick_fs_sec, rot_prim = 'upper right', 24, 32, 90
         else:
-            legend_loc, tick_fs_prim, tick_fs_sec, rot_prim = 'upper right', 20, 24, 90
+            legend_loc, tick_fs_prim, tick_fs_sec, rot_prim = 'upper right', 24, 24, 90
     fig, ax = plt.subplots(figsize=fig_size)
     group_labels_raw = combined_df['Group'].str.replace('TS', '')
     if horizontal:
@@ -364,6 +371,7 @@ TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT",
                      "T1228": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1239": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1249": ["AvgDockQ", "GlobalLDDT", "GDT_TS", "TMscore"]}
+
 
 for ID, scores in TARGET_SCORE_DICT.items():
     for score in scores:
