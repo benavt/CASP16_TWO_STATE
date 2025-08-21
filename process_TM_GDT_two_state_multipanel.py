@@ -42,7 +42,12 @@ def get_group_name_lookup():
 
 def get_best_fit(ID, v1_df, v2_df, score):
     group_name_lookup = get_group_name_lookup()
-    if 'Model Version' not in v1_df.columns or 'Model Version' not in v2_df.columns:
+    if (
+        'Model Version' not in v1_df.columns or 
+        'Model Version' not in v2_df.columns or
+        (('Model Version' in v1_df.columns and v1_df['Model Version'].isna().all()) and
+         ('Model Version' in v2_df.columns and v2_df['Model Version'].isna().all()))
+    ):
         v1_df_by_model_v1 = v1_df
         v2_df_by_model_v2 = v2_df
         v1_df_by_model_v2 = v1_df
