@@ -15,6 +15,7 @@ def frange(start, stop, step):
 def get_v1_ref_df(ID, score):
     file = f'./DATA/{ID}_v1_{score}_scores.csv'
     df = pd.read_csv(file)
+    df = df.dropna()
     return df
 
 def get_v2_ref_df(ID, score):
@@ -28,6 +29,7 @@ def get_v2_ref_df(ID, score):
 
     file = f'./DATA/{ID}_{version}_{score}_scores.csv'
     df = pd.read_csv(file)
+    df = df.dropna()
     return df
 
 def get_group_name_lookup():
@@ -718,12 +720,12 @@ def assessment(ID, score):
 TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT", "TMscore"], 
                      "M1239": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT", "TMscore"], 
                      "R1203": ["GDT_TS", "GlobalLDDT", "Composite_Score_4", "TMscore"], 
-                     "T1214": ["GDT_TS", "GlobalLDDT", "TMscore"],
+                     "T1214": ["GDT_TS", "GlobalLDDT", "TMscore", "Composite_Score_4"],
                      "T1228": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1239": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1249": ["AvgDockQ", "GlobalLDDT", "GDT_TS", "TMscore"]}
 
-assessment("T1214", "TMscore")
+assessment("R1203", "Composite_Score_4")
 raise Exception("Stop here")
 
 for ID, scores in TARGET_SCORE_DICT.items():
