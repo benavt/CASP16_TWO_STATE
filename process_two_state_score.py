@@ -303,7 +303,7 @@ def create_scatter(
         max_val_for_plotting = max(max_val, max(xlim), max(ylim))
     max_val = max(max_val, max_val_for_plotting)
 
-    ax_main.plot([0, max_val], [0, max_val], 'r-', label='y=x')
+    ax_main.plot([-100, 100], [-100, 100], 'r-', label='y=x')
     scatter = ax_main.scatter(x, y, c='blue', label=legend_label)
 
     # --- AF3 Baseline Highlighting ---
@@ -352,7 +352,7 @@ def create_scatter(
     ax_inset = None
     if inset:
         ax_inset = ax_main.inset_axes(inset_position)
-        ax_inset.plot([0, max_val], [0, max_val], 'r-')
+        ax_inset.plot([-100, 100], [-100, 100], 'r-')
         ax_inset.scatter(x, y, c='blue')
         if inset_xlim:
             ax_inset.set_xlim(*inset_xlim)
@@ -729,7 +729,8 @@ TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT",
                      "T1239": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1249": ["AvgDockQ", "GlobalLDDT", "GDT_TS", "TMscore"]}
 
-assessment("M1228", "GlobDockQ")
+assessment("R1203", "Composite_Score_4")
+assessment("T1214", "Composite_Score_4")
 raise Exception("Stop here")
 
 for ID, scores in TARGET_SCORE_DICT.items():

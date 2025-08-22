@@ -298,13 +298,14 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, out
     v1_colors = ['tab:blue'] * num_groups
     v2_colors = ['#FA7E0F'] * num_groups
     
-    # Color group 304 bars with teal
-    if '304' in check_labels:
-        idx_304 = list(check_labels).index('304')
-        v1_colors[idx_304] = 'cyan'
-        v2_colors[idx_304] = 'cyan'
+    # # Color group 304 bars with teal
+    # if '304' in check_labels:
+    #     idx_304 = list(check_labels).index('304')
+    #     v1_colors[idx_304] = 'cyan'
+    #     v2_colors[idx_304] = 'yellow'
 
     if num_groups > 100:
+
         if score != "TMscore":  
             bar_kwargs_v1 = {bar_size_param: bar_size, 'label': f'{score} (V1)', 'color': v1_colors}
             bar_kwargs_v2 = {bar_size_param: bar_size, 'label': f'{score} (V2)', 'color': v2_colors, stack_param: df_to_use[f'Best_v1_ref']}
@@ -404,6 +405,7 @@ TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT",
                      "T1239": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1249": ["AvgDockQ", "GlobalLDDT", "GDT_TS", "TMscore"]}
 assessment("R1203", "Composite_Score_4")
+assessment("T1214", "Composite_Score_4")
 raise Exception("Stop here")
 
 for ID, scores in TARGET_SCORE_DICT.items():
