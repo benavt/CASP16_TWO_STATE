@@ -316,6 +316,8 @@ def create_scatter(
                 # Shade the area y > y_304 and x > x_304
                 x_min, x_max = ax_main.get_xlim()
                 y_min, y_max = ax_main.get_ylim()
+                x_max += 0.05
+                y_max += 0.05
                 ax_main.fill_betweenx([yv, y_max], xv, x_max, color='yellow', alpha=0.2, zorder=0)
     # --- End AF3 Baseline Highlighting ---
 
@@ -376,6 +378,8 @@ def create_scatter(
                     # Shade the area y > y_304 and x > x_304
                     x_min, x_max = ax_inset.get_xlim()
                     y_min, y_max = ax_inset.get_ylim()
+                    x_max += padding
+                    y_max += padding
                     ax_inset.fill_betweenx([yv, y_max], xv, x_max, color='yellow', alpha=0.2, zorder=0)
         # --- End AF3 Baseline Highlighting ---
 
@@ -673,10 +677,10 @@ def assessment(ID, score):
         })
     elif ID == "M1228" and score == "GlobDockQ":
         kwargs.update({
-            'main_xlim': (20, 40),
-            'ylim': (20, 40),
-            'xticks': [round(x, 2) for x in list(frange(20, 40+0.001, 5))],
-            'yticks': [round(y, 2) for y in list(frange(20, 40+0.001, 5))],
+            'main_xlim': (0.20, 0.40),
+            'ylim': (0.20, 0.40),
+            'xticks': [round(x, 2) for x in list(frange(0.20, 0.40+0.001, 0.05))],
+            'yticks': [round(y, 2) for y in list(frange(0.20, 0.40+0.001, 0.05))],
             'AF3_baseline': True
         })
     elif ID == "M1239" and score == "GDT_TS":
@@ -725,7 +729,7 @@ TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT",
                      "T1239": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1249": ["AvgDockQ", "GlobalLDDT", "GDT_TS", "TMscore"]}
 
-assessment("R1203", "Composite_Score_4")
+assessment("M1228", "GlobDockQ")
 raise Exception("Stop here")
 
 for ID, scores in TARGET_SCORE_DICT.items():
