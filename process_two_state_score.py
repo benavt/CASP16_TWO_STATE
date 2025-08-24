@@ -574,6 +574,8 @@ def assessment(ID, score):
             'title': f'Scatter plot of Combined {score} scores for \n {ID} V1 vs V2 reference states',
         })
 
+    if ID == 'R1203':
+        kwargs.update({'AF3_baseline': True})
 
     # Special cases for insets and axis limits
     if ID == "T1228" and score == 'GlobalLDDT':
