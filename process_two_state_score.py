@@ -533,6 +533,7 @@ def assessment(ID, score):
     v1_df = get_v1_ref_df(ID, score)
     v2_df = get_v2_ref_df(ID, score)
     combined_df = get_best_fit(ID, v1_df, v2_df, score)
+    
     # Sort the combined_df by 'Combined_Score' in descending order
     combined_df = combined_df.sort_values(by='Combined_Score', ascending=False)
 
