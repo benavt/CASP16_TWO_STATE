@@ -169,8 +169,7 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, out
     v1_colors = ['#1A80BB'] * num_groups
     if '304' in check_labels:
         idx_304 = list(check_labels).index('304')
-        if not star:
-            v1_colors[idx_304] = '#4F81BD'  # bluish
+        v1_colors[idx_304] = 'cyan' 
     if num_groups > 100:
         if score != "TMscore":
             bar_kwargs_v1 = {bar_size_param: bar_size, 'label': f'<{score.replace('Updated_','')}> (V1)', 'color': v1_colors}
