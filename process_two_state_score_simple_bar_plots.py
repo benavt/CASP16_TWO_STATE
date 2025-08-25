@@ -404,9 +404,6 @@ TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT",
                      "T1228": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1239": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1249": ["AvgDockQ", "GlobalLDDT", "GDT_TS", "TMscore"]}
-assessment("R1203", "Composite_Score_4")
-assessment("T1214", "Composite_Score_4")
-raise Exception("Stop here")
 
 for ID, scores in TARGET_SCORE_DICT.items():
     for score in scores:
