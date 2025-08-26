@@ -249,14 +249,16 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, out
     dynamic_size = max(min_size, min(max_size, num_groups * per_group))
 
     if horizontal:
-        if ID != "M1228":
+        if ID != "M1228" and ID != "R1203":
             fig_size = (dynamic_size, 12)
+        elif ID == "R1203" and score == "Σ4":
+            fig_size = (20, 12)
         else:
             fig_size = (10, 15)
         bar_func, stack_param, line_func, line_param = plt.Axes.bar, 'bottom', plt.Axes.axvline, 'x'
         limit_set, label_prim, label_sec = plt.Axes.set_xlim, 'xlabel', 'ylabel'
 
-        if ID != "M1228":
+        if ID != "M1228" and ID != "R1203":
             if ID == "T1214" and score == "Σ4":
                 legend_loc, tick_fs_prim, tick_fs_sec, rot_prim = 'upper right', 18, 24, 90
             else:
@@ -264,8 +266,10 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, out
         else:
             legend_loc, tick_fs_prim, tick_fs_sec, rot_prim = 'upper right', 24, 32, 90
     else:
-        if ID != "M1228":
+        if ID != "M1228" and ID != "R1203":
             fig_size = (12, dynamic_size)
+        elif ID == "R1203" and score == "Composite_Score_4":
+            fig_size = (25, 12)
         else:
             fig_size = (15, 10)
         bar_func, stack_param, line_func, line_param = plt.Axes.barh, 'left', plt.Axes.axhline, 'y'
@@ -399,12 +403,14 @@ def assessment(ID, score):
 
 TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT", "TMscore"], 
                      "M1239": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT", "TMscore"], 
-                     "R1203": ["GDT_TS", "GlobalLDDT", "Updated_Composite_Score_4", "TMscore"], 
+                     "R1203": ["GDT_TS", "GlobalLDDT", "Composite_Score_4", "TMscore"], 
                      "T1214": ["GDT_TS", "GlobalLDDT", "TMscore", "Composite_Score_4"],
                      "T1228": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1239": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1249": ["AvgDockQ", "GlobalLDDT", "GDT_TS", "TMscore"]}
 
+assessment("R1203", "Composite_Score_4")
+raise Exception("Stop here")
 for ID, scores in TARGET_SCORE_DICT.items():
     for score in scores:
         try:
