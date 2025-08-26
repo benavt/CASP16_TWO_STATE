@@ -177,14 +177,14 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, out
             bar_kwargs_v1 = {bar_size_param: bar_size, 'label': f'<TM-score> (V1)', 'color': v1_colors}
     else:
         if score != "TMscore":
-            bar_kwargs_v1 = {bar_size_param: bar_size, 'label': f'<{score.replace('Updated_','')}> (V1)', 'edgecolor': 'black', 'linewidth': 1, 'color': v1_colors}
+            bar_kwargs_v1 = {bar_size_param: bar_size, 'label': f'<{score.replace('Updated_','')}> (V1)', 'color': v1_colors}
         else:
-            bar_kwargs_v1 = {bar_size_param: bar_size, 'label': f'<TM-score> (V1)', 'edgecolor': 'black', 'linewidth': 1, 'color': v1_colors}
+            bar_kwargs_v1 = {bar_size_param: bar_size, 'label': f'<TM-score> (V1)', 'color': v1_colors}
     bars_v1 = bar_func(ax, group_labels, df_to_use[f'Best_v1_ref'], **bar_kwargs_v1)
     if '304' in check_labels:
         idx_304 = list(check_labels).index('304')
         total_score = df_to_use[f'Best_v1_ref'].iloc[idx_304]
-        line_func(ax, **{line_param: total_score, 'color': 'green', 'linestyle': '--', 'linewidth': 4, 'label': 'AF3 Baseline Score'})
+        line_func(ax, **{line_param: total_score, 'color': 'gray', 'linestyle': '--', 'linewidth': 4, 'label': 'AF3 Baseline Score'})
         if star:
             # Add a gray star above (vertical) or to the right (horizontal) of the bar for group 304
             if horizontal:
@@ -195,11 +195,11 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, out
                 ax.scatter(idx_304, total_score + 0.02 * ax.get_ylim()[1], marker='*', s=300, color='gray', edgecolor='black', zorder=5)
     limit_set(ax, -0.5, len(group_labels) - 0.5)
     getattr(ax, f'set_{label_prim}')('Submission Group', fontsize=18)
-    getattr(ax, f'set_{label_sec}')('Two-State Score', fontsize=18)
+    getattr(ax, f'set_{label_sec}')('Single-State Score', fontsize=18)
     if score != "TMscore":
-        ax.set_title(f'Aggregate {score.replace('Updated_','')} scores for \n {ID} V1 and V2 reference states', fontsize=18)
+        ax.set_title(f'Aggregate {score.replace('Updated_','')} scores for \n {ID} V1 reference state', fontsize=18)
     else:
-        ax.set_title(f'Aggregate TM-scores for \n {ID} V1 and V2 reference states', fontsize=18)
+        ax.set_title(f'Aggregate TM-scores for \n {ID} V1 reference state', fontsize=18)
     ax.legend(loc=legend_loc, fontsize=16)
     if horizontal:
         ax.set_yticks(range(len(group_labels)))
