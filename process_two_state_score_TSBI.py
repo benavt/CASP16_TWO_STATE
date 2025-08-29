@@ -34,10 +34,10 @@ def get_v2_ref_df(ID, score):
 
 def calc_TSBI_score(v1_ref, v2_ref):
     if v1_ref == 0 or v2_ref == 0:  
-        return -1
+        return 0, -1
     balance = 1 - abs(v1_ref - v2_ref) / (v1_ref + v2_ref)
     tsbi = balance * (v1_ref + v2_ref)
-    return tsbi
+    return balance, tsbi
 
 def get_group_name_lookup():
     lookup = {}
@@ -52,8 +52,10 @@ def get_best_fit(ID, v1_df, v2_df, score):
     if (
         'Model Version' not in v1_df.columns or 
         'Model Version' not in v2_df.columns or
-        (('Model Version' in v1_df.columns and v1_df['Model Version'].isna().all()) and
-         ('Model Version' in v2_df.columns and v2_df['Model Version'].isna().all()))
+        (
+            ('Model Version' in v1_df.columns and (v1_df['Model Version'].isna().all() or (v1_df['Model Version'] == 'N/A').all())) and
+            ('Model Version' in v2_df.columns and (v2_df['Model Version'].isna().all() or (v2_df['Model Version'] == 'N/A').all()))
+        )
     ):
         v1_df_by_model_v1 = v1_df
         v2_df_by_model_v2 = v2_df
@@ -64,7 +66,6 @@ def get_best_fit(ID, v1_df, v2_df, score):
         v1_df_by_model_v2 = v1_df[v1_df['Model Version'] == 'v2']
         v2_df_by_model_v1 = v2_df[v2_df['Model Version'] == 'v1']
         v2_df_by_model_v2 = v2_df[v2_df['Model Version'] == 'v2']
-    
 
     # Initialize empty lists to store results
     groups = pd.concat([v1_df['Group'], v2_df['Group']]).unique()
@@ -218,13 +219,15 @@ def get_best_fit(ID, v1_df, v2_df, score):
         # Extract group number from group string (e.g., TS314 -> 314)
         group_number = str(int(''.join(filter(str.isdigit, group)))).zfill(3)
         group_name = group_name_lookup.get(group_number, "Unknown").strip()
-        TSBI_score = calc_TSBI_score(best_v1_ref, best_v2_ref)
+        balance, TSBI_score = calc_TSBI_score(best_v1_ref, best_v2_ref)
+        # print(f"Group: {group}, Balance: {balance}, TSBI_score: {TSBI_score}")
         if cumulative_score > 0: # only include groups with a positive cumulative score
             # Store results
             results.append({
                 'Group': group,
                 'Group_Name': group_name,
                 'TSBI_Score': TSBI_score,
+                'Balance': balance,
                 'Combined_Score': cumulative_score,
                 'Best_v1_ref': best_v1_ref,
                 'Best_v2_ref': best_v2_ref,
@@ -369,7 +372,7 @@ def assessment(ID, score):
 TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT", "TMscore"], 
                      "M1239": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT", "TMscore"], 
                      "R1203": ["GDT_TS", "GlobalLDDT", "Composite_Score_4", "TMscore"], 
-                     "T1214": ["GDT_TS", "GlobalLDDT", "TMscore", "Composite_Score_4"],
+                     "T1214": ["GDT_TS", "GlobalLDDT", "Composite_Score_4"],
                      "T1228": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1239": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1249": ["AvgDockQ", "GlobalLDDT", "GDT_TS", "TMscore"]}
@@ -377,10 +380,8 @@ TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT",
 
 for ID, scores in TARGET_SCORE_DICT.items():
     for score in scores:
-        try:
-            assessment(ID, score)
-            print(f"[SUCCESS] Processed {ID} {score}")
-        except Exception as e:
-            print(f"[ERROR] Error processing {ID} {score}: {e}")
-            continue
+        print(f"Processing {ID} {score}")
+        assessment(ID, score)
+        print(f"[SUCCESS] Processed {ID} {score}")
+        
 
