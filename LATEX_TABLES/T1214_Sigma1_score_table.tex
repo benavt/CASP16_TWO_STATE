@@ -1,13 +1,13 @@
 % T1214 Sigma1 Score Table
-\begin{table}[ht]
-\centering
+\begin{table*}[ht]
 \caption{T1214 Sigma1 Score Results}
-\label{tab:T1214_Sigma_score}
+\label{tab:T1214_Sigma_score_split}
 \scriptsize
-\resizebox{\textwidth}{!}{%
+\begin{minipage}[t]{0.48\textwidth}
+\centering
 \begin{tabular}{llrr}
 \toprule
-Group & Group\_Name & $\Sigma_1$ Score & Model \\ 
+Group & Group\_Name & $\Sigma_{score}$ Score & Model \\ 
 \midrule
 TS015 & PEZYFoldings & 91.17 & 5 \\ 
 TS386 & ShanghaiTech-Ligand & 89.37 & 4 \\ 
@@ -48,6 +48,16 @@ TS196 & HYU\_MLLAB & 79.57 & 4 \\
 TS167 & OpenComplex & 79.46 & 2 \\ 
 TS450 & OpenComplex\_Server & 79.46 & 5 \\ 
 TS475 & ptq & 79.41 & 3 \\ 
+\bottomrule
+\end{tabular}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\textwidth}
+\centering
+\begin{tabular}{llrr}
+\toprule
+Group & Group\_Name & $\Sigma_{score}$ Score & Model \\ 
+\midrule
 TS079 & MRAFold & 79.37 & 1 \\ 
 TS293 & MRAH & 79.37 & 2 \\ 
 TS304 & AF3-server & 79.33 & 2 \\ 
@@ -88,6 +98,6 @@ TS040 & DELCLAB & 62.72 & 3 \\
 TS361 & Cerebra\_server & 62.26 & 1 \\ 
 TS132 & profold2 & 30.97 & 1 \\ 
 \bottomrule
-\end{tabular}%
-}
-\end{table}
+\end{tabular}
+\end{minipage}
+\end{table*}

@@ -1,14 +1,22 @@
-% In your preamble:
-\begin{table}[ht]
-\centering
+% In your document body:
+\begin{longtable}{lllllll}
 \caption{Results for T1249 GDT TS Two-State Score}
-\label{tab:T1249_GDT_TS_two_state}
-\scriptsize
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llrrrll}
+\label{tab:T1249_GDT_TS_two_state} \\ 
 \toprule
 Group & Group\_Name & Two-State\_Score & V1\_GDT\_TS & V2\_GDT\_TS & V1\_Model & V2\_Model \\ 
 \midrule
+\endfirsthead
+\multicolumn{7}{c}%
+{{\tablename\ \thetable{} -- continued from previous page}} \\ 
+\toprule
+Group & Group\_Name & Two-State\_Score & V1\_GDT\_TS & V2\_GDT\_TS & V1\_Model & V2\_Model \\ 
+\midrule
+\endhead
+\bottomrule
+\multicolumn{7}{r}{{Continued on next page}} \\ 
+\endfoot
+\bottomrule
+\endlastfoot
 TS393 & GuijunLab-QA & 1.51 & 79.50 & 71.70 & TS393\_v1\_2 & TS393\_v2\_6 \\ 
 TS304 & AF3-server & 1.46 & 70.80 & 75.00 & TS304\_v1\_2 & TS304\_v2\_1 \\ 
 TS059 & DeepFold & 1.44 & 84.80 & 59.00 & TS059\_v2\_3 & TS059\_v1\_5 \\ 
@@ -82,8 +90,6 @@ TS114 & COAST & 0.08 & 4.10 & 4.20 & TS114\_v1\_3 & TS114\_v2\_3 \\
 TS337 & APOLLO & 0.08 & 4.10 & 4.20 & TS337\_v1\_1 & TS337\_v2\_1 \\ 
 TS023 & FTBiot0119 & 0.08 & 3.60 & 4.50 & TS023\_v1\_3 & TS023\_v2\_2 \\ 
 TS300 & ARC & 0.07 & 3.60 & 3.90 & TS300\_v1\_2 & TS300\_v2\_4 \\ 
-\bottomrule
-\end{tabular}%
-}
+\end{longtable}
 \begin{flushleft}\footnotesize $^{1}$ Model either not submitted or not assessed\end{flushleft}
 \end{table}

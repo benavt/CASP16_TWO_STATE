@@ -1,14 +1,22 @@
-% In your preamble:
-\begin{table}[ht]
-\centering
+% In your document body:
+\begin{longtable}{lllllll}
 \caption{Results for T1214 GDT TS Two-State Score}
-\label{tab:T1214_GDT_TS_two_state}
-\scriptsize
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llrrrll}
+\label{tab:T1214_GDT_TS_two_state} \\ 
 \toprule
 Group & Group\_Name & Two-State\_Score & V1\_GDT\_TS & V2\_GDT\_TS & V1\_Model & V2\_Model \\ 
 \midrule
+\endfirsthead
+\multicolumn{7}{c}%
+{{\tablename\ \thetable{} -- continued from previous page}} \\ 
+\toprule
+Group & Group\_Name & Two-State\_Score & V1\_GDT\_TS & V2\_GDT\_TS & V1\_Model & V2\_Model \\ 
+\midrule
+\endhead
+\bottomrule
+\multicolumn{7}{r}{{Continued on next page}} \\ 
+\endfoot
+\bottomrule
+\endlastfoot
 TS091 & Huang-HUST & 194.17 & 94.25 & 99.92 & TS091\_v1\_2 & TS091\_v2\_5 \\ 
 TS388 & DeepFold-server & 193.81 & 95.23 & 98.58 & TS388\_v1\_4 & TS388\_v2\_1 \\ 
 TS110 & MIEnsembles-Server & 193.63 & 94.67 & 98.97 & TS110\_v1\_1 & TS110\_v2\_5 \\ 
@@ -87,8 +95,6 @@ TS400 & OmniFold & 93.44 & 0.00 & 93.44 & N/A$^{1}$ & TS400\_v2\_1 \\
 TS225 & Unknown & 92.93 & 92.93 & 0.00 & TS225\_v1\_1 & N/A$^{1}$ \\ 
 TS275 & Seminoles & 78.71 & 78.71 & 0.00 & TS275\_v1\_1 & N/A$^{1}$ \\ 
 TS132 & profold2 & 54.91 & 0.00 & 54.91 & N/A$^{1}$ & TS132\_v2\_1 \\ 
-\bottomrule
-\end{tabular}%
-}
+\end{longtable}
 \begin{flushleft}\footnotesize $^{1}$ Model either not submitted or not assessed\end{flushleft}
 \end{table}

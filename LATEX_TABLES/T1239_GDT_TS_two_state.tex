@@ -1,14 +1,22 @@
-% In your preamble:
-\begin{table}[ht]
-\centering
+% In your document body:
+\begin{longtable}{lllllll}
 \caption{Results for T1239 GDT TS Two-State Score}
-\label{tab:T1239_GDT_TS_two_state}
-\scriptsize
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llrrrll}
+\label{tab:T1239_GDT_TS_two_state} \\ 
 \toprule
 Group & Group\_Name & Two-State\_Score & V1\_GDT\_TS & V2\_GDT\_TS & V1\_Model & V2\_Model \\ 
 \midrule
+\endfirsthead
+\multicolumn{7}{c}%
+{{\tablename\ \thetable{} -- continued from previous page}} \\ 
+\toprule
+Group & Group\_Name & Two-State\_Score & V1\_GDT\_TS & V2\_GDT\_TS & V1\_Model & V2\_Model \\ 
+\midrule
+\endhead
+\bottomrule
+\multicolumn{7}{r}{{Continued on next page}} \\ 
+\endfoot
+\bottomrule
+\endlastfoot
 TS462 & Zheng & 119.79 & 70.81 & 48.98 & TS462\_v2\_2 & TS462\_v1\_1 \\ 
 TS235 & isyslab-hust & 114.17 & 71.31 & 42.85 & TS235\_v2\_4 & TS235\_v1\_1 \\ 
 TS419 & CSSB-Human & 114.04 & 71.10 & 42.94 & TS419\_v2\_1 & TS419\_v1\_5 \\ 
@@ -83,8 +91,6 @@ TS284 & Unicorn & 46.65 & 46.65 & 0.00 & TS284\_v2\_4 & N/A$^{1}$ \\
 TS311 & RAGfold\_Prot1 & 42.25 & 42.25 & 0.00 & TS311\_v1\_1 & N/A$^{1}$ \\ 
 TS361 & Cerebra\_server & 31.40 & 31.40 & 0.00 & TS361\_v1\_2 & N/A$^{1}$ \\ 
 TS105 & PFSC-PFVM & 4.20 & 4.20 & 0.00 & TS105\_v1\_3 & N/A$^{1}$ \\ 
-\bottomrule
-\end{tabular}%
-}
+\end{longtable}
 \begin{flushleft}\footnotesize $^{1}$ Model either not submitted or not assessed\end{flushleft}
 \end{table}

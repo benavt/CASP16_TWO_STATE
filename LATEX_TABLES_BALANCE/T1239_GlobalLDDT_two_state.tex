@@ -1,14 +1,22 @@
-% In your preamble:
-\begin{table}[ht]
-\centering
+% In your document body:
+\begin{longtable}{llllllll}
 \caption{Results for T1239 GlobalLDDT Two-State Score}
-\label{tab:T1239_GlobalLDDT_two_state}
-\scriptsize
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llllllll}
+\label{tab:T1239_GlobalLDDT_two_state} \\ 
 \toprule
 Group & Group\_Name & Two-State\_Score & Balance & V1\_GlobalLDDT & V2\_GlobalLDDT & V1\_Model & V2\_Model \\ 
 \midrule
+\endfirsthead
+\multicolumn{8}{c}%
+{{\tablename\ \thetable{} -- continued from previous page}} \\ 
+\toprule
+Group & Group\_Name & Two-State\_Score & Balance & V1\_GlobalLDDT & V2\_GlobalLDDT & V1\_Model & V2\_Model \\ 
+\midrule
+\endhead
+\bottomrule
+\multicolumn{8}{r}{{Continued on next page}} \\ 
+\endfoot
+\bottomrule
+\endlastfoot
 TS028 & NKRNA-s & 1.67 & 0.98 & 0.82 & 0.85 & TS028\_v1\_4 & TS028\_v2\_1 \\ 
 TS208 & falcon2 & 1.66 & 0.97 & 0.81 & 0.85 & TS208\_v1\_4 & TS208\_v2\_4 \\ 
 TS051 & MULTICOM & 1.66 & 0.98 & 0.81 & 0.85 & TS051\_v1\_3 & TS051\_v2\_2 \\ 
@@ -83,8 +91,6 @@ TS284 & Unicorn & 0.76 & 0.0 & 0.00 & 0.76 & N/A$^{1}$ & TS284\_v2\_2 \\
 TS311 & RAGfold\_Prot1 & 0.76 & 0.0 & 0.00 & 0.76 & N/A$^{1}$ & TS311\_v1\_1 \\ 
 TS361 & Cerebra\_server & 0.58 & 0.0 & 0.00 & 0.58 & N/A$^{1}$ & TS361\_v1\_3 \\ 
 TS105 & PFSC-PFVM & 0.07 & 0.0 & 0.00 & 0.07 & N/A$^{1}$ & TS105\_v1\_3 \\ 
-\bottomrule
-\end{tabular}%
-}
+\end{longtable}
 \begin{flushleft}\footnotesize $^{1}$ Model either not submitted or not assessed\end{flushleft}
 \end{table}

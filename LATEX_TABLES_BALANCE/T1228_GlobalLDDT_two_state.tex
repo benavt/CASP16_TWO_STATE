@@ -1,14 +1,22 @@
-% In your preamble:
-\begin{table}[ht]
-\centering
+% In your document body:
+\begin{longtable}{llllllll}
 \caption{Results for T1228 GlobalLDDT Two-State Score}
-\label{tab:T1228_GlobalLDDT_two_state}
-\scriptsize
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llllllll}
+\label{tab:T1228_GlobalLDDT_two_state} \\ 
 \toprule
 Group & Group\_Name & Two-State\_Score & Balance & V1\_GlobalLDDT & V2\_GlobalLDDT & V1\_Model & V2\_Model \\ 
 \midrule
+\endfirsthead
+\multicolumn{8}{c}%
+{{\tablename\ \thetable{} -- continued from previous page}} \\ 
+\toprule
+Group & Group\_Name & Two-State\_Score & Balance & V1\_GlobalLDDT & V2\_GlobalLDDT & V1\_Model & V2\_Model \\ 
+\midrule
+\endhead
+\bottomrule
+\multicolumn{8}{r}{{Continued on next page}} \\ 
+\endfoot
+\bottomrule
+\endlastfoot
 TS314 & GuijunLab-PAthreader & 1.51 & 0.98 & 0.77 & 0.74 & TS314\_v1\_4 & TS314\_v2\_5 \\ 
 TS028 & NKRNA-s & 1.51 & 0.99 & 0.77 & 0.75 & TS028\_v1\_5 & TS028\_v2\_4 \\ 
 TS110 & MIEnsembles-Server & 1.51 & 0.99 & 0.77 & 0.75 & TS110\_v1\_3 & TS110\_v2\_3 \\ 
@@ -78,7 +86,5 @@ TS139 & DeepFold-refine & 1.45 & 0.97 & 0.75 & 0.70 & TS139\_v1\_6 & TS139\_v2\_
 TS212 & PIEFold\_human & 1.37 & 0.98 & 0.70 & 0.67 & TS212\_v2\_5 & TS212\_v1\_2 \\ 
 TS120 & Cerebra & 1.28 & 0.98 & 0.65 & 0.63 & TS120\_v2\_5 & TS120\_v1\_2 \\ 
 TS361 & Cerebra\_server & 1.27 & 0.98 & 0.65 & 0.62 & TS361\_v1\_2 & TS361\_v2\_1 \\ 
-\bottomrule
-\end{tabular}%
-}
+\end{longtable}
 \end{table}
