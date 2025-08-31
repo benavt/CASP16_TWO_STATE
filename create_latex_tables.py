@@ -83,81 +83,83 @@ def make_latex_table(df, caption, label, score_name):
 
 def make_t1214_sigma4_table():
     """Create special T1214 Sigma4 score table from T1214_Group_vs_Best_Composite_Score_4.csv"""
-    
-    # Read the T1214 data
-    t1214_data = pd.read_csv('composite_score_4_2_best_scores.csv')
-    
-    # Get group name lookup using the same function as process_two_state_score.py
-    group_name_lookup = get_group_name_lookup()
-    
-    # Process the data
-    processed_data = []
-    for _, row in t1214_data.iterrows():
-        group_ts = row['Group']  # e.g., "TS298"
-        model = row['Model']
-        composite_score = row['Composite_Score']
-        
-        # Extract group number using the same logic as process_two_state_score.py
-        group_number = str(int(''.join(filter(str.isdigit, group_ts)))).zfill(3)
-        group_name = group_name_lookup.get(group_number, group_ts).strip()
-        
-        # Parse model to get final character (e.g., T1214TS298_4 -> 4)
-        model_suffix = model.split('_')[-1] if '_' in model else model[-1]
-        
-        # Round composite score to nearest 100th
-        sigma4_score = round(composite_score, 2)
-        
-        processed_data.append({
-            'Group': group_ts,  # Keep original TS-prefixed group name
-            'Group_Name': group_name,
-            'Sigma4_Score': sigma4_score,
-            'Model_Suffix': model_suffix
-        })
-    
-    # Sort by Sigma4 score in descending order
-    processed_df = pd.DataFrame(processed_data)
-    processed_df = processed_df.sort_values('Sigma4_Score', ascending=False)
-    
-    # Create LaTeX table
-    header = (
-        "% T1214 Sigma4 Score Table\n"
-        "\\begin{table}[ht]\n"
-        "\\centering\n"
-        "\\caption{T1214 Sigma4 Score Results}\n"
-        "\\label{tab:T1214_Sigma4_score}\n"
-        "\\scriptsize\n"
-        "\\resizebox{\\textwidth}{!}{%\n"
-        "\\begin{tabular}{llrr}\n"
-        "\\toprule\n"
-        "Group & Group\\_Name & $\\Sigma_4$ Score & Model \\\\ \n"
-        "\\midrule\n"
-    )
-    
-    body = ""
-    for _, row in processed_df.iterrows():
-        group = escape_underscores(str(row['Group']))
-        group_name = escape_underscores(str(row['Group_Name']))
-        sigma4_score = f"{row['Sigma4_Score']:.2f}"
-        model_suffix = str(row['Model_Suffix'])
-        
-        body += f"{group} & {group_name} & {sigma4_score} & {model_suffix} \\\\ \n"
-    
-    footer = (
-        "\\bottomrule\n"
-        "\\end{tabular}%\n"
-        "}\n"
-        "\\end{table}\n"
-    )
-    
-    latex_table = header + body + footer
-    
-    # Write to file
-    tex_path = os.path.join(LATEX_DIR, 'T1214_Sigma4_score_table.tex')
-    with open(tex_path, 'w') as f:
-        f.write(latex_table)
-    print(f"Wrote {tex_path}")
-    
-    return processed_df
+    for score in '1', '2', '3', '4':
+        print(f"Processing {score}")
+
+        # Read the T1214 data
+        t1214_data = pd.read_csv(f'T1214_v1_Composite_Score_{score}_best_scores.csv')
+
+        # Get group name lookup using the same function as process_two_state_score.py
+        group_name_lookup = get_group_name_lookup()
+
+        # Process the data
+        processed_data = []
+        for _, row in t1214_data.iterrows():
+            model = row['Model']
+            group_ts = model.split('_')[0].split('T1214')[1]
+            composite_score = row[f'Composite_Score_{score}']
+            
+            # Extract group number using the same logic as process_two_state_score.py
+            group_number = str(int(''.join(filter(str.isdigit, group_ts)))).zfill(3)
+            group_name = group_name_lookup.get(group_number, group_ts).strip()
+            
+            # Parse model to get final character (e.g., T1214TS298_4 -> 4)
+            model_suffix = model.split('_')[-1] if '_' in model else model[-1]
+            
+            # Round composite score to nearest 100th
+            sigma_score = round(composite_score, 2)
+            
+            processed_data.append({
+                'Group': group_ts,  # Keep original TS-prefixed group name
+                'Group_Name': group_name,
+                f'Sigma{score}_Score': sigma_score,
+                'Model_Suffix': model_suffix
+            })
+
+        # Sort by Sigma4 score in descending order
+        processed_df = pd.DataFrame(processed_data)
+        processed_df = processed_df.sort_values(f'Sigma{score}_Score', ascending=False)
+
+        # Create LaTeX table
+        header = (
+            f"% T1214 Sigma{score} Score Table\n"
+            "\\begin{table}[ht]\n"
+            "\\centering\n"
+            f"\\caption{{T1214 Sigma{score} Score Results}}\n"
+            "\\label{tab:T1214_Sigma_score}\n"
+            "\\scriptsize\n"
+            "\\resizebox{\\textwidth}{!}{%\n"
+            "\\begin{tabular}{llrr}\n"
+            "\\toprule\n"
+            f"Group & Group\\_Name & $\\Sigma_{score}$ Score & Model \\\\ \n"
+            "\\midrule\n"
+        )
+
+        body = ""
+        for _, row in processed_df.iterrows():
+            group = escape_underscores(str(row['Group']))
+            group_name = escape_underscores(str(row['Group_Name']))
+            sigma_score = f"{row[f'Sigma{score}_Score']:.2f}"
+            model_suffix = str(row['Model_Suffix'])
+            
+            body += f"{group} & {group_name} & {sigma_score} & {model_suffix} \\\\ \n"
+
+        footer = (
+            "\\bottomrule\n"
+            "\\end{tabular}%\n"
+            "}\n"
+            "\\end{table}\n"
+        )
+
+        latex_table = header + body + footer
+
+        # Write to file
+        tex_path = os.path.join(LATEX_DIR, f'T1214_Sigma{score}_score_table.tex')
+        with open(tex_path, 'w') as f:
+            f.write(latex_table)
+        print(f"Wrote {tex_path}")
+
+    return 
 
 # Create the special T1214 Sigma4 table
 make_t1214_sigma4_table()
