@@ -1,14 +1,22 @@
-% In your preamble:
-\begin{table}[ht]
-\centering
+% In your document body:
+\begin{longtable}{lllllll}
 \caption{Results for T1214 Composite Score 2 Two-State Score}
-\label{tab:T1214_Composite_Score_2_two_state}
-\scriptsize
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llrrrll}
+\label{tab:T1214_Composite_Score_2_two_state} \\ 
 \toprule
 Group & Group\_Name & Two-State\_Score & V1\_Composite\_Score\_2 & V2\_Composite\_Score\_2 & V1\_Model & V2\_Model \\ 
 \midrule
+\endfirsthead
+\multicolumn{7}{c}%
+{{\tablename\ \thetable{} -- continued from previous page}} \\ 
+\toprule
+Group & Group\_Name & Two-State\_Score & V1\_Composite\_Score\_2 & V2\_Composite\_Score\_2 & V1\_Model & V2\_Model \\ 
+\midrule
+\endhead
+\bottomrule
+\multicolumn{7}{r}{{Continued on next page}} \\ 
+\endfoot
+\bottomrule
+\endlastfoot
 TS015 & PEZYFoldings & 180.88 & 90.16 & 90.72 & TS015\_v1\_5 & TS015\_v2\_1 \\ 
 TS462 & Zheng & 179.34 & 84.51 & 94.83 & TS462\_v1\_6 & TS462\_v2\_3 \\ 
 TS110 & MIEnsembles-Server & 176.58 & 81.68 & 94.91 & TS110\_v1\_2 & TS110\_v2\_5 \\ 
@@ -87,8 +95,6 @@ TS225 & Unknown & 76.67 & 76.67 & 0.00 & TS225\_v1\_1 & N/A$^{1}$ \\
 TS400 & OmniFold & 75.82 & 0.00 & 75.82 & N/A$^{1}$ & TS400\_v2\_1 \\ 
 TS275 & Seminoles & 65.38 & 65.38 & 0.00 & TS275\_v1\_1 & N/A$^{1}$ \\ 
 TS132 & profold2 & 40.27 & 0.00 & 40.27 & N/A$^{1}$ & TS132\_v2\_1 \\ 
-\bottomrule
-\end{tabular}%
-}
+\end{longtable}
 \begin{flushleft}\footnotesize $^{1}$ Model either not submitted or not assessed\end{flushleft}
 \end{table}

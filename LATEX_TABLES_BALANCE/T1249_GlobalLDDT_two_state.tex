@@ -1,14 +1,22 @@
-% In your preamble:
-\begin{table}[ht]
-\centering
+% In your document body:
+\begin{longtable}{llllllll}
 \caption{Results for T1249 GlobalLDDT Two-State Score}
-\label{tab:T1249_GlobalLDDT_two_state}
-\scriptsize
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llllllll}
+\label{tab:T1249_GlobalLDDT_two_state} \\ 
 \toprule
 Group & Group\_Name & Two-State\_Score & Balance & V1\_GlobalLDDT & V2\_GlobalLDDT & V1\_Model & V2\_Model \\ 
 \midrule
+\endfirsthead
+\multicolumn{8}{c}%
+{{\tablename\ \thetable{} -- continued from previous page}} \\ 
+\toprule
+Group & Group\_Name & Two-State\_Score & Balance & V1\_GlobalLDDT & V2\_GlobalLDDT & V1\_Model & V2\_Model \\ 
+\midrule
+\endhead
+\bottomrule
+\multicolumn{8}{r}{{Continued on next page}} \\ 
+\endfoot
+\bottomrule
+\endlastfoot
 TS304 & AF3-server & 1.60 & 0.99 & 0.79 & 0.81 & TS304\_v1\_2o & TS304\_v2\_1o \\ 
 TS393 & GuijunLab-QA & 1.57 & 0.99 & 0.78 & 0.79 & TS393\_v1\_6o & TS393\_v2\_6o \\ 
 TS462 & Zheng & 1.57 & 0.99 & 0.79 & 0.78 & TS462\_v1\_6o & TS462\_v2\_6o \\ 
@@ -82,8 +90,6 @@ TS114 & COAST & 0.36 & 0.99 & 0.18 & 0.18 & TS114\_v1\_4o & TS114\_v2\_4o \\
 TS337 & APOLLO & 0.35 & 0.99 & 0.17 & 0.18 & TS337\_v1\_1o & TS337\_v2\_1o \\ 
 TS300 & ARC & 0.34 & 0.99 & 0.17 & 0.17 & TS300\_v1\_1o & TS300\_v2\_1o \\ 
 TS023 & FTBiot0119 & 0.32 & 1.00 & 0.16 & 0.16 & TS023\_v1\_3o & TS023\_v2\_3o \\ 
-\bottomrule
-\end{tabular}%
-}
+\end{longtable}
 \begin{flushleft}\footnotesize $^{1}$ Model either not submitted or not assessed\end{flushleft}
 \end{table}

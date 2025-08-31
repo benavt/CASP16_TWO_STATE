@@ -1,13 +1,13 @@
 % T1214 Sigma3 Score Table
-\begin{table}[ht]
-\centering
+\begin{table*}[ht]
 \caption{T1214 Sigma3 Score Results}
-\label{tab:T1214_Sigma_score}
+\label{tab:T1214_Sigma_score_split}
 \scriptsize
-\resizebox{\textwidth}{!}{%
+\begin{minipage}[t]{0.48\textwidth}
+\centering
 \begin{tabular}{llrr}
 \toprule
-Group & Group\_Name & $\Sigma_3$ Score & Model \\ 
+Group & Group\_Name & $\Sigma_{score}$ Score & Model \\ 
 \midrule
 TS015 & PEZYFoldings & 95.40 & 5 \\ 
 TS386 & ShanghaiTech-Ligand & 94.08 & 4 \\ 
@@ -48,6 +48,16 @@ TS241 & elofsson & 85.46 & 2 \\
 TS475 & ptq & 85.46 & 2 \\ 
 TS304 & AF3-server & 85.46 & 2 \\ 
 TS301 & GHZ-MAN & 85.17 & 2 \\ 
+\bottomrule
+\end{tabular}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\textwidth}
+\centering
+\begin{tabular}{llrr}
+\toprule
+Group & Group\_Name & $\Sigma_{score}$ Score & Model \\ 
+\midrule
 TS267 & kiharalab\_server & 85.13 & 2 \\ 
 TS293 & MRAH & 85.06 & 2 \\ 
 TS079 & MRAFold & 85.06 & 1 \\ 
@@ -88,6 +98,6 @@ TS461 & forlilab & 39.80 & 2 \\
 TS361 & Cerebra\_server & 18.76 & 1 \\ 
 TS132 & profold2 & 9.66 & 1 \\ 
 \bottomrule
-\end{tabular}%
-}
-\end{table}
+\end{tabular}
+\end{minipage}
+\end{table*}

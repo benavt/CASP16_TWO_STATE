@@ -1,14 +1,22 @@
-% In your preamble:
-\begin{table}[ht]
-\centering
+% In your document body:
+\begin{longtable}{lllllll}
 \caption{Results for T1249 AvgDockQ Two-State Score}
-\label{tab:T1249_AvgDockQ_two_state}
-\scriptsize
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llrrrll}
+\label{tab:T1249_AvgDockQ_two_state} \\ 
 \toprule
 Group & Group\_Name & Two-State\_Score & V1\_AvgDockQ & V2\_AvgDockQ & V1\_Model & V2\_Model \\ 
 \midrule
+\endfirsthead
+\multicolumn{7}{c}%
+{{\tablename\ \thetable{} -- continued from previous page}} \\ 
+\toprule
+Group & Group\_Name & Two-State\_Score & V1\_AvgDockQ & V2\_AvgDockQ & V1\_Model & V2\_Model \\ 
+\midrule
+\endhead
+\bottomrule
+\multicolumn{7}{r}{{Continued on next page}} \\ 
+\endfoot
+\bottomrule
+\endlastfoot
 TS393 & GuijunLab-QA & 0.97 & 0.47 & 0.50 & TS393\_v1\_3o & TS393\_v2\_6o \\ 
 TS304 & AF3-server & 0.94 & 0.43 & 0.51 & TS304\_v1\_2o & TS304\_v2\_1o \\ 
 TS314 & GuijunLab-PAthreader & 0.88 & 0.37 & 0.52 & TS314\_v1\_2o & TS314\_v2\_1o \\ 
@@ -82,8 +90,6 @@ TS139 & DeepFold-refine & 0.03 & 0.01 & 0.02 & TS139\_v1\_4o & TS139\_v2\_3o \\
 TS300 & ARC & 0.03 & 0.01 & 0.01 & TS300\_v1\_2o & TS300\_v2\_2o \\ 
 TS085 & Bates & 0.03 & 0.01 & 0.01 & TS085\_v1\_5o & TS085\_v2\_4o \\ 
 TS023 & FTBiot0119 & 0.02 & 0.01 & 0.01 & TS023\_v1\_3o & TS023\_v2\_1o \\ 
-\bottomrule
-\end{tabular}%
-}
+\end{longtable}
 \begin{flushleft}\footnotesize $^{1}$ Model either not submitted or not assessed\end{flushleft}
 \end{table}

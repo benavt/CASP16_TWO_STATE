@@ -31,7 +31,72 @@ def escape_underscores(text):
         return text.replace('_', r'\_')
     return text
 
+
+def make_long_latex_table(df, caption, label, score_name):
+    if score_name.startswith('Composite_Score'):
+        score_name = score_name.replace('Composite_Score', 'CS')
+    header = (
+        "% In your document body:\n"
+        "\\begin{longtable}{llllllll}\n"
+        f"\\caption{{{caption}}}\n"
+        f"\\label{{{label}}} \\\\ \n"
+        "\\toprule\n"
+        f"Group & Group\_Name & Two-State\_Score & Balance & V1\_{score_name.replace('_', r'\_')} & V2\_{score_name.replace('_', r'\_')} & V1\_Model & V2\_Model \\\\ \n"
+        "\\midrule\n"
+        "\\endfirsthead\n"
+        "\\multicolumn{8}{c}%\n"
+        "{{\\tablename\\ \\thetable{} -- continued from previous page}} \\\\ \n"
+        "\\toprule\n"
+        f"Group & Group\_Name & Two-State\_Score & Balance & V1\_{score_name.replace('_', r'\_')} & V2\_{score_name.replace('_', r'\_')} & V1\_Model & V2\_Model \\\\ \n"
+        "\\midrule\n"
+        "\\endhead\n"
+        "\\bottomrule\n"
+        "\\multicolumn{8}{r}{{Continued on next page}} \\\\ \n"
+        "\\endfoot\n"
+        "\\bottomrule\n"
+        # "\\multicolumn{8}{l}\\\\ \n"
+        "\\endlastfoot\n"
+    )
+    body = ""
+    na_superscript = 'N/A$^{1}$'
+    has_na_sup = False
+    for _, row in df.iterrows():
+        row_vals = []
+        for col in COLUMNS:
+            val = row[col]
+            if pd.isna(val) or val == 0.0 or (isinstance(val, str) and 'None' in val):
+                if col in ['V1_Model_For_Combined_Score', 'V2_Model_For_Combined_Score']:
+                    row_vals.append(na_superscript)
+                    has_na_sup = True
+                else:
+                    row_vals.append(val)
+            else:
+                if col in ['Group', 'Group_Name', 'V1_Model_For_Combined_Score', 'V2_Model_For_Combined_Score']:
+                    row_vals.append(escape_underscores(val))
+                else:
+                    # Convert string to float and format to two decimal places
+
+                    try:
+                        float_val = float(val)
+                        row_vals.append(f"{float_val:.2f}")
+                    except (ValueError, TypeError):
+                        row_vals.append(val)
+        body += (
+            f"{row_vals[0]} & {row_vals[1]} & {row_vals[2]} & {row_vals[3]} & {row_vals[4]} & {row_vals[5]} & {row_vals[6]} & {row_vals[7]} \\\\ \n"
+        )
+    footer = (
+        "\\end{longtable}\n"
+    )
+    if has_na_sup:
+        footer += "\\begin{flushleft}\\footnotesize $^{1}$ Model either not submitted or not assessed\\end{flushleft}\n"
+    footer += "\\end{table}\n"
+    return header + body + footer
+
+
 def make_latex_table(df, caption, label, score_name):
+    if len(df) > 63:
+        return make_long_latex_table(df, caption, label, score_name)
+
     header = (
         "% In your preamble:\n"
         "\\begin{table}[ht]\n"

@@ -1,14 +1,22 @@
-% In your preamble:
-\begin{table}[ht]
-\centering
+% In your document body:
+\begin{longtable}{llllllll}
 \caption{Results for T1228 TMscore Two-State Score}
-\label{tab:T1228_TMscore_two_state}
-\scriptsize
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llllllll}
+\label{tab:T1228_TMscore_two_state} \\ 
 \toprule
 Group & Group\_Name & Two-State\_Score & Balance & V1\_TMscore & V2\_TMscore & V1\_Model & V2\_Model \\ 
 \midrule
+\endfirsthead
+\multicolumn{8}{c}%
+{{\tablename\ \thetable{} -- continued from previous page}} \\ 
+\toprule
+Group & Group\_Name & Two-State\_Score & Balance & V1\_TMscore & V2\_TMscore & V1\_Model & V2\_Model \\ 
+\midrule
+\endhead
+\bottomrule
+\multicolumn{8}{r}{{Continued on next page}} \\ 
+\endfoot
+\bottomrule
+\endlastfoot
 TS264 & GuijunLab-Human & 1.61 & 0.98 & 0.78 & 0.82 & TS264\_v1\_6 & TS264\_v2\_1 \\ 
 TS148 & Guijunlab-Complex & 1.59 & 0.96 & 0.77 & 0.83 & TS148\_v2\_3 & TS148\_v1\_2 \\ 
 TS147 & Zheng-Multimer & 1.55 & 0.93 & 0.83 & 0.72 & TS147\_v1\_1 & TS147\_v2\_1 \\ 
@@ -78,7 +86,5 @@ TS388 & DeepFold-server & 1.18 & 0.98 & 0.58 & 0.61 & TS388\_v2\_3 & TS388\_v1\_
 TS139 & DeepFold-refine & 1.17 & 0.96 & 0.61 & 0.56 & TS139\_v1\_6 & TS139\_v2\_2 \\ 
 TS120 & Cerebra & 1.12 & 0.99 & 0.55 & 0.56 & TS120\_v1\_4 & TS120\_v2\_3 \\ 
 TS361 & Cerebra\_server & 1.06 & 0.96 & 0.51 & 0.55 & TS361\_v1\_1 & TS361\_v2\_1 \\ 
-\bottomrule
-\end{tabular}%
-}
+\end{longtable}
 \end{table}
