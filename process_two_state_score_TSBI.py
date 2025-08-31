@@ -371,11 +371,21 @@ def assessment(ID, score):
 
 TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT", "TMscore"], 
                      "M1239": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT", "TMscore"], 
-                     "R1203": ["GDT_TS", "GlobalLDDT", "Composite_Score_4", "TMscore"], 
-                     "T1214": ["GDT_TS", "GlobalLDDT", "Composite_Score_4"],
+                     "R1203": ["GDT_TS", "GlobalLDDT", "Composite_Score_1", "Composite_Score_2", "Composite_Score_3","Composite_Score_4", "TMscore"], 
+                     "T1214": ["GDT_TS", "GlobalLDDT", "Composite_Score_1", "Composite_Score_2", "Composite_Score_3", "Composite_Score_4"],
                      "T1228": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1239": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1249": ["AvgDockQ", "GlobalLDDT", "GDT_TS", "TMscore"]}
+
+assessment("R1203", "Composite_Score_1")
+assessment("T1214", "Composite_Score_1")
+assessment("R1203", "Composite_Score_2")
+assessment("T1214", "Composite_Score_2")
+assessment("R1203", "Composite_Score_3")
+assessment("T1214", "Composite_Score_3")
+assessment("R1203", "Composite_Score_4")
+assessment("T1214", "Composite_Score_4")
+raise Exception("Stop here")
 
 
 for ID, scores in TARGET_SCORE_DICT.items():

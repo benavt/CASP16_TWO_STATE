@@ -243,8 +243,11 @@ def assessment(ID, score):
 
 
 
-TARGET_SCORE_DICT = {"T1214": ["GDT_TS", "GlobalLDDT", "TMscore", "Composite_Score_4"]}
+TARGET_SCORE_DICT = {"T1214": ["GDT_TS", "GlobalLDDT", "TMscore", "Composite_Score_1", "Composite_Score_2", "Composite_Score_3", "Composite_Score_4"]}
 
+assessment("T1214", "Composite_Score_1")
+assessment("T1214", "Composite_Score_2")
+assessment("T1214", "Composite_Score_3")
 assessment("T1214", "Composite_Score_4")
 raise Exception("Stop here")
 
