@@ -1,3 +1,19 @@
+"""
+MIT License
+
+Copyright (c) 2025 Tiburon Leon Benavides
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Author: Tiburon Leon Benavides
+Contribution: Main contributor
+Date: 2025-09-01
+"""
+
 import pandas as pd
 import matplotlib.pyplot as plt
 from adjustText import adjust_text  
@@ -376,16 +392,6 @@ TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT",
                      "T1228": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1239": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1249": ["AvgDockQ", "GlobalLDDT", "GDT_TS", "TMscore"]}
-
-assessment("R1203", "Composite_Score_1")
-assessment("T1214", "Composite_Score_1")
-assessment("R1203", "Composite_Score_2")
-assessment("T1214", "Composite_Score_2")
-assessment("R1203", "Composite_Score_3")
-assessment("T1214", "Composite_Score_3")
-assessment("R1203", "Composite_Score_4")
-assessment("T1214", "Composite_Score_4")
-raise Exception("Stop here")
 
 
 for ID, scores in TARGET_SCORE_DICT.items():
