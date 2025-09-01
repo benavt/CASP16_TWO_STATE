@@ -31,6 +31,8 @@ def frange(start, stop, step):
 def get_v1_ref_df(ID, score):
     file = f'./DATA/{ID}_v1_{score}_scores.csv'
     df = pd.read_csv(file)
+    if ID == "T1214":
+        df['Model Version'] = 'v1'
     df = df.dropna()
     return df
 
@@ -45,6 +47,8 @@ def get_v2_ref_df(ID, score):
 
     file = f'./DATA/{ID}_{version}_{score}_scores.csv'
     df = pd.read_csv(file)
+    if ID == "T1214":
+        df['Model Version'] = 'v2'
     df = df.dropna()
     return df
 
@@ -748,7 +752,6 @@ TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT",
                      "T1239": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1249": ["AvgDockQ", "GlobalLDDT", "GDT_TS", "TMscore"]}
 
-
 for ID, scores in TARGET_SCORE_DICT.items():
     for score in scores:
         try:
@@ -756,5 +759,6 @@ for ID, scores in TARGET_SCORE_DICT.items():
             print(f"[SUCCESS] Processed {ID} {score}")
         except Exception as e:
             print(f"[ERROR] Error processing {ID} {score}: {e}")
+            raise Exception("Stop here")
             continue
 

@@ -31,6 +31,8 @@ def frange(start, stop, step):
 def get_v1_ref_df(ID, score):
     file = f'./DATA/{ID}_v1_{score}_scores.csv'
     df = pd.read_csv(file)
+    if ID == "T1214":
+        df['Model Version'] = 'v1'
     df = df.dropna()
     return df
 
@@ -257,15 +259,7 @@ def assessment(ID, score):
     create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, outfile_suffix = "_horizontal_no_star")
     print(f"Done creating stacked bar plots for {ID} {score}")
 
-
-
 TARGET_SCORE_DICT = {"T1214": ["GDT_TS", "GlobalLDDT", "TMscore", "Composite_Score_1", "Composite_Score_2", "Composite_Score_3", "Composite_Score_4"]}
-
-assessment("T1214", "Composite_Score_1")
-assessment("T1214", "Composite_Score_2")
-assessment("T1214", "Composite_Score_3")
-assessment("T1214", "Composite_Score_4")
-raise Exception("Stop here")
 
 for ID, scores in TARGET_SCORE_DICT.items():
     for score in scores:
@@ -274,5 +268,6 @@ for ID, scores in TARGET_SCORE_DICT.items():
             print(f"[SUCCESS] Processed {ID} {score}")
         except Exception as e:
             print(f"[ERROR] Error processing {ID} {score}: {e}")
+            raise Exception("Stop here")
             continue
 

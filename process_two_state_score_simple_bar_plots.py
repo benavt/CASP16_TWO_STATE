@@ -20,6 +20,7 @@ from adjustText import adjust_text
 from tqdm import tqdm
 import csv
 from os.path import exists
+from process_two_state_score import get_v1_ref_df, get_v2_ref_df
 
 def frange(start, stop, step):
     vals = []
@@ -28,26 +29,6 @@ def frange(start, stop, step):
         start += step
     return vals
 
-def get_v1_ref_df(ID, score):
-    file = f'./DATA/{ID}_v1_{score}_scores.csv'
-    df = pd.read_csv(file)
-    df = df.dropna()
-    return df
-
-
-def get_v2_ref_df(ID, score):
-    version = 'v2'
-    if ID == "T1228":
-        version = 'v1_1'
-        if not(exists(f'./DATA/{ID}_{version}_{score}_scores.csv')):
-            version = 'v2_1'
-    elif ID == "T1239":
-        version = 'v1_1'
-
-    file = f'./DATA/{ID}_{version}_{score}_scores.csv'
-    df = pd.read_csv(file)
-    df = df.dropna()
-    return df
 
 def get_group_name_lookup():
     lookup = {}
@@ -419,14 +400,12 @@ def assessment(ID, score):
 
 TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT", "TMscore"], 
                      "M1239": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT", "TMscore"], 
-                     "R1203": ["GDT_TS", "GlobalLDDT", "Composite_Score_4", "TMscore"], 
-                     "T1214": ["GDT_TS", "GlobalLDDT", "TMscore", "Composite_Score_4"],
+                     "R1203": ["GDT_TS", "GlobalLDDT", "Composite_Score_1", "Composite_Score_2", "Composite_Score_3", "Composite_Score_4", "TMscore"], 
+                     "T1214": ["GDT_TS", "GlobalLDDT", "TMscore", "Composite_Score_1", "Composite_Score_2", "Composite_Score_3", "Composite_Score_4"],
                      "T1228": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1239": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1249": ["AvgDockQ", "GlobalLDDT", "GDT_TS", "TMscore"]}
 
-assessment("R1203", "Composite_Score_4")
-raise Exception("Stop here")
 for ID, scores in TARGET_SCORE_DICT.items():
     for score in scores:
         try:
@@ -434,5 +413,6 @@ for ID, scores in TARGET_SCORE_DICT.items():
             print(f"[SUCCESS] Processed {ID} {score}")
         except Exception as e:
             print(f"[ERROR] Error processing {ID} {score}: {e}")
+            raise Exception("Stop here")
             continue
 
