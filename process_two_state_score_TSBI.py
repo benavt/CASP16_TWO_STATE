@@ -20,6 +20,8 @@ from adjustText import adjust_text
 from tqdm import tqdm
 import csv
 from os.path import exists
+from process_two_state_score import get_v1_ref_df, get_v2_ref_df
+
 
 def frange(start, stop, step):
     vals = []
@@ -27,26 +29,6 @@ def frange(start, stop, step):
         vals.append(start)
         start += step
     return vals
-
-def get_v1_ref_df(ID, score):
-    file = f'./DATA/{ID}_v1_{score}_scores.csv'
-    df = pd.read_csv(file)
-    df = df.dropna()
-    return df
-
-def get_v2_ref_df(ID, score):
-    version = 'v2'
-    if ID == "T1228":
-        version = 'v1_1'
-        if not(exists(f'./DATA/{ID}_{version}_{score}_scores.csv')):
-            version = 'v2_1'
-    elif ID == "T1239":
-        version = 'v1_1'
-
-    file = f'./DATA/{ID}_{version}_{score}_scores.csv'
-    df = pd.read_csv(file)
-    df = df.dropna()
-    return df
 
 def calc_TSBI_score(v1_ref, v2_ref):
     if v1_ref == 0 or v2_ref == 0:  
