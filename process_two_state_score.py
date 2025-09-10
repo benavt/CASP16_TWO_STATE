@@ -770,7 +770,6 @@ TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT",
 
 
 assessment("T1214", "TMscore")
-assessment("T1214", "GDT_TS")
 exit()
 for ID, scores in TARGET_SCORE_DICT.items():
     for score in scores:
