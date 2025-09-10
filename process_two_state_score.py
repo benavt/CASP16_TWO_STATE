@@ -559,9 +559,9 @@ def assessment(ID, score):
 
     # Convert GDT_TS scores to percentage
     if score == 'GDT_TS':
-        if max(combined_df['Best_v1_ref']) < 1:
+        if max(combined_df['Best_v1_ref']) <= 1:
             combined_df['Best_v1_ref'] = combined_df['Best_v1_ref'] * 100
-        if max(combined_df['Best_v2_ref']) < 1:
+        if max(combined_df['Best_v2_ref']) <= 1:
             combined_df['Best_v2_ref'] = combined_df['Best_v2_ref'] * 100
 
     # Save the combined metric to a CSV file
@@ -682,6 +682,21 @@ def assessment(ID, score):
             'rect_height': 10,
             'legend_position': 'upper left',
         })
+    elif ID == "T1214" and score == "TMscore":
+        print(f"Creating scatter plot for {ID} {score}.")
+        kwargs.update({
+            'inset': True,
+            'inset_position': [0.25, 0.05, 0.475, 0.475],
+            'inset_xlim': [.94, 1.00],
+            'inset_ylim': [.94, 1.00],
+            'inset_xticks': [.94, .96, .98, 1.00],
+            'inset_yticks': [.94, .96, .98, 1.00],
+            'highlight_inset_rect': True,
+            'rect_xy': (.94, .94),
+            'rect_width': .06,
+            'rect_height': .06,
+            'legend_position': 'upper left',
+        })
     elif ID == "M1228" and score == "TMscore":
         kwargs.update({
             'main_xlim': (0.6, 0.8),
@@ -731,6 +746,7 @@ def assessment(ID, score):
             'yticks': [round(y, 2) for y in list(frange(0.15, 0.40+0.001, 0.05))],
         })
 
+
     # Call create_scatter once with all kwargs
     result = create_scatter(**kwargs)
 
@@ -752,6 +768,10 @@ TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT",
                      "T1239": ["GDT_TS", "GlobalLDDT", "TMscore"], 
                      "T1249": ["AvgDockQ", "GlobalLDDT", "GDT_TS", "TMscore"]}
 
+
+assessment("T1214", "TMscore")
+assessment("T1214", "GDT_TS")
+exit()
 for ID, scores in TARGET_SCORE_DICT.items():
     for score in scores:
         try:
