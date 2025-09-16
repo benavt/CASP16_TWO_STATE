@@ -248,7 +248,7 @@ TARGET_SCORE_DICT = {"M1228": ["GDT_TS", "TMscore"],
                      "R1203": ["GDT_TS", "TMscore"],
                      }
 
-def assessment(TARGET_SCORE_DICT):
+def assessment(TARGET_SCORE_DICT, output_dir = "./PLOTS", save_path = None):
 
     TARGET_SCORE_df_dict = {}
     for ID, scores in TARGET_SCORE_DICT.items():
@@ -335,12 +335,15 @@ def assessment(TARGET_SCORE_DICT):
     plt.tight_layout()
     
 
-    plt.savefig(f'./PLOTS/GDT_TM_multi_panel.png', dpi=300, bbox_inches='tight')
+    if save_path:
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+    else:
+        plt.savefig(f'./{output_dir}/GDT_TM_multi_panel.png', dpi=300, bbox_inches='tight')
     plt.close(fig)
 
     return
 
 
-assessment(TARGET_SCORE_DICT)
+assessment(TARGET_SCORE_DICT, output_dir = "./PLOTS", save_path = None)
 
 

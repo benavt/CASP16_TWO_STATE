@@ -146,7 +146,7 @@ def get_best_fit(ID, v1_df, score):
     results_df = pd.DataFrame(results)
     return results_df
 
-def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, outfile_suffix = ""):
+def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, output_dir = "./PLOTS", outfile_suffix = "", save_path = None):
     import matplotlib.pyplot as plt
     num_groups = len(combined_df)
     per_group, min_size, max_size = 0.35, 6, 20
@@ -233,7 +233,10 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, out
     for spine in ax.spines.values():
         spine.set_linewidth(3)
         spine.set_edgecolor('black')
-    plt.savefig(f'./PLOTS/{ID}_{score}_single_state{outfile_suffix}.png', dpi=300)
+    if save_path is None:
+        plt.savefig(f'{output_dir}/{ID}_{score}_single_state{outfile_suffix}.png', dpi=300)
+    else:
+        plt.savefig(save_path, dpi=300)
     plt.close()
 
 def assessment(ID, score):
@@ -259,15 +262,17 @@ def assessment(ID, score):
     create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, outfile_suffix = "_horizontal_no_star")
     print(f"Done creating stacked bar plots for {ID} {score}")
 
-TARGET_SCORE_DICT = {"T1214": ["GDT_TS", "GlobalLDDT", "TMscore", "Composite_Score_1", "Composite_Score_2", "Composite_Score_3", "Composite_Score_4"]}
 
-for ID, scores in TARGET_SCORE_DICT.items():
-    for score in scores:
-        try:
-            assessment(ID, score)
-            print(f"[SUCCESS] Processed {ID} {score}")
-        except Exception as e:
-            print(f"[ERROR] Error processing {ID} {score}: {e}")
-            raise Exception("Stop here")
-            continue
+if __name__ == "__main__":
+    TARGET_SCORE_DICT = {"T1214": ["GDT_TS", "GlobalLDDT", "TMscore", "Composite_Score_1", "Composite_Score_2", "Composite_Score_3", "Composite_Score_4"]}
+
+    for ID, scores in TARGET_SCORE_DICT.items():
+        for score in scores:
+            try:
+                assessment(ID, score)
+                print(f"[SUCCESS] Processed {ID} {score}")
+            except Exception as e:
+                print(f"[ERROR] Error processing {ID} {score}: {e}")
+                raise Exception("Stop here")
+                continue
 
