@@ -31,8 +31,8 @@ def Figure2_B_C():
     combined_df = combined_df.sort_values(by='Combined_Score', ascending=False)
     create_stacked_bar_two(combined_df, 'M1228', 'TMscore', horizontal=False, \
         star=True, outfile_suffix = "_horizontal_star", save_path = "./PLOTS_MANUSCRIPT/Figure2_B.png")
-    create_stacked_bar_two(combined_df, 'M1228', 'TMscore', horizontal=False, \
-        star=True, outfile_suffix = "_horizontal_star", save_path = "./PLOTS_MANUSCRIPT/FigS3_A1.png")
+    create_stacked_bar_two(combined_df, 'M1228', 'TMscore', horizontal=True, \
+        star=False, outfile_suffix = "_horizontal_star", save_path = "./PLOTS_MANUSCRIPT/FigS3_A1.png")
 
     kwargs = {}
     kwargs['text_fontsize'] = 16
@@ -62,7 +62,15 @@ def Figure4_C():
     # horizontal
     v1_df = get_v1_ref_df_two('T1228', 'GDT_TS')
     v2_df = get_v2_ref_df_two('T1228', 'GDT_TS')
+    # Convert GDT_TS scores to percentage
+    
     combined_df = get_best_fit_two('T1228', v1_df, v2_df, 'GDT_TS')
+    
+    if max(combined_df['Best_v1_ref']) <= 1:
+        combined_df['Best_v1_ref'] = combined_df['Best_v1_ref'] * 100
+    if max(combined_df['Best_v2_ref']) <= 1:
+        combined_df['Best_v2_ref'] = combined_df['Best_v2_ref'] * 100
+
     combined_df = combined_df.sort_values(by='Combined_Score', ascending=False)
     create_stacked_bar_two(combined_df, 'T1228', 'GDT_TS', horizontal=True, \
         star=True, outfile_suffix = "_vertical_star", save_path = "./PLOTS_MANUSCRIPT/Figure4_C.png")
@@ -90,6 +98,7 @@ def Figure5_C():
     v1_df = get_v1_ref_df_two('M1239', 'TMscore')
     v2_df = get_v2_ref_df_two('M1239', 'TMscore')
     combined_df = get_best_fit_two('M1239', v1_df, v2_df, 'TMscore')
+
     combined_df = combined_df.sort_values(by='Combined_Score', ascending=False)
    
     kwargs = {}
@@ -113,6 +122,12 @@ def Figure5_C():
     v1_df = get_v1_ref_df_two('T1239', 'GDT_TS')
     v2_df = get_v2_ref_df_two('T1239', 'GDT_TS')
     combined_df = get_best_fit_two('T1239', v1_df, v2_df, 'GDT_TS')
+
+    if max(combined_df['Best_v1_ref']) <= 1:
+        combined_df['Best_v1_ref'] = combined_df['Best_v1_ref'] * 100
+    if max(combined_df['Best_v2_ref']) <= 1:
+        combined_df['Best_v2_ref'] = combined_df['Best_v2_ref'] * 100
+        
     combined_df = combined_df.sort_values(by='Combined_Score', ascending=False)
    
     kwargs = {}
@@ -192,7 +207,14 @@ def FigS3():
     # M1228 GDT_TS and GlobDockQ
     v1_df = get_v1_ref_df_two('M1228', 'GDT_TS')
     v2_df = get_v2_ref_df_two('M1228', 'GDT_TS')
+    
     combined_df = get_best_fit_two('M1228', v1_df, v2_df, 'GDT_TS')
+    # Convert GDT_TS scores to percentage
+    if max(combined_df['Best_v1_ref']) <= 1:
+        combined_df['Best_v1_ref'] = combined_df['Best_v1_ref'] * 100
+    if max(combined_df['Best_v2_ref']) <= 1:
+        combined_df['Best_v2_ref'] = combined_df['Best_v2_ref'] * 100
+
     combined_df = combined_df.sort_values(by='Combined_Score', ascending=False)
     create_stacked_bar_two(combined_df, 'M1228', 'GDT_TS', horizontal=False, \
         star=True, outfile_suffix = "_horizontal_star", save_path = "./PLOTS_MANUSCRIPT/FigS3_B.png")
