@@ -450,7 +450,8 @@ def create_scatter(
     else:
         return fig, ax_main
 
-def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, outfile_suffix = ""):
+def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, \
+    output_dir = "./PLOTS", outfile_suffix = "", save_path = None):
     import matplotlib.pyplot as plt
     num_groups = len(combined_df)
     per_group, min_size, max_size = 0.35, 6, 20
@@ -545,7 +546,10 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, out
     for spine in ax.spines.values():
         spine.set_linewidth(3)
         spine.set_edgecolor('black')
-    plt.savefig(f'./PLOTS/{ID}_{score}_two_state{outfile_suffix}.png', dpi=300)
+    if save_path:
+        plt.savefig(save_path, dpi=300)
+    else:
+        plt.savefig(f'{output_dir}/{ID}_{score}_two_state{outfile_suffix}.png', dpi=300)
     plt.close()
 
 def assessment(ID, score):
@@ -758,26 +762,23 @@ def assessment(ID, score):
     create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, outfile_suffix = "_horizontal_no_star")
     print(f"Done creating stacked bar plots for {ID} {score}")
 
+if __name__ == "__main__":
 
+    TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT", "TMscore"], 
+                        "M1239": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT", "TMscore"], 
+                        "R1203": ["GDT_TS", "GlobalLDDT", "Composite_Score_1", "Composite_Score_2", "Composite_Score_3","Composite_Score_4", "TMscore"], 
+                        "T1214": ["GDT_TS", "GlobalLDDT", "TMscore", "Composite_Score_1", "Composite_Score_2", "Composite_Score_3", "Composite_Score_4"],
+                        "T1228": ["GDT_TS", "GlobalLDDT", "TMscore"], 
+                        "T1239": ["GDT_TS", "GlobalLDDT", "TMscore"], 
+                        "T1249": ["AvgDockQ", "GlobalLDDT", "GDT_TS", "TMscore"]}
 
-TARGET_SCORE_DICT = {"M1228": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT", "TMscore"], 
-                     "M1239": ["BestDockQ", "GDT_TS", "GlobDockQ", "GlobalLDDT", "TMscore"], 
-                     "R1203": ["GDT_TS", "GlobalLDDT", "Composite_Score_1", "Composite_Score_2", "Composite_Score_3","Composite_Score_4", "TMscore"], 
-                     "T1214": ["GDT_TS", "GlobalLDDT", "TMscore", "Composite_Score_1", "Composite_Score_2", "Composite_Score_3", "Composite_Score_4"],
-                     "T1228": ["GDT_TS", "GlobalLDDT", "TMscore"], 
-                     "T1239": ["GDT_TS", "GlobalLDDT", "TMscore"], 
-                     "T1249": ["AvgDockQ", "GlobalLDDT", "GDT_TS", "TMscore"]}
-
-
-assessment("T1214", "TMscore")
-exit()
-for ID, scores in TARGET_SCORE_DICT.items():
-    for score in scores:
-        try:
-            assessment(ID, score)
-            print(f"[SUCCESS] Processed {ID} {score}")
-        except Exception as e:
-            print(f"[ERROR] Error processing {ID} {score}: {e}")
-            raise Exception("Stop here")
-            continue
+    for ID, scores in TARGET_SCORE_DICT.items():
+        for score in scores:
+            try:
+                assessment(ID, score)
+                print(f"[SUCCESS] Processed {ID} {score}")
+            except Exception as e:
+                print(f"[ERROR] Error processing {ID} {score}: {e}")
+                raise Exception("Stop here")
+                continue
 
