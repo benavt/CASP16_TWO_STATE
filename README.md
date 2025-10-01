@@ -101,7 +101,7 @@ For a complete workflow, see the [Complete Workflow](#complete-workflow) section
 
 **Usage:**
 ```bash
-python process_two_state_score.py
+python scripts/process_two_state_score.py
 ```
 
 **What it does:**
@@ -126,7 +126,7 @@ python process_two_state_score.py
 
 **Usage:**
 ```bash
-python process_two_state_score_full_axis.py
+python scripts/process_two_state_score_full_axis.py
 ```
 
 **What it does:**
@@ -141,7 +141,7 @@ python process_two_state_score_full_axis.py
 
 **Usage:**
 ```bash
-python process_two_state_score_simple_bar_plots.py
+python scripts/process_two_state_score_simple_bar_plots.py
 ```
 
 **What it does:**
@@ -156,7 +156,7 @@ python process_two_state_score_simple_bar_plots.py
 
 **Usage:**
 ```bash
-python process_TM_GDT_two_state_multipanel.py
+python scripts/process_TM_GDT_two_state_multipanel.py
 ```
 
 **What it does:**
@@ -171,7 +171,7 @@ python process_TM_GDT_two_state_multipanel.py
 
 **Usage:**
 ```bash
-python process_single_state_score.py
+python scripts/process_single_state_score.py
 ```
 
 **What it does:**
@@ -185,7 +185,7 @@ python process_single_state_score.py
 
 **Usage:**
 ```bash
-python create_latex_tables.py
+python scripts/create_latex_tables.py
 ```
 
 **What it does:**
@@ -200,7 +200,7 @@ python create_latex_tables.py
 
 **Usage:**
 ```bash
-python create_latex_tables_with_balance.py
+python scripts/create_latex_tables_with_balance.py
 ```
 
 **What it does:**
@@ -215,7 +215,7 @@ python create_latex_tables_with_balance.py
 
 **Usage:**
 ```bash
-python process_two_state_score_TSBI.py
+python scripts/process_two_state_score_TSBI.py
 ```
 
 **What it does:**
@@ -265,7 +265,7 @@ Where:
 
 **Usage:**
 ```bash
-python process_dual_state_score.py
+python scripts/process_dual_state_score.py
 ```
 
 **What it does:**
@@ -284,7 +284,7 @@ python process_dual_state_score.py
 
 **Usage:**
 ```bash
-python create_dual_state_latex_tables.py
+python scripts/create_dual_state_latex_tables.py
 ```
 
 **What it does:**
@@ -300,7 +300,7 @@ python create_dual_state_latex_tables.py
 
 **Usage:**
 ```bash
-python create_single_state_latex_tables.py
+python scripts/create_single_state_latex_tables.py
 ```
 
 **What it does:**
@@ -317,7 +317,7 @@ python create_single_state_latex_tables.py
 
 **Usage:**
 ```bash
-python MakePlotsForManuscript.py
+python scripts/MakePlotsForManuscript.py
 ```
 
 **What it does:**
@@ -361,62 +361,62 @@ python MakePlotsForManuscript.py
 
 1. **Process Two-State Scores:**
    ```bash
-   python process_two_state_score.py
+   python scripts/process_two_state_score.py
    ```
 
 2. **Process Two-State Scores with TSBI:**
    ```bash
-   python process_two_state_score_TSBI.py
+   python scripts/process_two_state_score_TSBI.py
    ```
 
 3. **Process Two-State Scores with Full Axis:**
    ```bash
-   python process_two_state_score_full_axis.py
+   python scripts/process_two_state_score_full_axis.py
    ```
 
 4. **Process Two-State Scores with Simple Bar Plots:**
    ```bash
-   python process_two_state_score_simple_bar_plots.py
+   python scripts/process_two_state_score_simple_bar_plots.py
    ```
 
 5. **Create Multi-Panel TM/GDT Plots:**
    ```bash
-   python process_TM_GDT_two_state_multipanel.py
+   python scripts/process_TM_GDT_two_state_multipanel.py
    ```
 
 6. **Process Single-State Scores (if applicable):**
    ```bash
-   python process_single_state_score.py
+   python scripts/process_single_state_score.py
    ```
 
 7. **Process Dual-State Scores (if applicable):**
    ```bash
-   python process_dual_state_score.py
+   python scripts/process_dual_state_score.py
    ```
 
 8. **Generate LaTeX Tables:**
    ```bash
-   python create_latex_tables.py
+   python scripts/create_latex_tables.py
    ```
 
 9. **Generate LaTeX Tables with Balance:**
    ```bash
-   python create_latex_tables_with_balance.py
+   python scripts/create_latex_tables_with_balance.py
    ```
 
 10. **Generate Dual-State LaTeX Tables:**
     ```bash
-    python create_dual_state_latex_tables.py
+    python scripts/create_dual_state_latex_tables.py
     ```
 
 11. **Generate Single-State LaTeX Tables:**
     ```bash
-    python create_single_state_latex_tables.py
+    python scripts/create_single_state_latex_tables.py
     ```
 
 12. **Generate Manuscript Plots:**
     ```bash
-    python MakePlotsForManuscript.py
+    python scripts/MakePlotsForManuscript.py
     ```
 
 ## Output Files
