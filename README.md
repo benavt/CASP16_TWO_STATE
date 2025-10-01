@@ -436,7 +436,7 @@ Each output CSV file contains detailed scoring information with columns:
 - **v1_v1_Score, v1_v2_Score, v2_v1_Score, v2_v2_Score**: Individual scores for each combination
 - **v1_v1_ModelNumber, v1_v2_ModelNumber, v2_v1_ModelNumber, v2_v2_ModelNumber**: Model numbers for each score
 
-### Plots (`PLOTS/` directory)
+### Plots (`output/PLOTS/` directory)
 - **Scatter plots**: Comparing V1 vs V2 reference states
 - **Stacked bar charts**: Horizontal and vertical versions with and without special highlighting
 - **Special features**: AF3 baseline highlighting, inset zoom regions for specific targets
@@ -444,34 +444,34 @@ Each output CSV file contains detailed scoring information with columns:
 - **Simple bar plots**: Clean, minimal bar chart visualizations
 - **Multi-panel plots**: Combined TM and GDT score visualizations
 
-### TSBI Plots (`TSBI_PLOTS/` directory)
+### TSBI Plots (`output/TSBI_PLOTS/` directory)
 - **TSBI bar plots**: Horizontal and vertical bar charts showing TSBI scores for each group
 - **AF3 highlighting**: Special highlighting for group 304 (AF3) with optional star markers
 - **Multiple variants**: Star and no-star versions for both horizontal and vertical orientations
 
-### LaTeX Tables (`LATEX_TABLES/` directory)
+### LaTeX Tables (`output/LATEX_TABLES/` directory)
 - Publication-ready LaTeX tables for all processed data
 - Proper formatting and escaping for academic publication
 - Special T1214 Sigma4 score table
 
-### LaTeX Tables with Balance (`LATEX_TABLES_BALANCE/` directory)
+### LaTeX Tables with Balance (`output/LATEX_TABLES_BALANCE/` directory)
 - LaTeX tables including balance metrics
 - Additional columns for V1 and V2 reference state scores
 - Balance calculations for performance consistency assessment
 
-### Dual-State LaTeX Tables (`DUAL_STATE_LATEX_TABLES/` directory)
+### Dual-State LaTeX Tables (`output/DUAL_STATE_LATEX_TABLES/` directory)
 - LaTeX tables for dual-state score outputs
 - Publication-ready formatting with proper decimal places
 - Both regular and longtable formats for large datasets
 - Proper escaping of special characters for LaTeX
 
-### Single-State LaTeX Tables (`SINGLE_STATE_LATEX_TABLES/` directory)
+### Single-State LaTeX Tables (`output/SINGLE_STATE_LATEX_TABLES/` directory)
 - LaTeX tables for single-state score outputs
 - Special T1214 Sigma score tables for Composite_Score_1-4
 - Publication-ready formatting with proper decimal places
 - Both regular and longtable formats for large datasets
 
-### Manuscript Plots (`PLOTS_MANUSCRIPT/` directory)
+### Manuscript Plots (`output/PLOTS_MANUSCRIPT/` directory)
 - Publication-ready plots for manuscript figures
 - Consistent formatting, fonts, and styling
 - Figure 1C, 2B-C, 4C, 5C, 6B-C, 7C-D and supplementary figures
@@ -479,9 +479,9 @@ Each output CSV file contains detailed scoring information with columns:
 - AF3 baseline highlighting and special formatting
 
 ### PDF Reports
-- **CASP16_TWO_STATE_TABLES_ALL.pdf**: Combined PDF of all two-state tables
-- **CASP16_TWO_STATE_TABLES_BALANCE_ALL.pdf**: Combined PDF of all balance tables
-- **CASP16_TWO_STATE_TABLES.pdf**: Legacy PDF of two-state tables
+- **output/CASP16_TWO_STATE_TABLES_ALL.pdf**: Combined PDF of all two-state tables
+- **output/CASP16_TWO_STATE_TABLES_BALANCE_ALL.pdf**: Combined PDF of all balance tables
+- **output/CASP16_TWO_STATE_TABLES.pdf**: PDF of two-state tables which appear in main text
 
 ### Archive (`archive/` directory)
 - **PLOTS/**: Archived plot files from previous runs
