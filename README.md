@@ -32,7 +32,7 @@ CASP_DATA_PROCESSING/
 │   ├── create_single_state_latex_tables.py
 │   └── MakePlotsForManuscript.py
 ├── archive/              # Archived plots, PDFs, and legacy pipeline
-│   ├── archive_plots/
+│   ├── archive/
 │   │   ├── PLOTS/
 │   │   └── TSBI_PLOTS/
 ├── original_pipeline_by_NamitaDube_2024/ # Legacy modular pipeline (non-functional)
@@ -97,7 +97,7 @@ For a complete workflow, see the [Complete Workflow](#complete-workflow) section
 ## Script Overview and Usage
 
 ### 1. `process_two_state_score.py`
-**Purpose**: Processes the gathered data to compute two-state scores for each target and score type, generates summary CSVs in `OUTPUT/`, and creates scatter and bar plots in `PLOTS/`.
+**Purpose**: Processes the gathered data to compute two-state scores for each target and score type, generates summary CSVs in `output/OUTPUT_CSVS/`, and creates scatter and bar plots in `output/PLOTS/`.
 
 **Usage:**
 ```bash
@@ -189,7 +189,7 @@ python scripts/create_latex_tables.py
 ```
 
 **What it does:**
-- Reads all CSV files from the `OUTPUT/` directory
+- Reads all CSV files from the `output/OUTPUT_CSVS/` directory
 - Converts them to properly formatted LaTeX tables
 - Handles special formatting for publication (decimal places, underscores, etc.)
 - Creates a special T1214 Sigma4 score table
@@ -288,7 +288,7 @@ python scripts/create_dual_state_latex_tables.py
 ```
 
 **What it does:**
-- Reads dual-state CSV files from the `OUTPUT/` directory
+- Reads dual-state CSV files from the `output/OUTPUT_CSVS/` directory
 - Converts them to properly formatted LaTeX tables
 - Handles special formatting for publication (decimal places, underscores, etc.)
 - Creates both regular and longtable formats for large datasets
@@ -304,7 +304,7 @@ python scripts/create_single_state_latex_tables.py
 ```
 
 **What it does:**
-- Reads single-state CSV files from the `OUTPUT/` directory
+- Reads single-state CSV files from the `output/OUTPUT_CSVS/` directory
 - Converts them to properly formatted LaTeX tables
 - Creates special T1214 Sigma score tables for Composite_Score_1-4
 - Handles special formatting for publication (decimal places, underscores, etc.)
@@ -421,7 +421,7 @@ python scripts/MakePlotsForManuscript.py
 
 ## Output Files
 
-### CSV Outputs (`OUTPUT/` directory)
+### CSV Outputs (`output/OUTPUT_CSVS/` directory)
 Each output CSV file contains detailed scoring information with columns:
 - **Group**: The submission group identifier (e.g., TS314)
 - **Group_Name**: Human-readable group name
@@ -483,7 +483,7 @@ Each output CSV file contains detailed scoring information with columns:
 - **CASP16_TWO_STATE_TABLES_BALANCE_ALL.pdf**: Combined PDF of all balance tables
 - **CASP16_TWO_STATE_TABLES.pdf**: Legacy PDF of two-state tables
 
-### Archive (`archive_plots/` directory)
+### Archive (`archive/` directory)
 - **PLOTS/**: Archived plot files from previous runs
 - **TSBI_PLOTS/**: Archived TSBI plot files
 - **PDF files**: Archived PDF reports from previous processing runs
@@ -501,7 +501,7 @@ Each output CSV file contains detailed scoring information with columns:
 
 ## Troubleshooting
 
-- **Missing Data Files**: Ensure data files exist in the `DATA/` directory
+- **Missing Data Files**: Ensure data files exist in the `data/` directory
 - **Missing Dependencies**: Install required Python packages using the pip command above
 - **File Path Issues**: Ensure the script is run from the `CASP_DATA_PROCESSING/` directory
 - **Memory Issues**: For large datasets, consider processing targets individually
