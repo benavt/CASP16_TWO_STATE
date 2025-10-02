@@ -20,7 +20,7 @@ authors:
   given-names: "Gaetano T"
   orcid: "https://orcid.org/0000-0002-9440-3059"
 title: "Two State Score Code for CASP16 Ensembles Experiment"
-version: 1.0.0
+version: 1.0.3
 doi: 10.5281/zenodo.17247592
-date-released: 2025-10-01
-url: "https://github.com/benavt/CASP16_TWO_STATE"
+date-released: 2025-10-02
+url: "https://github.rpi.edu/RPIBioinformatics/CASP16_TWO_STATE/"
