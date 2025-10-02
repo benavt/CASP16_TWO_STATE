@@ -21,6 +21,6 @@ authors:
   orcid: "https://orcid.org/0000-0002-9440-3059"
 title: "Two State Score Code for CASP16 Ensembles Experiment"
 version: 1.0.3
-doi: 10.5281/zenodo.17247592
+doi: 10.5281/zenodo.17252014
 date-released: 2025-10-02
 url: "https://github.rpi.edu/RPIBioinformatics/CASP16_TWO_STATE/"
