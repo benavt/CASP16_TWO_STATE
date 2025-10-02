@@ -121,6 +121,10 @@ python scripts/process_two_state_score.py
 - **T1228**: GDT_TS, GlobalLDDT, TMscore
 - **T1239**: GDT_TS, GlobalLDDT, TMscore
 - **T1249**: AvgDockQ, GlobalLDDT, GDT_TS, TMscore
+- 
+<img width="365" height="320" alt="Screenshot 2025-10-02 at 10 22 45 AM" src="https://github.com/user-attachments/assets/dba6b3c5-02f2-45af-8748-6c3d08a568c6" />
+
+**Algorithm 1** This algorithm describes the process for calculating two-state scores in this work based on scores calculated from two predicted states to two reference states.
 
 ### 2. `process_two_state_score_full_axis.py`
 **Purpose**: Processes two-state scores plots with x and y axis ranges (0,1)
