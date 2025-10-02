@@ -208,9 +208,6 @@ python scripts/process_dual_state_score.py
 
 **T1214 GDT_TS Dual State Scatterplot** Dual state plots are similar to Two state plots, except that they use only a single model from each group and compare the best score to V1 (x-axis) vs V2 (y-axis).  It is used in cases where predictors were only trying to model a single state V1, as in T1214.  The dual state scatterplot allows for visualization of how a group’s best scoring model (vs V1) scores vs the original state V2.
 
-**Dual State Plot Methodology:**
-Dual state plots are similar to stacked bar plots, except that they use only a single model from each group and compare the best score to V1 (x-axis) vs V2 (y-axis). It is used in cases where predictors were only trying to model a single state V1, as in T1214. The dual state scatterplot allows for visualization of how a group's best scoring model (vs V1) scores vs the original state V2.
-
 **Targets and Score Types Processed:**
 - **T1214**: GDT_TS, GlobalLDDT, TMscore, Composite_Score_1, Composite_Score_2, Composite_Score_3, Composite_Score_4
 
