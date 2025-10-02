@@ -54,10 +54,12 @@ def assessment(ID, score):
     combined_df = combined_df.sort_values(by='Combined_Score', ascending=False)
     # Convert GDT_TS scores to percentage
     if score == 'GDT_TS':
-        if max(combined_df['Best_v1_ref']) < 1:
+        if max(combined_df['Best_v1_ref']) <= 1:
             combined_df['Best_v1_ref'] = combined_df['Best_v1_ref'] * 100
-        if max(combined_df['Best_v2_ref']) < 1:
+        if max(combined_df['Best_v2_ref']) <= 1:
             combined_df['Best_v2_ref'] = combined_df['Best_v2_ref'] * 100
+        if max(combined_df['Combined_Score']) <= 2:
+            combined_df['Combined_Score'] = combined_df['Combined_Score'] * 100
 
     # Save the combined metric to a CSV file
     combined_df.to_csv(f'./output/OUTPUT_CSVS/{ID}_{score}_two_state.csv', index=False)
