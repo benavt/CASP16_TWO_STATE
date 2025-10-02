@@ -202,14 +202,11 @@ python scripts/process_dual_state_score.py
 
 **What it does:**
 - Processes dual-state scoring for T1214 target with multiple score types
-- Computes dual-state scores by combining V1 and V2 reference state scores
-- Generates scatter plots and stacked bar charts for dual-state analysis
-- Creates special T1214 Sigma score tables for Composite_Score_1-4
-- Saves detailed CSV outputs with dual-state scoring information
 - Handles GDT_TS, GlobalLDDT, TMscore, and Composite_Score_1-4 for T1214
 
 <img width="2989" height="1772" alt="T1214_GDT_TS_scatter_plot_dual_state" src="https://github.com/user-attachments/assets/42fb6358-e8bc-4a39-8540-d2f6c7bd408a" />
 
+**T1214 GDT_TS Dual State Scatterplot** Dual state plots are similar to Two state plots, except that they use only a single model from each group and compare the best score to V1 (x-axis) vs V2 (y-axis).  It is used in cases where predictors were only trying to model a single state V1, as in T1214.  The dual state scatterplot allows for visualization of how a group’s best scoring model (vs V1) scores vs the original state V2.
 
 **Dual State Plot Methodology:**
 Dual state plots are similar to stacked bar plots, except that they use only a single model from each group and compare the best score to V1 (x-axis) vs V2 (y-axis). It is used in cases where predictors were only trying to model a single state V1, as in T1214. The dual state scatterplot allows for visualization of how a group's best scoring model (vs V1) scores vs the original state V2.
