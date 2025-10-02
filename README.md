@@ -166,6 +166,7 @@ python scripts/process_TM_GDT_two_state_multipanel.py
 - Focuses on TM and GDT scores across all relevant targets
 
 <img width="7169" height="5369" alt="FigS11" src="https://github.com/user-attachments/assets/55ec5ee4-a705-47d3-a2c0-46ebfd4c7bd4" />
+**Figure S11.** Two-State TM and GDT_TS scores for six targets: M1228, M1239, T1228, T1239, T1249, R1203.
 
 ### 5. `process_single_state_score.py`
 **Purpose**: Processes single-state scores for targets that only have one reference state (currently T1214).
@@ -436,16 +437,12 @@ Each output CSV file contains detailed scoring information with columns:
 - **Multi-panel plots**: Combined TM and GDT score visualizations
   
 <img width="4800" height="2400" alt="FigS5_B" src="https://github.com/user-attachments/assets/84a012b6-9674-44ff-bada-be2b00af05ff" />
-<!--
-Figure S5B.
-"Figure S5B. Combined two-state GDT_TS scores for best M1239 models ranked by predictor group. AlphaFold3 Server's Group (304) is highlighted with a star and a horizontal green line"
--->
+
+**Figure S5B.** Combined two-state GDT_TS scores for best M1239 models ranked by predictor group. AlphaFold3 Server's Group (304) is highlighted with a star and a horizontal green line.
 
 <img width="2971" height="1774" alt="FigS7_D" src="https://github.com/user-attachments/assets/7f5e3c3a-c6cf-4921-9a4d-49e9cd3c33f8" />
-<!--
-Figure S7D.
-"Figure S7D. Two state GDT_TS scatterplot for T1239. The point corresponding to AlphaFold3 Server's Group (304) is intersected by a vertical and horizontal dashed line."
--->
+
+**Figure S7D.** Two state GDT_TS scatterplot for T1239. The point corresponding to AlphaFold3 Server's Group (304) is intersected by a vertical and horizontal dashed line.
 
 ### TSBI Plots (`output/TSBI_PLOTS/` directory)
 - **TSBI bar plots**: Horizontal and vertical bar charts showing TSBI scores for each group
