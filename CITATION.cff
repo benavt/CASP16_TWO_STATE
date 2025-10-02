@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Benavides"
+  given-names: "Tiburon"
+  orcid: "https://orcid.org/0000-0002-5795-4273"
+title: "Two State Score Code for CASP16 Ensembles Experiment"
+version: 1.0.0
+doi: 10.5281/zenodo.1234
+date-released: 2025-10-01
+url: "https://github.com/benavt/CASP16_TWO_STATE"
