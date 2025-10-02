@@ -4,6 +4,10 @@ This repository contains scripts and utilities for processing, analyzing, and vi
 
 ![zenodo 17247438](https://github.com/user-attachments/assets/959d23e8-86ac-41b1-97ec-0afb37ab6ffb)
 
+This work is used in the following publication:
+
+Dube, N., Ramelot, T. A., Benavides, T. L., Huang, Y. J., Moult, J., Kryshtafovych, A., & Montelione, G. T. (2025). Modeling Alternative Conformational States in CASP16. bioRxiv. https://doi.org/10.1101/2025.09.02.673835
+
 ## Directory Structure
 
 ```
@@ -490,26 +494,6 @@ Each output CSV file contains detailed scoring information with columns:
 - **TSBI_PLOTS/**: Archived TSBI plot files
 - **PDF files**: Archived PDF reports from previous processing runs
 
-## Special Features
-
-- **AF3 Baseline Highlighting**: Special highlighting for group 304 (AF3) in relevant plots
-- **Inset Zoom Regions**: Detailed zoom views for specific target/score combinations
-- **Dynamic Plot Sizing**: Automatic adjustment of plot dimensions based on number of groups
-- **Group Name Mapping**: Automatic conversion of group numbers to human-readable names
-- **Error Handling**: Robust error handling for missing data or processing issues
-- **Multiple Plot Variants**: Different visualization styles (full axis, simple, multi-panel)
-- **Balance Metrics**: Additional calculations for performance consistency assessment
-- **Archive System**: Organized storage of previous processing results
-
-## Troubleshooting
-
-- **Missing Data Files**: Ensure data files exist in the `data/` directory
-- **Missing Dependencies**: Install required Python packages using the pip command above
-- **File Path Issues**: Ensure the script is run from the `CASP_DATA_PROCESSING/` directory
-- **Memory Issues**: For large datasets, consider processing targets individually
-- **Plot Generation Errors**: Check that matplotlib backend is properly configured
-- **LaTeX Table Errors**: Ensure proper LaTeX installation for PDF generation
-
 ## License
 
 This project is licensed under the MIT License. See the license header in each script file for details.
@@ -517,9 +501,3 @@ This project is licensed under the MIT License. See the license header in each s
 **Author**: Tiburon Leon Benavides  
 **Contribution**: Main contributor  
 **Date**: 2025-09-01
-
-## References
-
-This work is used in the following publication:
-
-Dube, N., Ramelot, T. A., Benavides, T. L., Huang, Y. J., Moult, J., Kryshtafovych, A., & Montelione, G. T. (2025). Modeling Alternative Conformational States in CASP16. bioRxiv. https://doi.org/10.1101/2025.09.02.673835
