@@ -2,7 +2,7 @@
 
 This repository contains scripts and utilities for processing, analyzing, and visualizing data for the CASP (Critical Assessment of Structure Prediction) assessment. The workflow includes processing scores, identifying missing data points, and generating plots and summary files.
 
-![zenodo 17247592](https://github.com/user-attachments/assets/3a87848a-d955-44a5-a79a-02e692a15437)
+[![zenodo 17247592](https://github.com/user-attachments/assets/3a87848a-d955-44a5-a79a-02e692a15437)](https://doi.org/10.5281/zenodo.17247592)
 
 This work is used in the following publication:
 
