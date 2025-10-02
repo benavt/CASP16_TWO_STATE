@@ -740,9 +740,6 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, \
     star_marker='*', star_size=300, star_color='gray', star_edgecolor='black',  # Star styling
     star_offset_factor=0.02,  # Star offset as fraction of axis range
     score_column_v1='Best_v1_ref', score_column_v2='Best_v2_ref',  # Data columns
-    use_tsbi=False,  # Whether to use TSBI-specific logic
-    tsbi_column='TSBI_Score',  # TSBI score column name
-    tsbi_output_dir='./output/TSBI_PLOTS',  # TSBI output directory
     single_state=False,  # Whether this is single-state (only v1)
     # Axis limits
     xlim=None, ylim=None,  # Axis limits (None for auto)
@@ -800,92 +797,7 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, \
         tick_fs_prim = id_config.get('tick_fs_prim_vertical', tick_fs_prim_vertical)
         tick_fs_sec = id_config.get('tick_fs_sec_vertical', tick_fs_sec_vertical)
         rot_prim = id_config.get('rot_prim_vertical', rot_prim_vertical)
-    # Handle TSBI-specific logic
-    if use_tsbi:
-        if tsbi_column not in combined_df.columns:
-            raise ValueError(f"{tsbi_column} column not found in combined_df.")
-        
-        # Sort by TSBI_Score descending for correct bar order
-        df_to_use = combined_df.sort_values(by=tsbi_column, ascending=False).reset_index(drop=True)
-        num_groups = len(df_to_use)
-        
-        # Set TSBI_Score == -1 to 0 for plotting
-        tsbi_scores_for_plot = df_to_use[tsbi_column].copy()
-        tsbi_scores_for_plot = tsbi_scores_for_plot.apply(lambda x: 0 if x == -1 else x)
-        
-        # Prepare group labels
-        group_name_lookup = get_group_name_lookup()
-        
-        fig, ax = plt.subplots(figsize=fig_size)
-        
-        if horizontal:
-            group_labels = []
-            for group in df_to_use['Group']:
-                group_id = str(int(''.join(filter(str.isdigit, group)))).zfill(3)
-                group_name = group_name_lookup.get(group_id, group).strip()
-                group_labels.append(f"{group_id}")
-            
-            x_pos = range(num_groups)
-            bars = ax.bar(x_pos, tsbi_scores_for_plot, color=v1_color)
-            ax.set_xticks(x_pos)
-            ax.set_xticklabels(group_labels, rotation=90, fontsize=tick_fs_prim)
-            ax.set_ylabel('TSBI Score', fontsize=label_fontsize)
-            ax.set_xlabel('Submission Group', fontsize=label_fontsize)
-            ax.set_ylim(bottom=0)
-        else:
-            group_labels = []
-            for group in df_to_use['Group']:
-                group_id = str(int(''.join(filter(str.isdigit, group)))).zfill(3)
-                group_name = group_name_lookup.get(group_id, group).strip()
-                group_labels.append(f"{group_name} ({group_id})")
-            
-            y_pos = range(num_groups)
-            tsbi_scores_for_plot_reversed = tsbi_scores_for_plot[::-1]
-            bars = ax.barh(y_pos, tsbi_scores_for_plot_reversed, color=v1_color)
-            group_labels_reversed = group_labels[::-1]
-            ax.set_yticks(y_pos)
-            ax.set_yticklabels(group_labels_reversed, fontsize=tick_fs_prim)
-            ax.set_xlabel('TSBI Score', fontsize=label_fontsize)
-            ax.set_ylabel('Submission Group', fontsize=label_fontsize)
-            ax.set_xlim(left=0)
-        
-        # Highlight AF3-server (group 304) if present
-        if '304' in [str(int(''.join(filter(str.isdigit, g)))).zfill(3) for g in df_to_use['Group']]:
-            idx_304 = None
-            for idx, group in enumerate(df_to_use['Group']):
-                group_id = str(int(''.join(filter(str.isdigit, group)))).zfill(3)
-                if group_id == '304':
-                    idx_304 = idx
-                    break
-            if not horizontal:
-                idx_304 = num_groups - idx_304 - 1
-            if idx_304 is not None:
-                bars[idx_304].set_color(v1_color_304)
-                if star:
-                    if horizontal:
-                        ax.scatter(idx_304, tsbi_scores_for_plot.iloc[idx_304] + star_offset_factor * ax.get_ylim()[1], 
-                                 marker=star_marker, s=star_size, color=star_color, edgecolor=star_edgecolor, zorder=5)
-                    else:
-                        ax.scatter(tsbi_scores_for_plot_reversed.iloc[idx_304] + star_offset_factor * ax.get_xlim()[1], idx_304, 
-                                 marker=star_marker, s=star_size, color=star_color, edgecolor=star_edgecolor, zorder=5)
-        
-        # Title
-        ax.set_title(f'TSBI Score for {ID}', fontsize=title_fontsize)
-        
-        # Style
-        plt.tight_layout()
-        for spine in ax.spines.values():
-            spine.set_linewidth(spine_linewidth)
-            spine.set_edgecolor(spine_edgecolor)
-        
-        # Save
-        if save_path:
-            plt.savefig(save_path, dpi=300)
-        else:
-            plt.savefig(f'{tsbi_output_dir}/{ID}_{score}_TSBI_bar{outfile_suffix}.png', dpi=300)
-        plt.close()
-        return
-    
+
     # Regular stacked bar logic
     fig, ax = plt.subplots(figsize=fig_size)
     group_labels_raw = combined_df['Group'].str.replace('TS', '')
@@ -972,12 +884,32 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, \
     # Set axis limits and labels
     limit_set(ax, -0.5, len(group_labels) - 0.5)
     
-    # Apply custom axis limits if provided
-    if xlim is not None:
-        ax.set_xlim(*xlim)
-    if ylim is not None:
-        ax.set_ylim(*ylim)
+    # Calculate maximum combined score for automatic limit setting
+    if single_state:
+        max_combined_score = df_to_use[score_column_v1].max()
+    else:
+        max_combined_score = (df_to_use[score_column_v1] + df_to_use[score_column_v2]).max()
     
+    num_groups = len(group_labels)
+    
+    # Apply custom axis limits if provided, otherwise set automatic limits
+    if horizontal:
+        # For horizontal plots, xlim controls the score values (x-axis)
+        if xlim is not None:
+            ax.set_xlim(*xlim)
+        else:
+            # Set automatic xlim based on maximum combined score with some padding
+            ax.set_xlim(0, max_combined_score * 1.1)
+        ax.set_ylim(0, num_groups)
+    else:
+        # For vertical plots, ylim controls the score values (y-axis)
+        if ylim is not None:
+            ax.set_ylim(*ylim)
+        else:
+            # Set automatic ylim based on maximum combined score with some padding
+            ax.set_ylim(0, max_combined_score * 1.1)
+        ax.set_xlim(0, num_groups)
+
     getattr(ax, f'set_{label_prim}')(xlabel, fontsize=label_fontsize)
     getattr(ax, f'set_{label_sec}')(ylabel, fontsize=label_fontsize)
     
@@ -1228,10 +1160,8 @@ def assessment(ID, score):
 
 
     print("Creating stacked bar plots...")
-    create_stacked_bar(combined_df, ID, score, horizontal=True, star=True, outfile_suffix = "_vertical_star")
-    create_stacked_bar(combined_df, ID, score, horizontal=False, star=True, outfile_suffix = "_horizontal_star")
-    create_stacked_bar(combined_df, ID, score, horizontal=True, star=False, outfile_suffix = "_vertical_no_star")
-    create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, outfile_suffix = "_horizontal_no_star")
+    create_stacked_bar(combined_df, ID, score, horizontal=True, star=True, outfile_suffix = "_vertical")
+    create_stacked_bar(combined_df, ID, score, horizontal=False, star=True, outfile_suffix = "_horizontal")
     print(f"Done creating stacked bar plots for {ID} {score}")
 
 if __name__ == "__main__":
