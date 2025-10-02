@@ -122,7 +122,7 @@ python scripts/process_two_state_score.py
 - **T1239**: GDT_TS, GlobalLDDT, TMscore
 - **T1249**: AvgDockQ, GlobalLDDT, GDT_TS, TMscore
 
-<img width="365" height="320" alt="Screenshot 2025-10-02 at 10 22 45 AM" src="https://github.com/user-attachments/assets/dba6b3c5-02f2-45af-8748-6c3d08a568c6" />
+<img width="365" alt="Screenshot 2025-10-02 at 10 22 45 AM" src="https://github.com/user-attachments/assets/dba6b3c5-02f2-45af-8748-6c3d08a568c6" />
 
 **Algorithm 1** This algorithm describes the process for calculating two-state scores in this work based on scores calculated from two predicted states to two reference states.
 
@@ -164,7 +164,7 @@ python scripts/process_TM_GDT_two_state_multipanel.py
 - Combines scatter plots and bar charts in unified layouts
 - Focuses on TM-score and GDT_TS scores across all relevant targets
 
-<img width="7169" height="5369" alt="FigS11" src="https://github.com/user-attachments/assets/55ec5ee4-a705-47d3-a2c0-46ebfd4c7bd4" />
+<img width="7169" alt="FigS11" src="https://github.com/user-attachments/assets/55ec5ee4-a705-47d3-a2c0-46ebfd4c7bd4" />
 
 **Figure S11.** Two-State TM and GDT_TS scores for six targets: M1228, M1239, T1228, T1239, T1249, R1203.
 
@@ -208,7 +208,7 @@ python scripts/process_dual_state_score.py
 - Processes dual-state scoring for T1214 target with multiple score types
 - Handles GDT_TS, GlobalLDDT, TMscore, and Composite_Score_1-4 for T1214
 
-<img width="2989" height="1772" alt="T1214_GDT_TS_scatter_plot_dual_state" src="https://github.com/user-attachments/assets/42fb6358-e8bc-4a39-8540-d2f6c7bd408a" />
+<img width="2989" alt="T1214_GDT_TS_scatter_plot_dual_state" src="https://github.com/user-attachments/assets/42fb6358-e8bc-4a39-8540-d2f6c7bd408a" />
 
 **T1214 GDT_TS Dual State Scatterplot** Dual state plots are similar to Two state plots, except that they use only a single model from each group and compare the best score to V1 (x-axis) vs V2 (y-axis).  It is used in cases where predictors were only trying to model a single state V1, as in T1214.  The dual state scatterplot allows for visualization of how a group’s best scoring model (vs V1) scores vs the original state V2.
 
@@ -359,11 +359,11 @@ Each output CSV file contains detailed scoring information with columns:
 - **Simple bar plots**: Clean, minimal bar chart visualizations
 - **Multi-panel plots**: Combined TM-score and GDT_TS score visualizations
   
-<img width="4800" height="2400" alt="FigS5_B" src="https://github.com/user-attachments/assets/84a012b6-9674-44ff-bada-be2b00af05ff" />
+<img width="4800" alt="FigS5_B" src="https://github.com/user-attachments/assets/84a012b6-9674-44ff-bada-be2b00af05ff" />
 
 **Figure S5B.** Combined two-state GDT_TS scores for best M1239 models ranked by predictor group. AlphaFold3 Server's Group (304) is highlighted with a star and a horizontal green line.
 
-<img width="2971" height="1774" alt="FigS7_D" src="https://github.com/user-attachments/assets/7f5e3c3a-c6cf-4921-9a4d-49e9cd3c33f8" />
+<img width="2971" alt="FigS7_D" src="https://github.com/user-attachments/assets/7f5e3c3a-c6cf-4921-9a4d-49e9cd3c33f8" />
 
 **Figure S7D.** Two state GDT_TS scatterplot for T1239. The point corresponding to AlphaFold3 Server's Group (304) is intersected by a vertical and horizontal dashed line.
 
