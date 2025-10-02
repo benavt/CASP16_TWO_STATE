@@ -113,7 +113,7 @@ python scripts/process_two_state_score.py
 **What it does:**
 - Automatically processes all targets and score types defined in `TARGET_SCORE_DICT`
 - Computes two-state scores by combining the best scores from different model/version combinations
-- Generates scatter plots comparing V1 vs V2 reference states
+- Generates scatter plots comparing scores from V1 and V2 reference states
 - Creates stacked bar charts showing combined scores
 - Saves detailed CSV outputs with all scoring information
 - Handles special cases for different targets (M1228, M1239, R1203, T1214, T1228, T1239, T1249)
@@ -128,19 +128,12 @@ python scripts/process_two_state_score.py
 - **T1249**: AvgDockQ, GlobalLDDT, GDT_TS, TMscore
 
 ### 2. `process_two_state_score_full_axis.py`
-**Purpose**: Processes two-state scores with full axis visualization, providing detailed scatter plots with complete axis ranges and enhanced visual features.
+**Purpose**: Processes two-state scores plots with x and y axis ranges (0,1)
 
 **Usage:**
 ```bash
 python scripts/process_two_state_score_full_axis.py
 ```
-
-**What it does:**
-- Similar functionality to the standard two-state processor but with enhanced plotting
-- Creates scatter plots with full axis ranges for better data visualization
-- Includes additional visual features and annotations
-- Generates more detailed plots suitable for publication
-- Handles the same targets and score types as the standard processor
 
 ### 3. `process_two_state_score_simple_bar_plots.py`
 **Purpose**: Processes two-state scores with simplified bar plot visualizations, focusing on clean and minimal design.
@@ -171,6 +164,8 @@ python scripts/process_TM_GDT_two_state_multipanel.py
 - Generates publication-ready multi-panel figures
 - Combines scatter plots and bar charts in unified layouts
 - Focuses on TM and GDT scores across all relevant targets
+- 
+<img width="7169" height="5369" alt="FigS11" src="https://github.com/user-attachments/assets/55ec5ee4-a705-47d3-a2c0-46ebfd4c7bd4" />
 
 ### 5. `process_single_state_score.py`
 **Purpose**: Processes single-state scores for targets that only have one reference state (currently T1214).
@@ -197,12 +192,11 @@ python scripts/create_latex_tables.py
 **What it does:**
 - Reads all CSV files from the `output/OUTPUT_CSVS/` directory
 - Converts them to properly formatted LaTeX tables
-- Handles special formatting for publication (decimal places, underscores, etc.)
 - Creates a special T1214 Sigma4 score table
 - Saves all tables to the `LATEX_TABLES/` directory
 
 ### 7. `create_latex_tables_with_balance.py`
-**Purpose**: Generates LaTeX table files with balance metrics, providing additional insights into performance consistency across reference states.
+**Purpose**: Generates LaTeX table files with the balance metric, providing additional insights into performance consistency across reference states.
 
 **Usage:**
 ```bash
@@ -213,7 +207,6 @@ python scripts/create_latex_tables_with_balance.py
 - Creates LaTeX tables that include balance metrics alongside performance scores
 - Provides additional columns for V1 and V2 reference state scores
 - Includes balance calculations to assess consistency across reference states
-- Generates publication-ready tables with enhanced metrics
 - Saves tables to the `LATEX_TABLES_BALANCE/` directory
 
 ### 8. `process_two_state_score_TSBI.py`
@@ -228,7 +221,6 @@ python scripts/process_two_state_score_TSBI.py
 - Automatically processes all targets and score types defined in `TARGET_SCORE_DICT`
 - Computes TSBI scores that balance performance with consistency across V1 and V2 reference states
 - Generates horizontal and vertical bar plots showing TSBI scores for each group
-- Creates special highlighting for AF3-server (group 304) with optional star markers
 - Saves detailed CSV outputs with TSBI scoring information
 - Handles the same targets and score types as the standard two-state processor
 
@@ -296,10 +288,7 @@ python scripts/create_dual_state_latex_tables.py
 **What it does:**
 - Reads dual-state CSV files from the `output/OUTPUT_CSVS/` directory
 - Converts them to properly formatted LaTeX tables
-- Handles special formatting for publication (decimal places, underscores, etc.)
-- Creates both regular and longtable formats for large datasets
 - Saves all tables to the `DUAL_STATE_LATEX_TABLES/` directory
-- Includes proper escaping of special characters for LaTeX
 
 ### 11. `create_single_state_latex_tables.py`
 **Purpose**: Generates LaTeX table files specifically for single-state score outputs, including special T1214 Sigma score tables.
@@ -311,12 +300,8 @@ python scripts/create_single_state_latex_tables.py
 
 **What it does:**
 - Reads single-state CSV files from the `output/OUTPUT_CSVS/` directory
-- Converts them to properly formatted LaTeX tables
 - Creates special T1214 Sigma score tables for Composite_Score_1-4
-- Handles special formatting for publication (decimal places, underscores, etc.)
-- Creates both regular and longtable formats for large datasets
 - Saves all tables to the `SINGLE_STATE_LATEX_TABLES/` directory
-- Includes proper escaping of special characters for LaTeX
 
 ### 12. `MakePlotsForManuscript.py`
 **Purpose**: Generates publication-ready plots specifically for manuscript figures, with consistent formatting and styling.
@@ -331,9 +316,6 @@ python scripts/MakePlotsForManuscript.py
 - Generates Figure 1C, 2B-C, 4C, 5C, 6B-C, 7C-D and supplementary figures
 - Uses consistent formatting, fonts, and styling for publication
 - Saves all plots to the `PLOTS_MANUSCRIPT/` directory
-- Handles both single-state and two-state score visualizations
-- Creates scatter plots and bar charts with manuscript-specific parameters
-- Includes AF3 baseline highlighting and special formatting for key figures
 
 ### 13. `original_pipeline_by_NamitaDube_2024/` (Legacy Directory)
 **Purpose**: Contains the original modular pipeline for computing Composite Score 4 (CS4) across predicted protein structures. This is legacy code that does not function in the current environment but served as the foundation for developing the current repository's scripts.
@@ -361,7 +343,7 @@ python scripts/MakePlotsForManuscript.py
 - `plot_best_per_group.py` - Plot best scores per group
 - `plot_scatter_diagnostic.py` - Generate scatter diagnostic plots
 
-**Note**: This directory is preserved for historical reference and to understand the evolution of the current processing pipeline. The current repository's scripts were developed based on concepts and methodologies from this original pipeline.
+**Note**: This directory is preserved for historical reference and to understand the evolution of the current processing pipeline. 
 
 ## Complete Workflow
 
@@ -449,6 +431,9 @@ Each output CSV file contains detailed scoring information with columns:
 - **Full axis plots**: Enhanced scatter plots with complete axis ranges
 - **Simple bar plots**: Clean, minimal bar chart visualizations
 - **Multi-panel plots**: Combined TM and GDT score visualizations
+  
+<img width="4800" height="2400" alt="FigS5_B" src="https://github.com/user-attachments/assets/84a012b6-9674-44ff-bada-be2b00af05ff" />
+<img width="2971" height="1774" alt="FigS7_D" src="https://github.com/user-attachments/assets/7f5e3c3a-c6cf-4921-9a4d-49e9cd3c33f8" />
 
 ### TSBI Plots (`output/TSBI_PLOTS/` directory)
 - **TSBI bar plots**: Horizontal and vertical bar charts showing TSBI scores for each group
