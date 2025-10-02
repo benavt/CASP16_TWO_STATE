@@ -900,7 +900,7 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, \
         else:
             # Set automatic xlim based on maximum combined score with some padding
             ax.set_xlim(0, max_combined_score * 1.1)
-        ax.set_ylim(0, num_groups)
+        ax.set_ylim(-0.5, num_groups - 0.5)
     else:
         # For vertical plots, ylim controls the score values (y-axis)
         if ylim is not None:
@@ -908,7 +908,7 @@ def create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, \
         else:
             # Set automatic ylim based on maximum combined score with some padding
             ax.set_ylim(0, max_combined_score * 1.1)
-        ax.set_xlim(0, num_groups)
+        ax.set_xlim(-0.5, num_groups - 0.5)
 
     getattr(ax, f'set_{label_prim}')(xlabel, fontsize=label_fontsize)
     getattr(ax, f'set_{label_sec}')(ylabel, fontsize=label_fontsize)

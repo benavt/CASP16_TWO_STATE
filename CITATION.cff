@@ -2,10 +2,25 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 authors:
 - family-names: "Benavides"
-  given-names: "Tiburon"
+  given-names: "Tiburon L"
   orcid: "https://orcid.org/0000-0002-5795-4273"
+- family-names: "Dube"
+  given-names: "Namita"
+  orcid: "https://orcid.org/0000-0002-2107-4899"
+- family-names: "Ramelot"
+  given-names: "Theresa A"
+  orcid: "https://orcid.org/0000-0002-0335-1573"
+- family-names: "Huang"
+  given-names: "Yuanpeng J"
+  orcid: "https://orcid.org/0000-0002-3374-786X"
+- family-names: "Kryshtafovych"
+  given-names: "Andriy"
+  orcid: "https://orcid.org/0000-0001-5066-7178"
+- family-names: "Montelione"
+  given-names: "Gaetano T"
+  orcid: "https://orcid.org/0000-0002-9440-3059"
 title: "Two State Score Code for CASP16 Ensembles Experiment"
 version: 1.0.0
-doi: 10.5281/zenodo.17247438
+doi: 10.5281/zenodo.17247592
 date-released: 2025-10-01
 url: "https://github.com/benavt/CASP16_TWO_STATE"

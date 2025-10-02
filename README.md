@@ -146,7 +146,7 @@ python scripts/process_two_state_score_simple_bar_plots.py
 - Handles the same targets and score types as the standard processor
 
 ### 4. `process_TM_GDT_two_state_multipanel.py`
-**Purpose**: Creates multi-panel plots specifically for TM and GDT scores, providing comprehensive visualization of these key metrics.
+**Purpose**: Creates multi-panel plots specifically for TM-score and GDT_TS scores, providing comprehensive visualization of these key metrics.
 
 **Usage:**
 ```bash
@@ -154,11 +154,11 @@ python scripts/process_TM_GDT_two_state_multipanel.py
 ```
 
 **What it does:**
-- Creates multi-panel plots combining TM and GDT score visualizations
+- Creates multi-panel plots combining TM-score and GDT_TS score visualizations
 - Provides comprehensive view of these critical assessment metrics
 - Generates publication-ready multi-panel figures
 - Combines scatter plots and bar charts in unified layouts
-- Focuses on TM and GDT scores across all relevant targets
+- Focuses on TM-score and GDT_TS scores across all relevant targets
 
 <img width="7169" height="5369" alt="FigS11" src="https://github.com/user-attachments/assets/55ec5ee4-a705-47d3-a2c0-46ebfd4c7bd4" />
 
@@ -262,13 +262,13 @@ python scripts/MakePlotsForManuscript.py
 - **10 Python scripts** for processing LGA outputs, GlobalLDDT logs, and local GDT/LDDT tables
 - **Makefile** for automated pipeline execution
 - **Composite Score 4 calculation**: Mean of 5 components (Local_LDDT, Local_GDT, binary thresholds for Global_LDDT>80, Global_GDT>80, and g_RMS)
-- **Configurable thresholds** for Global_GDT and Global_LDDT (default 80)
+- **Configurable thresholds** for Global_GDT_TS and Global_LDDT (default 80)
 - **Plotting capabilities** for bar plots and scatter diagnostic plots
 
 **Key Scripts:**
 - `extract_global_gdt_rms.py` - Parse Global GDT_TS and g_RMS from LGA outputs
 - `extract_global_lddt.py` - Parse Global LDDT from .lddt outputs  
-- `extract_local_gdt.py` - Compute Local GDT averages for residue ranges
+- `extract_local_gdt.py` - Compute Local GDT_TS averages for residue ranges
 - `extract_local_lddt.py` - Compute Local LDDT averages for residue ranges
 - `merge_all.py` - Merge metrics into combined_results.csv
 - `normalize_metrics.py` - Apply sigmoid scaling and ×100 scaling
@@ -353,7 +353,7 @@ Each output CSV file contains detailed scoring information with columns:
 - **Special features**: AF3 baseline highlighting, inset zoom regions for specific targets
 - **Full axis plots**: Enhanced scatter plots with complete axis ranges
 - **Simple bar plots**: Clean, minimal bar chart visualizations
-- **Multi-panel plots**: Combined TM and GDT score visualizations
+- **Multi-panel plots**: Combined TM-score and GDT_TS score visualizations
   
 <img width="4800" height="2400" alt="FigS5_B" src="https://github.com/user-attachments/assets/84a012b6-9674-44ff-bada-be2b00af05ff" />
 

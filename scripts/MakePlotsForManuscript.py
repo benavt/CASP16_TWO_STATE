@@ -65,12 +65,9 @@ def Figure4_C():
     v1_df = get_v1_ref_df('T1228', 'GDT_TS')
     v2_df = get_v2_ref_df('T1228', 'GDT_TS')
     combined_df = get_best_fit('T1228', v1_df, v2_df, 'GDT_TS')
-    
-    # Convert GDT_TS scores to percentage
-    if max(combined_df['Best_v1_ref']) <= 1:
-        combined_df['Best_v1_ref'] = combined_df['Best_v1_ref'] * 100
-    if max(combined_df['Best_v2_ref']) <= 1:
-        combined_df['Best_v2_ref'] = combined_df['Best_v2_ref'] * 100
+    combined_df['Combined_Score'] = combined_df['Combined_Score'] * 100
+    combined_df['Best_v1_ref'] = combined_df['Best_v1_ref'] * 100
+    combined_df['Best_v2_ref'] = combined_df['Best_v2_ref'] * 100
 
     combined_df = combined_df.sort_values(by='Combined_Score', ascending=False)
     
@@ -138,12 +135,11 @@ def Figure5_C():
     v1_df = get_v1_ref_df('T1239', 'GDT_TS')
     v2_df = get_v2_ref_df('T1239', 'GDT_TS')
     combined_df = get_best_fit('T1239', v1_df, v2_df, 'GDT_TS')
+    combined_df['Combined_Score'] = combined_df['Combined_Score'] * 100
+    combined_df['Best_v1_ref'] = combined_df['Best_v1_ref'] * 100
+    combined_df['Best_v2_ref'] = combined_df['Best_v2_ref'] * 100
 
     # Convert GDT_TS scores to percentage
-    if max(combined_df['Best_v1_ref']) <= 1:
-        combined_df['Best_v1_ref'] = combined_df['Best_v1_ref'] * 100
-    if max(combined_df['Best_v2_ref']) <= 1:
-        combined_df['Best_v2_ref'] = combined_df['Best_v2_ref'] * 100
         
     combined_df = combined_df.sort_values(by='Combined_Score', ascending=False)
    
@@ -235,12 +231,10 @@ def FigS3():
     v1_df = get_v1_ref_df('M1228', 'GDT_TS')
     v2_df = get_v2_ref_df('M1228', 'GDT_TS')
     combined_df = get_best_fit('M1228', v1_df, v2_df, 'GDT_TS')
-    
+    combined_df['Combined_Score'] = combined_df['Combined_Score'] * 100
+    combined_df['Best_v1_ref'] = combined_df['Best_v1_ref'] * 100
+    combined_df['Best_v2_ref'] = combined_df['Best_v2_ref'] * 100
     # Convert GDT_TS scores to percentage
-    if max(combined_df['Best_v1_ref']) <= 1:
-        combined_df['Best_v1_ref'] = combined_df['Best_v1_ref'] * 100
-    if max(combined_df['Best_v2_ref']) <= 1:
-        combined_df['Best_v2_ref'] = combined_df['Best_v2_ref'] * 100
 
     combined_df = combined_df.sort_values(by='Combined_Score', ascending=False)
     
@@ -275,7 +269,7 @@ def FigS3():
     v2_df = get_v2_ref_df('M1228', 'GlobDockQ')
     combined_df = get_best_fit('M1228', v1_df, v2_df, 'GlobDockQ')
     combined_df = combined_df.sort_values(by='Combined_Score', ascending=False)
-    
+
     # Create stacked bar plot
     create_stacked_bar(combined_df, 'M1228', 'GlobDockQ', horizontal=False, star=True, 
                       outfile_suffix="_horizontal_star", save_path="./output/PLOTS_MANUSCRIPT/FigS3_D.png",
@@ -310,10 +304,12 @@ def FigS5():
     v2_df = get_v2_ref_df('M1239', 'GDT_TS')
     combined_df = get_best_fit('M1239', v1_df, v2_df, 'GDT_TS')
     combined_df['Combined_Score'] = combined_df['Combined_Score'] * 100
+    combined_df['Best_v1_ref'] = combined_df['Best_v1_ref'] * 100
+    combined_df['Best_v2_ref'] = combined_df['Best_v2_ref'] * 100
     combined_df = combined_df.sort_values(by='Combined_Score', ascending=False)
     # Create stacked bar plot
     create_stacked_bar(combined_df, 'M1239', 'GDT_TS', horizontal=False, star=True, 
-                      outfile_suffix="_horizontal_star", save_path="./output/PLOTS_MANUSCRIPT/FigS5_B.png",
+                      save_path="./output/PLOTS_MANUSCRIPT/FigS5_B.png",
                       output_dir='./output/PLOTS_MANUSCRIPT',
                       fig_width_vertical=16, fig_height_vertical=8,
                       tick_fs_prim_vertical=24, tick_fs_sec_vertical=28, label_fontsize=28)
@@ -435,6 +431,8 @@ def FigS7():
     v2_df = get_v2_ref_df('T1228', 'GDT_TS')
     combined_df = get_best_fit('T1228', v1_df, v2_df, 'GDT_TS')
     combined_df = combined_df.sort_values(by='Combined_Score', ascending=False)
+    combined_df['Best_v1_ref'] = combined_df['Best_v1_ref'] * 100
+    combined_df['Best_v2_ref'] = combined_df['Best_v2_ref'] * 100
     
     # Create stacked bar plot
     create_stacked_bar(combined_df, 'T1228', 'GDT_TS', horizontal=True, star=True, 
@@ -461,6 +459,9 @@ def FigS7():
     v2_df = get_v2_ref_df('T1239', 'GDT_TS')
     combined_df = get_best_fit('T1239', v1_df, v2_df, 'GDT_TS')
     combined_df = combined_df.sort_values(by='Combined_Score', ascending=False)
+    combined_df['Best_v1_ref'] = combined_df['Best_v1_ref'] * 100
+    combined_df['Best_v2_ref'] = combined_df['Best_v2_ref'] * 100
+    combined_df['Combined_Score'] = combined_df['Combined_Score'] * 100
     
     # Create stacked bar plot
     create_stacked_bar(combined_df, 'T1239', 'GDT_TS', horizontal=True, star=True, 
