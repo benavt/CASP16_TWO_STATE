@@ -164,7 +164,7 @@ python scripts/process_TM_GDT_two_state_multipanel.py
 - Generates publication-ready multi-panel figures
 - Combines scatter plots and bar charts in unified layouts
 - Focuses on TM and GDT scores across all relevant targets
-- 
+
 <img width="7169" height="5369" alt="FigS11" src="https://github.com/user-attachments/assets/55ec5ee4-a705-47d3-a2c0-46ebfd4c7bd4" />
 
 ### 5. `process_single_state_score.py`
@@ -273,6 +273,9 @@ python scripts/process_dual_state_score.py
 - Creates special T1214 Sigma score tables for Composite_Score_1-4
 - Saves detailed CSV outputs with dual-state scoring information
 - Handles GDT_TS, GlobalLDDT, TMscore, and Composite_Score_1-4 for T1214
+
+**Dual State Plot Methodology:**
+Dual state plots are similar to stacked bar plots, except that they use only a single model from each group and compare the best score to V1 (x-axis) vs V2 (y-axis). It is used in cases where predictors were only trying to model a single state V1, as in T1214. The dual state scatterplot allows for visualization of how a group's best scoring model (vs V1) scores vs the original state V2.
 
 **Targets and Score Types Processed:**
 - **T1214**: GDT_TS, GlobalLDDT, TMscore, Composite_Score_1, Composite_Score_2, Composite_Score_3, Composite_Score_4
@@ -433,7 +436,16 @@ Each output CSV file contains detailed scoring information with columns:
 - **Multi-panel plots**: Combined TM and GDT score visualizations
   
 <img width="4800" height="2400" alt="FigS5_B" src="https://github.com/user-attachments/assets/84a012b6-9674-44ff-bada-be2b00af05ff" />
+<!--
+Figure S5B.
+"Figure S5B. Combined two-state GDT_TS scores for best M1239 models ranked by predictor group. AlphaFold3 Server's Group (304) is highlighted with a star and a horizontal green line"
+-->
+
 <img width="2971" height="1774" alt="FigS7_D" src="https://github.com/user-attachments/assets/7f5e3c3a-c6cf-4921-9a4d-49e9cd3c33f8" />
+<!--
+Figure S7D.
+"Figure S7D. Two state GDT_TS scatterplot for T1239. The point corresponding to AlphaFold3 Server's Group (304) is intersected by a vertical and horizontal dashed line."
+-->
 
 ### TSBI Plots (`output/TSBI_PLOTS/` directory)
 - **TSBI bar plots**: Horizontal and vertical bar charts showing TSBI scores for each group
