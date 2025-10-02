@@ -208,6 +208,7 @@ python scripts/process_dual_state_score.py
 - Saves detailed CSV outputs with dual-state scoring information
 - Handles GDT_TS, GlobalLDDT, TMscore, and Composite_Score_1-4 for T1214
 
+<img width="2989" height="1772" alt="T1214_GDT_TS_scatter_plot_dual_state" src="https://github.com/user-attachments/assets/42fb6358-e8bc-4a39-8540-d2f6c7bd408a" />
 
 
 **Dual State Plot Methodology:**
