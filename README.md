@@ -515,3 +515,9 @@ This project is licensed under the MIT License. See the license header in each s
 **Author**: Tiburon Leon Benavides  
 **Contribution**: Main contributor  
 **Date**: 2025-09-01
+
+## References
+
+This work is used in the following publication:
+
+Dube, N., Ramelot, T. A., Benavides, T. L., Huang, Y. J., Moult, J., Kryshtafovych, A., & Montelione, G. T. (2025). Modeling Alternative Conformational States in CASP16. bioRxiv. https://doi.org/10.1101/2025.09.02.673835
