@@ -1,43 +1,8 @@
-![zenodo 17247438](https://github.com/user-attachments/assets/959d23e8-86ac-41b1-97ec-0afb37ab6ffb)# CASP Data Processing
+# CASP Data Processing
 
 This repository contains scripts and utilities for processing, analyzing, and visualizing data for the CASP (Critical Assessment of Structure Prediction) assessment. The workflow includes processing scores, identifying missing data points, and generating plots and summary files.
 
-![Uploading ze<svg xmlns="http://www.w3.org/2000/svg"
-     width="190.84375" height="20">
-        <linearGradient id="b" x2="0" y2="100%">
-            <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
-            <stop offset="1" stop-opacity=".1"/>
-        </linearGradient>
-        <mask id="a" width="190.84375" height="20">
-            <rect width="190.84375" height="20" rx="3"
-            fill="#fff"/>
-        </mask>
-        <g mask="url(#a)">
-            <path fill="#555" d="M0 0h31.375v20H0z" />
-            <path fill="#007ec6"
-            d="M31.375 0h159.46875v20H31.375z"
-            />
-            <path fill="url(#b)" d="M0 0h190.84375v20H0z" />
-        </g>
-        <g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,
-        Verdana,Geneva,sans-serif" font-size="11">
-            <text x="16.1875" y="15" fill="#010101"
-            fill-opacity=".3">
-                DOI
-            </text>
-            <text x="16.1875" y="14">
-                DOI
-            </text>
-            <text x="110.609375"
-            y="15" fill="#010101" fill-opacity=".3">
-                10.5281/zenodo.17247438
-            </text>
-            <text x="110.609375" y="14">
-                10.5281/zenodo.17247438
-            </text>
-        </g>
-    </svg>nodo.17247438.svg…]()
-
+![zenodo 17247438](https://github.com/user-attachments/assets/959d23e8-86ac-41b1-97ec-0afb37ab6ffb)
 
 ## Directory Structure
 
