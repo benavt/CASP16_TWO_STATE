@@ -47,10 +47,8 @@ def assessment(ID, score):
     
 
     print("Creating stacked bar plots...")
-    create_stacked_bar(combined_df, ID, score, horizontal=True, star=True, outfile_suffix = "_vertical_star", single_state=True, ylabel='Single-State Score', baseline_color='gray', v1_color_304='cyan', tick_fs_prim_horizontal=18, tick_fs_sec_horizontal=18, tick_fs_prim_vertical=18, tick_fs_sec_vertical=18, output_dir='./output/PLOTS')
-    create_stacked_bar(combined_df, ID, score, horizontal=False, star=True, outfile_suffix = "_horizontal_star", single_state=True, ylabel='Single-State Score', baseline_color='gray', v1_color_304='cyan', tick_fs_prim_horizontal=18, tick_fs_sec_horizontal=18, tick_fs_prim_vertical=18, tick_fs_sec_vertical=18, output_dir='./output/PLOTS')
-    create_stacked_bar(combined_df, ID, score, horizontal=True, star=False, outfile_suffix = "_vertical_no_star", single_state=True, ylabel='Single-State Score', baseline_color='gray', v1_color_304='cyan', tick_fs_prim_horizontal=18, tick_fs_sec_horizontal=18, tick_fs_prim_vertical=18, tick_fs_sec_vertical=18, output_dir='./output/PLOTS')
-    create_stacked_bar(combined_df, ID, score, horizontal=False, star=False, outfile_suffix = "_horizontal_no_star", single_state=True, ylabel='Single-State Score', baseline_color='gray', v1_color_304='cyan', tick_fs_prim_horizontal=18, tick_fs_sec_horizontal=18, tick_fs_prim_vertical=18, tick_fs_sec_vertical=18, output_dir='./output/PLOTS')
+    create_stacked_bar(combined_df, ID, score, horizontal=True, star=True, outfile_suffix = "_vertical", single_state=True, ylabel='Single-State Score', baseline_color='gray', v1_color_304='cyan', tick_fs_prim_horizontal=18, tick_fs_sec_horizontal=18, tick_fs_prim_vertical=18, tick_fs_sec_vertical=18, output_dir='./output/PLOTS')
+    create_stacked_bar(combined_df, ID, score, horizontal=False, star=True, outfile_suffix = "_horizontal", single_state=True, ylabel='Single-State Score', baseline_color='gray', v1_color_304='cyan', tick_fs_prim_horizontal=18, tick_fs_sec_horizontal=18, tick_fs_prim_vertical=18, tick_fs_sec_vertical=18, output_dir='./output/PLOTS')
     print(f"Done creating stacked bar plots for {ID} {score}")
 
 

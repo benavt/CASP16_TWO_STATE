@@ -37,6 +37,12 @@ def create_stacked_bar_dual_state(*args, **kwargs):
     kwargs.setdefault('title_prefix', 'Dual-State')
     kwargs.setdefault('output_dir', './output/PLOTS')
     
+    # Set y-axis limit to maximum Combined_Score
+    if len(args) >= 1:
+        combined_df = args[0]
+        max_combined_score = combined_df['Combined_Score'].max()
+        kwargs.setdefault('ylim', (0, max_combined_score))
+    
     # Special ID configurations for dual_state
     special_ids = {
         'M1228': {
@@ -123,10 +129,8 @@ def assessment(ID, score):
     
 
     # print("Creating stacked bar plots...")
-    create_stacked_bar_dual_state(combined_df, ID, score, horizontal=False, star=True, outfile_suffix = "_vertical_star")
-    create_stacked_bar_dual_state(combined_df, ID, score, horizontal=True, star=True, outfile_suffix = "_horizontal_star")
-    create_stacked_bar_dual_state(combined_df, ID, score, horizontal=False, star=False, outfile_suffix = "_vertical_no_star")
-    create_stacked_bar_dual_state(combined_df, ID, score, horizontal=True, star=False, outfile_suffix = "_horizontal_no_star")
+    create_stacked_bar_dual_state(combined_df, ID, score, horizontal=False, star=True, outfile_suffix = "_vertical")
+    create_stacked_bar_dual_state(combined_df, ID, score, horizontal=True, star=True, outfile_suffix = "_horizontal")
     
     kwargs = {}
     # Default scatter plot parameters
