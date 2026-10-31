@@ -151,35 +151,28 @@ def extract_png_text_chunks(png_content):
 
 def extract_office_xml(office_content):
     """Extract XML content from Office Open XML files (.docx, .xlsx, .pptx)."""
-    try:
-        xml_parts = []
-        with tempfile.TemporaryDirectory() as tmpdir:
-            zip_path = os.path.join(tmpdir, 'office.zip')
-            with open(zip_path, 'wb') as f:
-                f.write(office_content)
-            
-            with zipfile.ZipFile(zip_path, 'r') as zf:
-                for name in zf.namelist():
-                    if name.endswith('.xml') or name.endswith('.rels'):
-                        xml_parts.append(zf.read(name))
+    xml_parts = []
+    with tempfile.TemporaryDirectory() as tmpdir:
+        zip_path = os.path.join(tmpdir, 'office.zip')
+        with open(zip_path, 'wb') as f:
+            f.write(office_content)
         
-        return b''.join(xml_parts)
-    except (zipfile.BadZipFile, Exception):
-        return b''
+        with zipfile.ZipFile(zip_path, 'r') as zf:
+            for name in zf.namelist():
+                if name.endswith('.xml') or name.endswith('.rels'):
+                    xml_parts.append(zf.read(name))
+    
+    return b''.join(xml_parts)
 
 
 def scan_binary_with_strings(content):
     """Use strings command to extract printable text from binary files."""
-    try:
-        result = subprocess.run(['strings', '-n', '8'],
-                              input=content,
-                              stdout=subprocess.PIPE,
-                              stderr=subprocess.PIPE,
-                              check=True)
-        return result.stdout
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        # strings not available, return original content
-        return content
+    result = subprocess.run(['strings', '-n', '8'],
+                          input=content,
+                          stdout=subprocess.PIPE,
+                          stderr=subprocess.PIPE,
+                          check=True)
+    return result.stdout
 
 
 def inspect_content(content, filename=''):
@@ -189,28 +182,22 @@ def inspect_content(content, filename=''):
     
     # Decompress if gzipped
     if content.startswith(b'\x1f\x8b'):
-        try:
-            content = gzip.decompress(content)
-        except Exception:
-            pass
+        content = gzip.decompress(content)
     
     # Handle PDF files: extract text and scan attachments
     if content.startswith(b'%PDF'):
-        try:
-            text_content, attachments = extract_pdf_text_and_attachments(content)
-            
-            # Scan visible text
-            findings.extend(scan_patterns(text_content, filename))
-            
-            # Scan each attachment recursively
-            for attach_name, attach_content in attachments:
-                attach_findings = inspect_content(attach_content, attach_name)
-                if attach_findings:
-                    findings.append(f'PDF attachment "{attach_name}" contains: {", ".join(attach_findings)}')
-            
-            return findings
-        except Exception as e:
-            return [f'PDF processing error: {str(e)}']
+        text_content, attachments = extract_pdf_text_and_attachments(content)
+        
+        # Scan visible text
+        findings.extend(scan_patterns(text_content, filename))
+        
+        # Scan each attachment recursively
+        for attach_name, attach_content in attachments:
+            attach_findings = inspect_content(attach_content, attach_name)
+            if attach_findings:
+                findings.append(f'PDF attachment "{attach_name}" contains: {", ".join(attach_findings)}')
+        
+        return findings
     
     # Handle PNG files: extract text chunks only
     if content.startswith(b'\x89PNG'):
@@ -223,7 +210,7 @@ def inspect_content(content, filename=''):
             office_findings = scan_patterns(xml_content, filename)
             if office_findings:
                 findings.append(f'Office XML content contains: {", ".join(office_findings)}')
-            return findings
+        return findings
     
     # For other binary files (not images), use strings
     if file_ext not in ('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.ico'):
@@ -309,7 +296,7 @@ def scan_repository(ref='HEAD'):
                               check=True)
         content = result.stdout
         
-        # Scan content
+        # Scan content - any error is a violation
         try:
             findings = inspect_content(content, name)
             
@@ -321,7 +308,8 @@ def scan_repository(ref='HEAD'):
                 findings = sorted(set(findings))
                 failures.append((name, findings))
         except Exception as e:
-            failures.append((name, [f'scan error: {str(e)}']))
+            # File cannot be scanned - treat as violation
+            failures.append((name, [f'file cannot be scanned: {str(e)}']))
     
     return scanned, failures
 
