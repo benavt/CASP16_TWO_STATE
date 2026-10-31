@@ -1,0 +1,26 @@
+name: Privacy Check
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  privacy-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y poppler-utils
+      
+      - name: Run privacy checker
+        run: |
+          chmod +x scripts/check_privacy.py
+          python3 scripts/check_privacy.py
